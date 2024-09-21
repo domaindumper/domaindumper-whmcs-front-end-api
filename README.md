@@ -1,2 +1,2 @@
 # .github
-All about company
+All about WHMCS front API
