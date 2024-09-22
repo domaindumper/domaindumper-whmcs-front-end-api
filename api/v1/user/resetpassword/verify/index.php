@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Check for empty fields
         if (empty($password) || empty($password2)) {
-            
+
             $ResponseCode = 400;
 
             $response = [
@@ -31,31 +31,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             // Check if passwords match
             if ($password === $password2) {
-                
-                echo $password2; die;
 
-                $encripted_password = password_hash('354gf763254@#', PASSWORD_BCRYPT);
+                // Check if password is valid
 
-                // echo $encripted_password; die;
+                if (isPasswordVaild($password2)) {
 
-                // Now update the password
+                    $encripted_password = password_hash($password2, PASSWORD_BCRYPT);
 
-                Illuminate\Database\Capsule\Manager::table('tblusers')
-                    ->updateOrInsert(
-                        ['reset_token' => $reset_token],
-                        ['password' => $encripted_password, 'reset_token' => '', 'updated_at' => date('Y-m-d H:i:s')]
-                    );
+                    // Now update the password
+
+                    Illuminate\Database\Capsule\Manager::table('tblusers')
+                        ->updateOrInsert(
+                            ['reset_token' => $reset_token],
+                            ['password' => $encripted_password, 'reset_token' => '', 'updated_at' => date('Y-m-d H:i:s')]
+                        );
 
 
-                // Prepare the response data
+                    // Prepare the response data
 
-                $ResponseCode = 200;
+                    $ResponseCode = 200;
 
-                $response = [
-                    'status' => 'success',
-                    'code' => 200,
-                    'message' => 'Please log in again to continue as the password has been updated.'
-                ];
+                    $response = [
+                        'status' => 'success',
+                        'code' => 200,
+                        'message' => 'Please log in again to continue as the password has been updated.'
+                    ];
+
+
+                } else {
+                    $ResponseCode = 400;
+
+                    $response = [
+                        'status' => 'error',
+                        'code' => 400,
+                        'message' => 'Password must contain at least least one digit, one uppercase letter, one lowercase letter, one number, and one special character from: @$!%*#?&'
+                    ];
+                }
+
+
             } else {
                 // Passwords don't match
                 $ResponseCode = 400;
