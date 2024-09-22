@@ -11,11 +11,11 @@ $ca = new ClientArea();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $authToken = $_REQUEST['authToken'];
+    $auth_token = $_REQUEST['auth_token'];
 
-    if (isSessionActive($authToken)) {
+    if (isSessionActive($auth_token)) {
 
-        $Session = GetSession($authToken);
+        $Session = GetSession($auth_token);
 
         $user_id = $Session->id;
 
