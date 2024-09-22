@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $Session = GetSession($authToken);
 
-        $user_id = $Session->client_id;
+        $user_id = $Session->id;
 
         // Here get loggedin user details
 
