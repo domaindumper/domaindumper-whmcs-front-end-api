@@ -18,12 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isPasswordResetToken($reset_token)) {
 
-
-
         // Check for empty fields
         if (empty($password) || empty($password2)) {
             
-            $ResponseCode = 200;
+            $ResponseCode = 400;
 
             $response = [
                 'status' => 'error',
@@ -41,6 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $results = localAPI($command, $postData);
 
                 $encripted_password = $results['password'];
+
+                echo 'encripted_password: ' . $encripted_password;
+                die();
 
                 // Now update the password
 
