@@ -38,7 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $results = localAPI($command, $postData);
 
-                $encripted_password = '$2y$10$'.$results['password'];
+                $encripted_password = $results['password'];
+
+                $encripted_password = password_hash($password2, PASSWORD_BCRYPT);
+
+                echo $encripted_password; die;
 
                 // Now update the password
 
