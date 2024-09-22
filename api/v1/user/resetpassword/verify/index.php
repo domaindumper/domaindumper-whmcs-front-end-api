@@ -40,9 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $encripted_password = '$2y$10$'.$results['password'];
 
-                echo 'encripted_password: ' . $encripted_password;
-                die();
-
                 // Now update the password
 
                 Illuminate\Database\Capsule\Manager::table('tblusers')
