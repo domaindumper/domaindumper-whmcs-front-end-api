@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $encripted_password = $results['password'];
 
-                $encripted_password = password_hash($password2, PASSWORD_BCRYPT);
+                $encripted_password = password_hash('354gf763254@#', PASSWORD_BCRYPT);
 
                 echo $encripted_password; die;
 
