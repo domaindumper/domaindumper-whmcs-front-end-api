@@ -31,14 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             // Check if passwords match
             if ($password === $password2) {
-                $command = 'EncryptPassword';
-                $postData = array(
-                    'password2' => $password2,
-                );
-
-                $results = localAPI($command, $postData);
-
-                $encripted_password = $results['password'];
+                
+                echo $password2; die;
 
                 $encripted_password = password_hash('354gf763254@#', PASSWORD_BCRYPT);
 
