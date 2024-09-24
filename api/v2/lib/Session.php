@@ -45,13 +45,10 @@ function GetSession($authToken)
 
     $Userdata = $UserResults['client'];
 
-    unset($Userdata['users']);
-
-    print_r($Userdata);
-
-    die();
+    
 
     // Remove not usfull data from user information
+    unset($Userdata['users']);
     unset($Userdata['userid']);
     unset($Userdata['client_id']);
     unset($Userdata['id']);
