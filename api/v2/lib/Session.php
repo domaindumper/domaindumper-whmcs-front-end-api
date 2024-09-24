@@ -41,6 +41,10 @@ function GetSession($authToken)
 
     $UserResults = localAPI($command, $postData);
 
+    print_r($UserResults);
+
+    die();
+
     $Userdata = $UserResults['client'];
 
     unset($Userdata['users']);
