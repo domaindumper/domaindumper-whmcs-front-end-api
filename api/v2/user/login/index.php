@@ -58,6 +58,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Generate the JWT
         $JwtToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
+        // Remove not usfull data from user information
+
+        unset($Userdata['userid']);
+        unset($Userdata['client_id']);
+        unset($Userdata['id']);
+        unset($Userdata['owner_user_id']);
+        unset($Userdata['uuid']);
+
+        // Prepare the response data
+
         $response = [
             'status' => $results['result'],
             'code' => 200,
