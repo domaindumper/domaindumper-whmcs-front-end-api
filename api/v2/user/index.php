@@ -29,9 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $results = localAPI($command, $postData);
 
+         // Remove not usfull data from user information
+
         $Userdata = $results['client'];
 
         unset($Userdata['users']);
+        unset($Userdata['userid']);
+        unset($Userdata['client_id']);
+        unset($Userdata['id']);
+        unset($Userdata['owner_user_id']);
+        unset($Userdata['uuid']);
 
         // Prepare the response data
         $ResponseCode = 200;
