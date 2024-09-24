@@ -31,6 +31,9 @@ function GetSession($authToken)
 
     }
 
+    // Get the user details from the database
+
+
     return $decoded->data->client_id;
 }
 
