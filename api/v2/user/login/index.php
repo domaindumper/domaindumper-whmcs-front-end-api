@@ -45,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         unset($Userdata['users']);
 
         // genrate JWT Auth Token
-// Payload data
+
+        // Payload data
         $payload = [
             'iss' => JWT_ISS, // Issuer (e.g., your application's domain)
             'aud' => JWT_AUD, // Audience (e.g., the intended recipient)
@@ -55,12 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         // Generate the JWT
-        $jwt = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
-
-        // Output the JWT
-        echo $jwt;
-
-        $JwtToken = $results['passwordhash'] . '-' . md5($email . time());
+        $JwtToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
         $response = [
             'status' => $results['result'],
