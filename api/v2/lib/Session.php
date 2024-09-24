@@ -31,6 +31,8 @@ function GetSession($authToken)
 
     }
 
+    // Get the user details from the database
+
     $user = Illuminate\Database\Capsule\Manager::table('tblusers')->where('id', $decoded->data->client_id)->first();
 
     return $user;
