@@ -41,16 +41,22 @@ function GetSession($authToken)
 
     $UserResults = localAPI($command, $postData);
 
-    
+    print_r($UserResults);
+
+    die();
 
     $Userdata = $UserResults['client'];
 
-    
+    unset($Userdata['users']);
 
     // Remove not usfull data from user information
-  
+    unset($Userdata['userid']);
+    unset($Userdata['client_id']);
+    unset($Userdata['id']);
+    unset($Userdata['owner_user_id']);
+    unset($Userdata['uuid']);
 
-    return $decoded->data->client_id;
+    return $Userdata;
 }
 
 function isSessionActive($authToken)
