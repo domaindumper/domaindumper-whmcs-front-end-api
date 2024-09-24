@@ -43,7 +43,6 @@ function isSessionActive($authToken)
     // Decode and verify the JWT
     try {
         $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
-
         return true;
     } catch (Exception $e) {
         //echo "Invalid JWT: " . $e->getMessage();
