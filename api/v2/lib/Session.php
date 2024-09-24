@@ -20,7 +20,18 @@ function UpdateSession($authToken)
 
 function GetSession($authToken)
 {
-    $user = Illuminate\Database\Capsule\Manager::table('tblusers')->where('auth_token', $authToken)->first();
+
+    // Decode and verify the JWT
+    try {
+
+        $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
+
+    } catch (Exception $e) {
+        //echo "Invalid JWT: " . $e->getMessage();
+
+    }
+
+    $user = Illuminate\Database\Capsule\Manager::table('tblusers')->where('id', $decoded->data->client_id)->first();
 
     return $user;
 }
