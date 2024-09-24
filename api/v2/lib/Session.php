@@ -48,12 +48,7 @@ function GetSession($authToken)
     
 
     // Remove not usfull data from user information
-    unset($Userdata['users']);
-    unset($Userdata['userid']);
-    unset($Userdata['client_id']);
-    unset($Userdata['id']);
-    unset($Userdata['owner_user_id']);
-    unset($Userdata['uuid']);
+  
 
     return $Userdata;
 }
