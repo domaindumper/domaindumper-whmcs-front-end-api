@@ -29,7 +29,7 @@ function isSessionActive($authToken)
 {
     // Decode and verify the JWT
     try {
-        $decoded = JWT::decode($jwt, JWT_SECRET, [JWT_ALGORITHM]);
+        $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
 
         // Access the decoded data
         echo "User ID: " . $decoded->data->user_id . "\n";
