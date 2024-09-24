@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response = [
             'status' => 'error',
             'code' => 401,
-            'message' => 'You must be logged in to access this resource.'
+            'message' => 'It looks like your session has expired. Please log in again.'
         ];
     }
 
