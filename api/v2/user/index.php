@@ -5,17 +5,19 @@ use WHMCS\Database\Capsule;
 define('CLIENTAREA', true);
 
 require '../../../init.php';
+require '../vendor/autoload.php';
 require '../lib/Session.php';
+
 
 $ca = new ClientArea();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $auth_token = $_REQUEST['auth_token'];
+    $authToken = $_REQUEST['authToken'];
 
-    if (isSessionActive($auth_token)) {
+    if (isSessionActive($authToken)) {
 
-        $Session = GetSession($auth_token);
+        $Session = GetSession($authToken);
 
         $user_id = $Session->id;
 

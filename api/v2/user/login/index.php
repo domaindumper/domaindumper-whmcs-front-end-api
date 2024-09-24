@@ -5,9 +5,8 @@ use WHMCS\Database\Capsule;
 define('CLIENTAREA', true);
 
 require '../../../../init.php';
-require '../../lib/Session.php';
 require '../../vendor/autoload.php';
-
+require '../../lib/Session.php';
 
 
 $ca = new ClientArea();

@@ -27,11 +27,18 @@ function GetSession($authToken)
 
 function isSessionActive($authToken)
 {
-    if (Illuminate\Database\Capsule\Manager::table('tblusers')->where('auth_token', $authToken)->exists()) {
-        return true;
-    } else {
-        return false;
+    // Decode and verify the JWT
+    try {
+        $decoded = JWT::decode($jwt, JWT_SECRET, [JWT_ALGORITHM]);
+
+        // Access the decoded data
+        echo "User ID: " . $decoded->data->user_id . "\n";
+        echo "Username: " . $decoded->data->username . "\n";
+    } catch (Exception $e) {
+        echo "Invalid JWT: " . $e->getMessage();
     }
+
+    die();
 }
 
 function isPasswordResetToken($reset_token)
