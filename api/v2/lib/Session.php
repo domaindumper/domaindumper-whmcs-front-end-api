@@ -32,8 +32,8 @@ function isSessionActive($authToken)
         $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
 
         // Access the decoded data
-        echo "User ID: " . $decoded->data->user_id . "\n";
-        echo "Username: " . $decoded->data->username . "\n";
+        echo "User ID: " . $decoded->data->userid . "\n";
+        echo "Username: " . $decoded->data->client_id . "\n";
     } catch (Exception $e) {
         echo "Invalid JWT: " . $e->getMessage();
     }
