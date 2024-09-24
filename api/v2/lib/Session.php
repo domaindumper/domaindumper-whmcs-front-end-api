@@ -35,6 +35,14 @@ function GetSession($authToken)
 
     $user = Illuminate\Database\Capsule\Manager::table('tblusers')->where('id', $decoded->data->client_id)->first();
 
+    // Remove not usfull data from user information
+
+    unset($user->userid);
+    unset($user->client_id);
+    unset($user->id);
+    unset($user->owner_user_id);
+    unset($user->uuid);
+
     return $user;
 }
 
