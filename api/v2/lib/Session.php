@@ -41,13 +41,15 @@ function GetSession($authToken)
 
     $UserResults = localAPI($command, $postData);
 
-    print_r($UserResults);
-
-    die();
+    
 
     $Userdata = $UserResults['client'];
 
     unset($Userdata['users']);
+
+    print_r($Userdata);
+
+    die();
 
     // Remove not usfull data from user information
     unset($Userdata['userid']);
