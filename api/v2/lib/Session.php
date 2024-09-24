@@ -33,12 +33,26 @@ function GetSession($authToken)
 
     // Get the user details from the database
 
-    $user = Illuminate\Database\Capsule\Manager::table('tblusers')->where('id', $decoded->data->client_id)->first();
+    $command = 'GetClientsDetails';
+    $postData = array(
+        'clientid' => $decoded->data->client_id,
+        'stats' => true,
+    );
+
+    $UserResults = localAPI($command, $postData);
+
+    $Userdata = $UserResults['client'];
+
+    unset($Userdata['users']);
 
     // Remove not usfull data from user information
+    unset($Userdata['userid']);
+    unset($Userdata['client_id']);
+    unset($Userdata['id']);
+    unset($Userdata['owner_user_id']);
+    unset($Userdata['uuid']);
 
-
-    return $user;
+    return $Userdata;
 }
 
 function isSessionActive($authToken)
