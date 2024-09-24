@@ -50,7 +50,7 @@ function GetSession($authToken)
     // Remove not usfull data from user information
   
 
-    return $UserResults;
+    return $decoded->data->client_id;
 }
 
 function isSessionActive($authToken)
