@@ -6,6 +6,9 @@ define('CLIENTAREA', true);
 
 require '../../../../init.php';
 require '../../lib/Session.php';
+require '../../vendor/autoload.php';
+
+
 
 $ca = new ClientArea();
 
@@ -41,16 +44,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         unset($Userdata['users']);
 
-        // Create a session
+        // genrate JWT Auth Token
+// Payload data
+        $payload = [
+            'iss' => JWT_ISS, // Issuer (e.g., your application's domain)
+            'aud' => JWT_AUD, // Audience (e.g., the intended recipient)
+            'iat' => time(), // Issued at time
+            'exp' => time() + 3600, // Expiration time (1 hour in this example)
+            'data' => $Userdata,
+        ];
 
-        $authToken = $results['passwordhash'].'-'.md5($email.time());
+        // Generate the JWT
+        $jwt = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
-        CreateSession($authToken, $Userdata['client_id']);
+        // Output the JWT
+        echo $jwt;
+
+        $JwtToken = $results['passwordhash'] . '-' . md5($email . time());
 
         $response = [
             'status' => $results['result'],
             'code' => 200,
-            'authToken' => $authToken,
+            'authToken' => $JwtToken,
             'Userdata' => $Userdata
         ];
 
