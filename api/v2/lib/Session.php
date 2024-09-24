@@ -31,14 +31,12 @@ function isSessionActive($authToken)
     try {
         $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
 
-        // Access the decoded data
-        echo "User ID: " . $decoded->data->userid . "\n";
-        echo "Username: " . $decoded->data->client_id . "\n";
+        return true;
     } catch (Exception $e) {
-        echo "Invalid JWT: " . $e->getMessage();
-    }
+        //echo "Invalid JWT: " . $e->getMessage();
 
-    die();
+        return false;
+    }
 }
 
 function isPasswordResetToken($reset_token)
