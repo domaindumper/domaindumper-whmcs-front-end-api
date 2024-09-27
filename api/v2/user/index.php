@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $authToken = !empty($_REQUEST['authToken']) ? $_REQUEST['authToken'] : '';
 
-    if (isSessionActive($authToken)) {
+    if (isActiveSession($authToken)) {
 
         $user_id = GetSession($authToken);
 

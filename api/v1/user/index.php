@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $auth_token = $_REQUEST['auth_token'];
 
-    if (isSessionActive($auth_token)) {
+    if (isActiveSession($auth_token)) {
 
         $Session = GetSession($auth_token);
 

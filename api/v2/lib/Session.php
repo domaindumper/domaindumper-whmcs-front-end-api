@@ -41,7 +41,7 @@ function GetSession($authToken)
     return $decoded->data->client_id;
 }
 
-function isSessionActive($authToken)
+function isActiveSession($authToken)
 {
 
     if (Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->exists()) {
@@ -77,7 +77,7 @@ function isSessionActive($authToken)
     }
 }
 
-function isPasswordResetToken($reset_token)
+function isVaildPasswordResetToken($reset_token)
 {
     if (Illuminate\Database\Capsule\Manager::table('tblusers')->where('reset_token', $reset_token)->exists()) {
         return true;
@@ -86,7 +86,7 @@ function isPasswordResetToken($reset_token)
     }
 }
 
-function isPasswordVaild($password)
+function isVaildPassword($password)
 {
     // Define a regular expression pattern for MySQL-supported passwords
     $password_pattern = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/';

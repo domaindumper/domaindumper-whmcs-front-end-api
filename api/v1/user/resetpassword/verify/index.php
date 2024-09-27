@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = !empty($_REQUEST['password']) ? $_REQUEST['password'] : '';
     $password2 = !empty($_REQUEST['password2']) ? $_REQUEST['password2'] : '';
 
-    if (isPasswordResetToken($reset_token)) {
+    if (isVaildPasswordResetToken($reset_token)) {
 
         // Check for empty fields
         if (empty($password) || empty($password2)) {
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // Check if password is valid
 
-                if (isPasswordVaild($password2)) {
+                if (isVaildPassword($password2)) {
 
                     $encripted_password = password_hash($password2, PASSWORD_BCRYPT);
 

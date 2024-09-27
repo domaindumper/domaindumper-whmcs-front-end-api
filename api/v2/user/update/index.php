@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $lastname = !empty($_REQUEST['lastname']) ? $_REQUEST['lastname'] : '';
     $email = !empty($_REQUEST['email']) ? $_REQUEST['email'] : '';
 
-    if (isSessionActive($authToken)) {
+    if (isActiveSession($authToken)) {
 
         $user_id = GetSession($authToken);
 
