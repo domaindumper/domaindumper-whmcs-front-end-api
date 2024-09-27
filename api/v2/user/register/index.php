@@ -93,6 +93,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             StoreSession($authToken, $clientid);
 
+            // Remove not usfull data from user information
+
+            $Userdata = refineUserInformation(Userdata: $Userdata);
+
             $response = [
                 'status' => $results['result'],
                 'code' => 200,
