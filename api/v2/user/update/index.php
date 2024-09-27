@@ -22,35 +22,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $user_id = GetSession($authToken);
 
-        // Here get loggedin user details from database
-
-        $command = 'GetClientsDetails';
+        $command = 'UpdateClient';
         $postData = array(
             'clientid' => $user_id,
-            'stats' => true,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
         );
 
         $results = localAPI($command, $postData);
 
-         // Remove not usfull data from user information
-
-        $Userdata = $results['client'];
-
-        unset($Userdata['users']);
-        unset($Userdata['userid']);
-        unset($Userdata['client_id']);
-        unset($Userdata['id']);
-        unset($Userdata['owner_user_id']);
-        unset($Userdata['uuid']);
 
         // Prepare the response data
-        $ResponseCode = 200;
-        $response = [
-            'status' => 'success',
-            'code' => 200,
-            'message' => 'User information retrieved successfully',
-            'data' => $Userdata
-        ];
+
+        if ($results['result'] == 'success') {
+
+            $ResponseCode = 200;
+            $response = [
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Your profile has been updated successfully',
+            ];
+
+        } else {
+            $ResponseCode = 400;
+            $response = [
+                'status' => 'error',
+                'code' => 400,
+                'message' => $results['result']
+            ];
+        }
+
+
+
+
 
     } else {
 
