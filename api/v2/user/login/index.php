@@ -57,6 +57,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Generate the JWT
         $JwtToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
+        // Save the JWT token to database for revaildation and logout feature
+
+        CreateSession($JwtToken, $Userdata->client_id);
+
+
         // Remove not usfull data from user information
 
         $Userdata = refineUserInformation(Userdata: $Userdata);
