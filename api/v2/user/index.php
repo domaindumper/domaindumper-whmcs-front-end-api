@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $user_id = GetSession($authToken);
 
-        // Here get loggedin user details
+        // Here get loggedin user details from database
 
         $command = 'GetClientsDetails';
         $postData = array(
