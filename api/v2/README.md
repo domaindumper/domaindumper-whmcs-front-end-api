@@ -9,7 +9,8 @@ define('JWT_ISS', 'api.example.com'); // Issuer (e.g., your application's domain
 define('JWT_AUD', 'example.com'); // Audience (e.g., the intended recipient)
 
 
-### Add authToken row to tblclients tabele
+### Add authToken row to tblusers tabele
 
-ALTER TABLE `tblclients` ADD `authToken` TEXT NOT NULL AFTER `pwresetkey`;
+ALTER TABLE `tblusers` ADD `authToken` TEXT NULL DEFAULT NULL AFTER `reset_token`;
+
 
