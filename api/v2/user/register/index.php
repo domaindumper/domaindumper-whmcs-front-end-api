@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $LoginResults = localAPI($command, $postData);
 
 
-            $clientid = $LoginResults['userid'];
+            $clientid = $results['clientid'];
 
 
             // Retry data from database
