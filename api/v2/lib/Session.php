@@ -2,9 +2,6 @@
 
 function StoreSession($authToken, $client_id)
 {
-
-    print_r($authToken);
-    die();
     Illuminate\Database\Capsule\Manager::table('tblusers')
         ->updateOrInsert(
             ['id' => $client_id],
@@ -14,8 +11,8 @@ function StoreSession($authToken, $client_id)
 
 function DestroySession($authToken)
 {
-    
-// Genrate new token with with past date to Invalidate the token
+
+    // Genrate new token with with past date to Invalidate the token
 
 }
 function UpdateSession($authToken)
