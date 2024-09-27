@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Save the JWT token to database for revaildation and logout feature
 
-       // StoreSession($JwtToken, $Userdata->client_id);
+        StoreSession($JwtToken, $Userdata->client_id);
 
 
         // Remove not usfull data from user information
