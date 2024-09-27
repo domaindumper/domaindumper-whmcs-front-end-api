@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $response = [
                 'status' => 'error',
                 'code' => 400,
-                'message' => $results['result']
+                'message' => $results['message']
             ];
         }
 
