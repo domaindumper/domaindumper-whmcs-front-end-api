@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Generate the JWT
             $authToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
-            CreateSession($authToken, client_id: $results['clientid']);
+            CreateSession($authToken, $results['clientid']);
 
             $response = [
                 'status' => $results['result'],
