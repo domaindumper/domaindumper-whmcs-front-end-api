@@ -14,6 +14,8 @@ function DestroySession($authToken)
 
     // Remove the authToken from the database
 
+    Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->update(['authToken' => '']);
+
 }
 function UpdateSession($authToken)
 {
@@ -43,7 +45,6 @@ function isSessionActive($authToken)
 {
 
     if (Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->exists()) {
-        // ...
 
         // Decode and verify the JWT
         try {
@@ -52,8 +53,16 @@ function isSessionActive($authToken)
             // Check if the JWT is expired
             $currentTimestamp = time();
             if ($decoded->exp < $currentTimestamp) {
+
+                // if JWT is expired then return false and drop authToken from database
+
+                Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->update(['authToken' => '']);
+
                 return false;
             } else {
+
+                // if JWT is not expired then return true
+
                 return true;
             }
 
