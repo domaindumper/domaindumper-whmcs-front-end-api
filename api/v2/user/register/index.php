@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $results = localAPI($command, $postData);
 
-            print($results);
+            print_r($results);
 
             die();
 
