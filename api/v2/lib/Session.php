@@ -1,6 +1,6 @@
 <?php
 
-function CreateSession($authToken, $client_id)
+function StoreSession($authToken, $client_id)
 {
     Illuminate\Database\Capsule\Manager::table('tblusers')
         ->updateOrInsert(
