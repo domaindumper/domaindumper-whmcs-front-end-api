@@ -73,7 +73,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Create a session
 
-            $authToken = $LoginResults['passwordhash'] . '-' . md5($email . time());
+            // Payload data
+            $payload = [
+                'iss' => JWT_ISS, // Issuer (e.g., your application's domain)
+                'aud' => JWT_AUD, // Audience (e.g., the intended recipient)
+                'iat' => time(), // Issued at time
+                'exp' => time() + 3600, // Expiration time (1 hour in this example)
+                'data' => $Userdata,
+            ];
+
+            // Generate the JWT
+            $JwtToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
             CreateSession($authToken, client_id: $results['clientid']);
 
