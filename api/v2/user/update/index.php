@@ -4,6 +4,12 @@ use WHMCS\Database\Capsule;
 
 define('CLIENTAREA', true);
 
+
+
+echo $_SERVER['DOCUMENT_ROOT'];
+
+die();
+
 require '../../../init.php';
 require '../vendor/autoload.php';
 require '../lib/Session.php';
