@@ -57,26 +57,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'password2' => $password2,
             );
 
-            $results = localAPI($command, $postData);
+            $LoginResults = localAPI($command, $postData);
 
 
-            $clientid = $results['userid'];
+            $clientid = $LoginResults['userid'];
 
 
             // Retry data from database
 
             $command = 'GetClientsDetails';
             $postData = array(
-                'clientid' => $results['userid'],
+                'clientid' => $LoginResults['userid'],
                 'stats' => true,
             );
 
             $UserResults = localAPI($command, $postData);
 
 
-            print_r($UserResults);
+            print_r(value: $UserResults);
 
             die();
+
+            $Userdata = $UserResults['client'];
+
+            unset($Userdata['users']);
+
+
+            
 
             $Userdata = $UserResults['client'];
 
