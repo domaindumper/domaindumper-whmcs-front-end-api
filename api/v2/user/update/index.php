@@ -4,15 +4,9 @@ use WHMCS\Database\Capsule;
 
 define('CLIENTAREA', true);
 
-
-
-echo $_SERVER['DOCUMENT_ROOT'];
-
-die();
-
-require '../../../init.php';
-require '../vendor/autoload.php';
-require '../lib/Session.php';
+require $_SERVER['DOCUMENT_ROOT'].'/init.php';
+require $_SERVER['DOCUMENT_ROOT'].'/api/v2/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'].'/api/v2/lib/Session.php';
 
 
 $ca = new ClientArea();
