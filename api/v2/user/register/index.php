@@ -73,18 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $UserResults = localAPI($command, $postData);
 
-
-            print_r(value: $UserResults);
-
-            die();
-
-            $Userdata = $UserResults['client'];
-
-            unset($Userdata['users']);
-
-
-            
-
             $Userdata = $UserResults['client'];
 
             unset($Userdata['users']);
