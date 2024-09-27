@@ -11,7 +11,9 @@ function CreateSession($authToken, $client_id)
 
 function DestroySession($authToken)
 {
-    Illuminate\Database\Capsule\Manager::table('tblusers')->where('auth_token', $authToken)->delete();
+    
+// Genrate new token with with past date to Invalidate the token
+
 }
 function UpdateSession($authToken)
 {
