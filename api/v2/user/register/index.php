@@ -59,9 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $results = localAPI($command, $postData);
 
-            print_r($results);
-
-            die();
 
             $clientid = $results['userid'];
 
@@ -75,6 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             );
 
             $UserResults = localAPI($command, $postData);
+
+
+            print_r($UserResults);
+
+            die();
 
             $Userdata = $UserResults['client'];
 
