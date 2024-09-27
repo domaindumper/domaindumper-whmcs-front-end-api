@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $user_id = GetSession($authToken);
 
-        $command = 'UpdateClient';
+        $command = 'UpdateUser';
         $postData = array(
-            'clientid' => $user_id,
+            'user_id' => $user_id,
             'firstname' => $firstname,
             'lastname' => $lastname,
             'email' => $email,
