@@ -2,7 +2,7 @@
 
 function StoreSession($authToken, $client_id)
 {
-    Illuminate\Database\Capsule\Manager::table('tblusers')
+    Illuminate\Database\Capsule\Manager::table('tblclients')
         ->updateOrInsert(
             ['id' => $client_id],
             ['authToken' => $authToken, 'updated_at' => date('Y-m-d H:i:s')]
@@ -14,12 +14,12 @@ function DestroySession($authToken)
 
     // Remove the authToken from the database
 
-    Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->update(['authToken' => '']);
+    Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $authToken)->update(['authToken' => '']);
 
 }
 function UpdateSession($authToken)
 {
-    $user = Illuminate\Database\Capsule\Manager::table('tblusers')->where('auth_token', $authToken)->first();
+    $user = Illuminate\Database\Capsule\Manager::table('tblclients')->where('auth_token', $authToken)->first();
 }
 
 function GetSession($authToken)
@@ -44,7 +44,7 @@ function GetSession($authToken)
 function isActiveSession($authToken)
 {
 
-    if (Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->exists()) {
+    if (Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $authToken)->exists()) {
 
         // Decode and verify the JWT
         try {
@@ -56,7 +56,7 @@ function isActiveSession($authToken)
 
                 // if JWT is expired then return false and drop authToken from database
 
-                Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->update(['authToken' => '']);
+                Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $authToken)->update(['authToken' => '']);
 
                 return false;
             } else {
@@ -79,7 +79,7 @@ function isActiveSession($authToken)
 
 function isVaildPasswordResetToken($reset_token)
 {
-    if (Illuminate\Database\Capsule\Manager::table('tblusers')->where('reset_token', $reset_token)->exists()) {
+    if (Illuminate\Database\Capsule\Manager::table('tblclients')->where('reset_token', $reset_token)->exists()) {
         return true;
     } else {
         return false;
