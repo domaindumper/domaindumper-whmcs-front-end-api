@@ -105,7 +105,7 @@ function refineUserInformation($Userdata)
 
     foreach ($keysToUnset as $key) {
         if (array_key_exists($key, $Userdata)) {
-            //unset($Userdata[$key]);
+            unset($Userdata[$key]);
         }
     }
 
