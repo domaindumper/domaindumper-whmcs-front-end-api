@@ -41,6 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $Userdata = $UserResults['client'];
 
+
+        print_r($Userdata);
+
+        die();
+
         unset($Userdata['users']);
 
         // genrate JWT Auth Token
