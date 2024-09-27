@@ -12,7 +12,7 @@ function StoreSession($authToken, $client_id)
 function DestroySession($authToken)
 {
 
-    // Genrate new token with with past date to Invalidate the token
+    // Remove the authToken from the database
 
 }
 function UpdateSession($authToken)
@@ -41,22 +41,29 @@ function GetSession($authToken)
 
 function isSessionActive($authToken)
 {
-    // Decode and verify the JWT
-    try {
-        $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
 
-        // Check if the JWT is expired
-        $currentTimestamp = time();
-        if ($decoded->exp < $currentTimestamp) {
+    if (Illuminate\Database\Capsule\Manager::table('tblusers')->where('authToken', $authToken)->exists()) {
+        // ...
+
+        // Decode and verify the JWT
+        try {
+            $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
+
+            // Check if the JWT is expired
+            $currentTimestamp = time();
+            if ($decoded->exp < $currentTimestamp) {
+                return false;
+            } else {
+                return true;
+            }
+
+
+        } catch (Exception $e) {
+            //echo "Invalid JWT: " . $e->getMessage();
+
             return false;
-        } else {
-            return true;
         }
-
-
-    } catch (Exception $e) {
-        //echo "Invalid JWT: " . $e->getMessage();
-
+    } {
         return false;
     }
 }
