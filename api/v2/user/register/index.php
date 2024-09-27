@@ -49,18 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($results['result'] == 'success') {
 
-            $command = 'GetClientsDetails';
-            $postData = array(
-                'clientid' => $results['clientid'],
-                'stats' => true,
-            );
-
-            $UserResults = localAPI($command, $postData);
-
-            $Userdata = $UserResults['client'];
-
-            unset($Userdata['users']);
-
             // Log the user in
 
             $command = 'ValidateLogin';
@@ -70,6 +58,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             );
 
             $LoginResults = localAPI($command, $postData);
+
+            $clientid = $LoginResults['userid'];
+
+
+            // Retry data from database
+
+            $command = 'GetClientsDetails';
+            $postData = array(
+                'clientid' => $clientid,
+                'stats' => true,
+            );
+
+            $UserResults = localAPI($command, $postData);
+
+            $Userdata = $UserResults['client'];
+
+            unset($Userdata['users']);
 
             // Create a session
 
@@ -85,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Generate the JWT
             $authToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
-            StoreSession($authToken, $results['owner_user_id']);
+            StoreSession($authToken, $clientid);
 
             $response = [
                 'status' => $results['result'],
