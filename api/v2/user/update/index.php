@@ -14,6 +14,9 @@ $ca = new ClientArea();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $authToken = !empty($_REQUEST['authToken']) ? $_REQUEST['authToken'] : '';
+    $firstname = !empty($_REQUEST['firstname']) ? $_REQUEST['firstname'] : '';
+    $lastname = !empty($_REQUEST['lastname']) ? $_REQUEST['lastname'] : '';
+    $email = !empty($_REQUEST['email']) ? $_REQUEST['email'] : '';
 
     if (isSessionActive($authToken)) {
 
@@ -33,7 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $Userdata = $results['client'];
 
-        $Userdata = refineUserInformation($Userdata);
+        unset($Userdata['users']);
+        unset($Userdata['userid']);
+        unset($Userdata['client_id']);
+        unset($Userdata['id']);
+        unset($Userdata['owner_user_id']);
+        unset($Userdata['uuid']);
 
         // Prepare the response data
         $ResponseCode = 200;

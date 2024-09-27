@@ -59,11 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Remove not usfull data from user information
 
-        unset($Userdata['userid']);
-        unset($Userdata['client_id']);
-        unset($Userdata['id']);
-        unset($Userdata['owner_user_id']);
-        unset($Userdata['uuid']);
+        $Userdata = refineUserInformation(Userdata: $Userdata);
 
         // Prepare the response data
 

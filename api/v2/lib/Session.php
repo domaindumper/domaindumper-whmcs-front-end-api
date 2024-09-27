@@ -79,3 +79,17 @@ function isPasswordVaild($password)
         return false;
     }
 }
+
+function refineUserInformation($Userdata)
+{
+
+    $keysToUnset = ['users', 'userid', 'client_id', 'id', 'owner_user_id', 'uuid'];
+
+    foreach ($keysToUnset as $key) {
+        if (array_key_exists($key, $Userdata)) {
+            unset($Userdata[$key]);
+        }
+    }
+
+    return $Userdata;
+}
