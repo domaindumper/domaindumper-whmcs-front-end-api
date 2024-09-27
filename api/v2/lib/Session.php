@@ -5,7 +5,7 @@ function CreateSession($authToken, $client_id)
     Illuminate\Database\Capsule\Manager::table('tblusers')
         ->updateOrInsert(
             ['id' => $client_id],
-            ['auth_token' => $authToken, 'created_at' => date('Y-m-d H:i:s')]
+            ['authToken' => $authToken, 'created_at' => date('Y-m-d H:i:s')]
         );
 }
 
