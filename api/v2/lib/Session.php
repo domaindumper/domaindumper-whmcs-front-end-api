@@ -10,7 +10,7 @@ function StoreSession($authToken, $client_id, $ExpireTime)
     Illuminate\Database\Capsule\Manager::table('tblclients')
         ->updateOrInsert(
             ['id' => $client_id],
-            ['authToken' => $CompressAuthToken, 'authTokenExpireAt' => $CompressAuthToken, 'updated_at' => date('Y-m-d H:i:s')]
+            ['authToken' => $CompressAuthToken, 'authTokenExpireAt' => $ExpireTime, 'updated_at' => date('Y-m-d H:i:s')]
         );
 }
 
