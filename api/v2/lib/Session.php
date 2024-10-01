@@ -125,6 +125,9 @@ function CompressAuthToken($authToken)
 {
     $lastDotPosition = strrpos($authToken, '.');
     if ($lastDotPosition !== false) {
+
+        // Saving only last part of JWT token
+
         return substr($authToken, $lastDotPosition + 1);
     } else {
         return ''; // Handle the case where there is no dot in the string
