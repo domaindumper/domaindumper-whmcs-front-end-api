@@ -2,24 +2,30 @@
 
 function StoreSession($authToken, $client_id)
 {
+
+    $CompressAuthToken = CompressAuthToken($authToken);
+
     Illuminate\Database\Capsule\Manager::table('tblclients')
         ->updateOrInsert(
             ['id' => $client_id],
-            ['authToken' => $authToken, 'updated_at' => date('Y-m-d H:i:s')]
+            ['authToken' => $CompressAuthToken, 'updated_at' => date('Y-m-d H:i:s')]
         );
 }
 
 function DestroySession($authToken)
 {
+    $CompressAuthToken = CompressAuthToken($authToken);
 
     // Remove the authToken from the database
 
-    Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $authToken)->update(['authToken' => '']);
+    Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $CompressAuthToken)->update(['authToken' => '']);
 
 }
 function UpdateSession($authToken)
 {
-    $user = Illuminate\Database\Capsule\Manager::table('tblclients')->where('auth_token', $authToken)->first();
+    $CompressAuthToken = CompressAuthToken($authToken);
+    
+    $user = Illuminate\Database\Capsule\Manager::table('tblclients')->where('auth_token', $CompressAuthToken)->first();
 }
 
 function GetSession($authToken)
@@ -43,8 +49,9 @@ function GetSession($authToken)
 
 function isActiveSession($authToken)
 {
+    $CompressAuthToken = CompressAuthToken($authToken);
 
-    if (Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $authToken)->exists()) {
+    if (Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $CompressAuthToken)->exists()) {
 
         // Decode and verify the JWT
         try {
@@ -110,4 +117,14 @@ function refineUserInformation($Userdata)
     }
 
     return $Userdata;
+}
+
+function CompressAuthToken($authToken)
+{
+    $lastDotPosition = strrpos($authToken, '.');
+    if ($lastDotPosition !== false) {
+        return substr($authToken, $lastDotPosition + 1);
+    } else {
+        return ''; // Handle the case where there is no dot in the string
+    }
 }
