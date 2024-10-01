@@ -2,11 +2,8 @@
 
 function StoreSession($authToken, $client_id, $ExpireTime)
 {
-    // Create a DateTime object from the Unix timestamp
-    $ExpireTime = new DateTime('@' . $ExpireTime);
-
     // Format the DateTime object as a MySQL-compatible string
-    $ExpireTime = $ExpireTime->format('Y-m-d H:i:s');
+    $ExpireTime = date('Y-m-d H:i:s', $ExpireTime);
 
     $CompressAuthToken = CompressAuthToken($authToken);
 
