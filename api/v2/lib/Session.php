@@ -1,14 +1,19 @@
 <?php
 
-function StoreSession($authToken, $client_id)
+function StoreSession($authToken, $client_id, $ExpireTime)
 {
+    // Create a DateTime object from the Unix timestamp
+    $ExpireTime = new DateTime('@' . $ExpireTime);
+
+    // Format the DateTime object as a MySQL-compatible string
+    $ExpireTime = $ExpireTime->format('Y-m-d H:i:s');
 
     $CompressAuthToken = CompressAuthToken($authToken);
 
     Illuminate\Database\Capsule\Manager::table('tblclients')
         ->updateOrInsert(
             ['id' => $client_id],
-            ['authToken' => $CompressAuthToken, 'updated_at' => date('Y-m-d H:i:s')]
+            ['authToken' => $CompressAuthToken, 'authTokenExpireAt' => '', 'updated_at' => date('Y-m-d H:i:s')]
         );
 }
 
@@ -24,7 +29,7 @@ function DestroySession($authToken)
 function UpdateSession($authToken)
 {
     $CompressAuthToken = CompressAuthToken($authToken);
-    
+
     $user = Illuminate\Database\Capsule\Manager::table('tblclients')->where('auth_token', $CompressAuthToken)->first();
 }
 

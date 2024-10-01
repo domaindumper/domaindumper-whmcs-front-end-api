@@ -45,12 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // genrate JWT Auth Token
 
+        $ExpireTime = time() + 3600; // Expiration time (1 hour)
+
         // Payload data
         $payload = [
             'iss' => JWT_ISS, // Issuer (e.g., your application's domain)
             'aud' => JWT_AUD, // Audience (e.g., the intended recipient)
             'iat' => time(), // Issued at time
-            'exp' => time() + 3600, // Expiration time (1 hour in this example)
+            'exp' => $ExpireTime, 
             'data' => $Userdata,
         ];
 
@@ -59,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Save the JWT token to database for revaildation and logout feature
 
-        StoreSession($authToken, $Userdata['client_id']);
+        StoreSession($authToken, $Userdata['client_id'], $ExpireTime);
 
 
         // Remove not usfull data from user information
