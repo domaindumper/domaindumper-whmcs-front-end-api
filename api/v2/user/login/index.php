@@ -11,7 +11,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/api/v2/lib/Session.php';
 
 $ca = new ClientArea();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 
     $email = !empty($_REQUEST['email']) ? $_REQUEST['email'] : '';
