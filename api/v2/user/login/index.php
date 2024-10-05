@@ -13,11 +13,12 @@ $ca = new ClientArea();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
+    $data = json_decode(file_get_contents('php://input'), true);
 
-    $email = !empty($_REQUEST['email']) ? $_REQUEST['email'] : '';
-    $password2 = !empty($_REQUEST['password']) ? $_REQUEST['password'] : '';
+    $email = !empty($data['email']) ? $data['email'] : '';
+    $password2 = !empty($data['password']) ? $data['password'] : '';
 
-    print_r($_POST);
+    print_r($data);
 
     $command = 'ValidateLogin';
     $postData = array(
