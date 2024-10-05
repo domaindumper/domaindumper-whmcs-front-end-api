@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
     $email = !empty($_REQUEST['email']) ? $_REQUEST['email'] : '';
     $password2 = !empty($_REQUEST['password']) ? $_REQUEST['password'] : '';
 
-    print_r($_REQUEST);
+    print_r($_POST);
 
     $command = 'ValidateLogin';
     $postData = array(
