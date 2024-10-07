@@ -28,11 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
     $country = !empty($data['country']) ? $data['country'] : '';
     $phonenumber = !empty($data['phonenumber']) ? $data['phonenumber'] : '';
 
-    $email_preferences_general = !empty($data[email_preferences_general]) ? $data[email_preferences_general] : '';
-    $email_preferences_product = !empty($data[email_preferences_product]) ? $data[email_preferences_product] : '';
-    $email_preferences_invoice = !empty($data[email_preferences_invoice]) ? $data[email_preferences_invoice] : '';
-    $email_preferences_support = !empty($data[email_preferences_support]) ? $data[email_preferences_support] : '';
-    $email_preferences_affiliate = !empty($data[email_preferences_affiliate]) ? $data[email_preferences_affiliate] : '';
+    $email_general = !empty($data['email_general']) ? $data['email_general'] : '';
 
     $marketingoptin = !empty($data['marketingoptin']) ? $data['marketingoptin'] : '';
 
@@ -54,11 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             'postcode' => $postcode,
             'country' => $country,
             'phonenumber' => $phonenumber,
-            'email_preferences[general]' => $email_preferences_general,
-            'email_preferences[product]' => $email_preferences_product,
-            'email_preferences[invoice]' => $email_preferences_invoice,
-            'email_preferences[support]' => $email_preferences_support,
-            'email_preferences[affiliate]' => $email_preferences_affiliate,
+            'email_preferences[general]' => $email_general,
+            'email_preferences[product]' => $email_product,
+            'email_preferences[invoice]' => $email_invoice,
+            'email_preferences[support]' => $email_support,
+            'email_preferences[affiliate]' => $email_affiliate,
             'marketingoptin' => $marketingoptin,
         );
 
