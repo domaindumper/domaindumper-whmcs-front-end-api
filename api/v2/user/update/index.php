@@ -81,8 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
         );
 
         $results = localAPI($command, $postData);
-        
-        print_r($results);
+
+        //print_r($results);
 
         // Prepare the response data
 
