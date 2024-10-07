@@ -28,11 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
     $country = !empty($data['country']) ? $data['country'] : '';
     $phonenumber = !empty($data['phonenumber']) ? $data['phonenumber'] : '';
 
-    $email_preferences[general] = !empty($data[email_preferences[general]]) ? $data[email_preferences[general]] : '';
-    $email_preferences[product] = !empty($data[email_preferences[product]]) ? $data[email_preferences[product]] : '';
-    $email_preferences[invoice] = !empty($data[email_preferences[invoice]]) ? $data[email_preferences[invoice]] : '';
-    $email_preferences[support] = !empty($data[email_preferences[support]]) ? $data[email_preferences[support]] : '';
-    $email_preferences[affiliate] = !empty($data[email_preferences[affiliate]]) ? $data[email_preferences[affiliate]] : '';
+    $email_preferences_general = !empty($data[email_preferences_general]) ? $data[email_preferences_general] : '';
+    $email_preferences_product = !empty($data[email_preferences_product]) ? $data[email_preferences_product] : '';
+    $email_preferences_invoice = !empty($data[email_preferences_invoice]) ? $data[email_preferences_invoice] : '';
+    $email_preferences_support = !empty($data[email_preferences_support]) ? $data[email_preferences_support] : '';
+    $email_preferences_affiliate = !empty($data[email_preferences_affiliate]) ? $data[email_preferences_affiliate] : '';
 
     $marketingoptin = !empty($data['marketingoptin']) ? $data['marketingoptin'] : '';
 
@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             'postcode' => $postcode,
             'country' => $country,
             'phonenumber' => $phonenumber,
-            'email_preferences[general]' => $email_preferences[general],
-            'email_preferences[product]' => $email_preferences[roduct],
-            'email_preferences[invoice]' => $email_preferences[nvoice],
-            'email_preferences[support]' => $email_preferences[upport],
-            'email_preferences[affiliate]' => $email_preferences[affiliate],
+            'email_preferences[general]' => $email_preferences_general,
+            'email_preferences[product]' => $email_preferences_product,
+            'email_preferences[invoice]' => $email_preferences_invoice,
+            'email_preferences[support]' => $email_preferences_support,
+            'email_preferences[affiliate]' => $email_preferences_affiliate,
             'marketingoptin' => $marketingoptin,
         );
 
