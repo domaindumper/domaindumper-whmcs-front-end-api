@@ -61,8 +61,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             'marketingoptin' => $marketingoptin,
         );
 
-        $results = localAPI($command, $postData);
+        // $results = localAPI($command, $postData);
 
+
+        // Change User Details also
+
+        // Get User ID from Auth Token
+
+        $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
+
+        $user_id = $decoded->data->userid;
+
+        $command = 'UpdateUser';
+        $postData = array(
+            'user_id' => $user_id,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'email' => $email,
+        );
+
+        $results = localAPI($command, $postData);
+        
+        print_r($results);
 
         // Prepare the response data
 
