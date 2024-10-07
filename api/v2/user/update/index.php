@@ -28,11 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
     $country = !empty($data['country']) ? $data['country'] : '';
     $phonenumber = !empty($data['phonenumber']) ? $data['phonenumber'] : '';
 
-    $email_preferences['general'] = !empty($data[email_preferences['general']]) ? $data[email_preferences['general']] : '';
-    $email_preferences['product'] = !empty($data[email_preferences['product']]) ? $data[email_preferences['product']] : '';
-    $email_preferences['invoice'] = !empty($data[email_preferences['invoice']]) ? $data[email_preferences['invoice']] : '';
-    $email_preferences['support'] = !empty($data[email_preferences['support']]) ? $data[email_preferences['support']] : '';
-    $email_preferences['affiliate'] = !empty($data[email_preferences['affiliate']]) ? $data[email_preferences['affiliate']] : '';
+    $email_preferences[general] = !empty($data[email_preferences[general]]) ? $data[email_preferences[general]] : '';
+    $email_preferences[product] = !empty($data[email_preferences[product]]) ? $data[email_preferences[product]] : '';
+    $email_preferences[invoice] = !empty($data[email_preferences[invoice]]) ? $data[email_preferences[invoice]] : '';
+    $email_preferences[support] = !empty($data[email_preferences[support]]) ? $data[email_preferences[support]] : '';
+    $email_preferences[affiliate] = !empty($data[email_preferences[affiliate]]) ? $data[email_preferences[affiliate]] : '';
 
     $marketingoptin = !empty($data['marketingoptin']) ? $data['marketingoptin'] : '';
 
