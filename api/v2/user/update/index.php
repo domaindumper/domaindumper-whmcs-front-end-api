@@ -29,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
     $phonenumber = !empty($data['phonenumber']) ? $data['phonenumber'] : '';
 
     $email_general = !empty($data['email_general']) ? $data['email_general'] : '';
+    $email_product = !empty($data['email_product']) ? $data['email_product'] : '';
+    $email_invoice = !empty($data['email_invoice']) ? $data['email_invoice'] : '';
+    $email_affiliate = !empty($data['email_affiliate']) ? $data['email_affiliate'] : '';
 
     $marketingoptin = !empty($data['marketingoptin']) ? $data['marketingoptin'] : '';
 
