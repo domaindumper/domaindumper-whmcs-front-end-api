@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             'marketingoptin' => $marketingoptin,
         );
 
-        // $results = localAPI($command, $postData);
+         $results = localAPI($command, $postData);
 
 
         // Change User Details also
