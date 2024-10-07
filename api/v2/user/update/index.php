@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             'postcode' => $postcode,
             'country' => $country,
             'phonenumber' => $phonenumber,
-            'email_preferences[general]' => $email_preferences['general'],
-            'email_preferences[product]' => $email_preferences['product'],
-            'email_preferences[invoice]' => $email_preferences['invoice'],
-            'email_preferences[support]' => $email_preferences['support'],
-            'email_preferences[affiliate]' => $email_preferences['affiliate'],
+            'email_preferences[general]' => $email_preferences[general],
+            'email_preferences[product]' => $email_preferences[roduct],
+            'email_preferences[invoice]' => $email_preferences[nvoice],
+            'email_preferences[support]' => $email_preferences[upport],
+            'email_preferences[affiliate]' => $email_preferences[affiliate],
             'marketingoptin' => $marketingoptin,
         );
 
