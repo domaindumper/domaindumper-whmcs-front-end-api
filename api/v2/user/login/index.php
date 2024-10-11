@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
         // Remove not usfull data from user information
 
-        $Userdata = refineUserInformation(Userdata: $Userdata);
+        $Userdata = refineUserInformation( $Userdata);
 
         // Prepare the response data
 

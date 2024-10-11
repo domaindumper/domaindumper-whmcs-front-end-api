@@ -82,7 +82,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
         $results = localAPI($command, $postData);
 
-        //print_r($results);
+        //Get update userdata and return it
+
+        $command = 'GetClientsDetails';
+        $postData = array(
+            'clientid' => $results['userid'],
+            'stats' => true,
+        );
+
+        $UserResults = localAPI($command, $postData);
+
+        $Userdata = $UserResults['client'];
+
+        $Userdata = refineUserInformation( $Userdata);
 
         // Prepare the response data
 
@@ -92,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             $response = [
                 'status' => 'success',
                 'code' => 200,
+                'Userdata' => $Userdata,
                 'message' => 'Your profile has been updated successfully',
             ];
 
