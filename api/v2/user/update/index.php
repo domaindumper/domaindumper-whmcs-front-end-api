@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             'companyname' => $companyname,
             'email' => $email,
             'address1' => $address1,
-            'address2' => $address2,
+            // 'address2' => $address2,
             'city' => $city,
             'state' => $state,
             'postcode' => $postcode,
