@@ -72,15 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
         $user_id = $decoded->data->userid;
 
-        $command = 'UpdateUser';
-        $postData = array(
-            'user_id' => $user_id,
-            'firstname' => $firstname,
-            'lastname' => $lastname,
-            'email' => $email,
-        );
+        // $command = 'UpdateUser';
+        // $postData = array(
+        //     'user_id' => $user_id,
+        //     'firstname' => $firstname,
+        //     'lastname' => $lastname,
+        //     'email' => $email,
+        // );
 
-        $results = localAPI($command, $postData);
+        // $results = localAPI($command, $postData);
 
         //Get update userdata and return it
 
