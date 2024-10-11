@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
         $command = 'GetClientsDetails';
         $postData = array(
-            'clientid' => $results['userid'],
+            'clientid' => $user_id,
             'stats' => true,
         );
 
