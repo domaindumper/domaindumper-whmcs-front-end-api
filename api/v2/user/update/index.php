@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
         // Handle missing authorization header
 
-        $ResponseCode = 401;
+        $ResponseCode = 200;
         $response = [
             'status' => 'error',
             'code' => 401,
