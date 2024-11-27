@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
         unset($Userdata['users']);
 
-        // genrate JWT Auth Token
+        // Generate JWT Auth Token
 
         $ExpireTime = time() + 3600; // Expiration time (1 hour)
 
@@ -59,28 +59,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
         // Generate the JWT
         $authToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
-        // Save the JWT token to database for revaildation and logout feature
-
+        // Save the JWT token to database for revalidation and logout feature
         StoreSession($authToken, $Userdata['client_id'], $ExpireTime);
 
+        // Remove not useful data from user information
+        $Userdata = refineUserInformation($Userdata); 
 
-        // Remove not usfull data from user information
+        // *** Set the JWT as an HTTP-only cookie ***
+        $serialized = serialize('token', $authToken, [
+            'httpOnly' => true,
+            'secure' => $_SERVER['HTTPS'] ?? false, // Use HTTPS in production
+            'sameSite' => 'Strict', // Prevent CSRF attacks
+            'maxAge' => $ExpireTime - time(), // Set the expiration time
+            'path' => '/', // Accessible across your entire domain
+        ]);
+        header('Set-Cookie: ' . $serialized);
 
-        $Userdata = refineUserInformation( $Userdata);
-
-        // Prepare the response data
-
+        // Prepare the response data (you might not need to send the token in the response anymore)
         $response = [
             'status' => $results['result'],
             'code' => 200,
-            'authToken' => $authToken,
+            // 'authToken' => $authToken, // You can remove this if not needed in the response
             'Userdata' => $Userdata
         ];
 
     } else {
         $response = [
             'status' => $results['result'],
-            'code' => 200,
+            'code' => 200, 
             'message' => $results['message']
         ];
     }
@@ -98,8 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
 }
 
-
-
 http_response_code($ResponseCode);
 header('Content-Type: application/json');
 echo json_encode($response);
+?>
