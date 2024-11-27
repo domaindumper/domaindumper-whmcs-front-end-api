@@ -1,9 +1,9 @@
 ## WHMCS front API
 
-### Add `auth_token` column in table `tblusers` by: 
+### Add `authToken` column in table `tblusers` by: 
 
 ```sql
-ALTER TABLE `tblusers` ADD `auth_token` TEXT NULL DEFAULT NULL AFTER `reset_token`;
+ALTER TABLE `tblusers` ADD `authToken` TEXT NULL DEFAULT NULL AFTER `reset_token`;
 
 ```
 
