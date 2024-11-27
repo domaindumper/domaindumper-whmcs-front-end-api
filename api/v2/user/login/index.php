@@ -68,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
         // *** Set the JWT as an HTTP-only cookie ***
         $serialized = serialize('token', $authToken, [
             'httpOnly' => true,
-            'secure' => $_SERVER['HTTPS'] ?? false, // Use HTTPS in production
-            'sameSite' => 'Strict', // Prevent CSRF attacks
+            //'secure' => $_SERVER['HTTPS'] ?? false, // Use HTTPS in production
+            //'sameSite' => 'Strict', // Prevent CSRF attacks
             'maxAge' => $ExpireTime - time(), // Set the expiration time
             'path' => '/', // Accessible across your entire domain
         ]);
