@@ -2,4 +2,7 @@
 
 ### Add `auth_token` column in table `tblusers` by: 
 
+```sql
 ALTER TABLE `tblusers` ADD `auth_token` TEXT NULL DEFAULT NULL AFTER `reset_token`;
+
+```
