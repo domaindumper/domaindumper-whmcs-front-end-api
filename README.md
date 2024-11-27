@@ -3,7 +3,7 @@
 ### Add `authToken` column in table `tblclients` by: 
 
 ```sql
-ALTER TABLE `tblclients` ADD `authToken` TEXT NULL DEFAULT NULL AFTER `reset_token`;
+ALTER TABLE `tblclients` ADD `authToken` TEXT NULL DEFAULT NULL AFTER `api_key`;
 
 ```
 
