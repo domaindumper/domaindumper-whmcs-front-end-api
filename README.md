@@ -1,10 +1,11 @@
 ## WHMCS front API
 
-### Add `authToken` column in table `tblclients` by: 
+### Add `authToken` and `authTokenExpireAt` column in table `tblclients` by: 
 
 ```sql
-ALTER TABLE `tblclients` ADD `authToken` TEXT NULL DEFAULT NULL AFTER `api_key`;
-
+ALTER TABLE `tblclients` 
+ADD `authToken` TEXT NULL DEFAULT NULL AFTER `api_key`,
+ADD `authTokenExpireAt` TIMESTAMP NOT NULL AFTER `authToken`;
 ```
 
 
