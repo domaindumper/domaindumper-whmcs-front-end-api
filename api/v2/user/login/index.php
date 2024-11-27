@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
 http_response_code($ResponseCode);
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: http://localhost:3000'); // Replace with your frontend's origin
-header('Access-Control-Allow-Credentials: true'); // Allow cookies to be included
+header('Access-Control-Allow-Origin: *'); // Replace with your frontend's origin
+//header('Access-Control-Allow-Credentials: true'); // Allow cookies to be included
 echo json_encode($response);
 ?>
