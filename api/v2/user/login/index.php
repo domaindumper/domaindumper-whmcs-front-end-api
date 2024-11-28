@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'code' => 200,
             `authToken` => $authToken,
             'Userdata' => $Userdata
-        ];
+        ]; 
 
     } else {
         $response = [
