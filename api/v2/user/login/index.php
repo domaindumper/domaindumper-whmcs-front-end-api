@@ -16,7 +16,7 @@ $allowedOrigins = [
     'https://www.whoisextractor.com'
 ];
 
-echo $_SERVER['HTTP_HOST']; die();
+
 
 $origin = $_SERVER['HTTP_ORIGIN']; 
 
@@ -32,6 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit; // Terminate the request for OPTIONS
 }
+
+echo $_SERVER['HTTP_HOST']; die();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
