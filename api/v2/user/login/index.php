@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'iss' => JWT_ISS,
             'aud' => JWT_AUD,
             'iat' => time(),
-            'exp' => $ExpireTime, 
+            'exp' => $ExpireTime,
             'data' => $Userdata,
         ];
 
@@ -68,11 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         StoreSession($authToken, $Userdata['client_id'], $ExpireTime);
 
-        $Userdata = refineUserInformation($Userdata); 
+        $Userdata = refineUserInformation($Userdata);
 
         // *** Set the JWT as an HTTP-only cookie (Corrected) ***
-        $serialized = serialize($authToken); 
-        header('Set-Cookie: authToken=' . $serialized . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'); 
+        $serialized = serialize($authToken);
+        header('Set-Cookie: authToken=' . $serialized . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/');
 
         $response = [
             'status' => $results['result'],
@@ -84,12 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $response = [
             'status' => $results['result'],
-            'code' => 200, 
+            'code' => 200,
             'message' => $results['message']
         ];
     }
 
-} else { 
+} else {
 
     // Handle invalid request method
     $ResponseCode = 405;
