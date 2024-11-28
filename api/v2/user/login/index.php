@@ -84,11 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serialized = serialize($authToken);
 
         // Determine the domain dynamically
-        $domain = ($_SERVER['HTTP_ORIGIN'] === 'http://localhost:3000') ? 'localhost' : '.whoisextractor.com'; 
+        $domain = ($_SERVER['HTTP_ORIGIN'] === 'http://localhost:3000') ? 'ocalhost:3000' : '.whoisextractor.com'; 
 
         // Determine if the connection is secure (HTTPS)
 
-        $isSecure = ($domain == 'localhost') ? false : true;
+        $isSecure = ($domain == 'ocalhost:3000') ? false : true;
 
         header('Set-Cookie: authToken=' . $serialized . '; Domain=' . $domain . '; HttpOnly; ' . ($isSecure ? 'Secure; ' : '') . 'SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'); 
 
