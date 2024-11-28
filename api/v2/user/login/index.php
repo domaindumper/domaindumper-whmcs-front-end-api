@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit; // Terminate the request for OPTIONS
 }
 
-echo $_SERVER['HTTP_HOST']; die();
+echo $_SERVER['HTTP_ORIGIN']; die();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
