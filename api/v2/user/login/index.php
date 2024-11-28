@@ -33,8 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit; // Terminate the request for OPTIONS
 }
 
-echo $_SERVER['HTTP_ORIGIN']; die();
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $data = json_decode(file_get_contents('php://input'), true);
@@ -88,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $serialized = serialize($authToken);
 
         // Determine the domain dynamically
-        $domain = ($_SERVER['HTTP_HOST'] === 'localhost:3000') ? 'localhost' : '.whoisextractor.com'; // Adjust if needed
+        $domain = ($_SERVER['HTTP_ORIGIN'] === 'http://localhost:3000') ? 'localhost' : '.whoisextractor.com'; // Adjust if needed
 
         header('Set-Cookie: authToken=' . $serialized . '; Domain=' . $domain . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . $ExpireTime . '; Path=/'); 
 
