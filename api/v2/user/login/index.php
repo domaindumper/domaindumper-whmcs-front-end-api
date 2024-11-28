@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Determine the domain dynamically
         $domain = ($_SERVER['HTTP_ORIGIN'] === 'http://localhost:3000') ? 'localhost' : '.whoisextractor.com'; // Adjust if needed
 
-        echo $domain; die;
+        //echo $domain; die;
 
         header('Set-Cookie: authToken=' . $serialized . '; Domain=' . $domain . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . $ExpireTime . '; Path=/'); 
 
