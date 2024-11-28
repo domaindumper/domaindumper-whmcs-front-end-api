@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // *** Set the JWT as an HTTP-only cookie ***
         $serialized = serialize($authToken); 
-        header('Set-Cookie: authToken=' . $serialized . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'); 
+        header('Set-Cookie: authToken=' . $serialized . '; SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'); 
 
         $response = [
             'status' => $results['result'],
