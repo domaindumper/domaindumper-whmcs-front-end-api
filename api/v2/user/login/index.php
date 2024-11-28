@@ -16,8 +16,6 @@ $allowedOrigins = [
     'https://www.whoisextractor.com'
 ];
 
-
-
 $origin = $_SERVER['HTTP_ORIGIN']; 
 
 if (in_array($origin, $allowedOrigins)) {
@@ -66,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         unset($Userdata['users']);
 
         // Generate JWT Auth Token
-        $ExpireTime = time() + ($rememberMe ? (3600 * 24 * 30) : 3600); // 30 days if rememberMe is true, else 1 hour
+        $ExpireTime = time() + ($rememberMe ? (3600 * 24 * 30) : 3600); 
 
         $payload = [
             'iss' => JWT_ISS,
@@ -82,15 +80,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $Userdata = refineUserInformation($Userdata); 
 
-        // *** Set the JWT as an HTTP-only cookie (with dynamic domain) ***
+        // *** Set the JWT as an HTTP-only cookie (with dynamic domain and Secure attribute) ***
         $serialized = serialize($authToken);
 
         // Determine the domain dynamically
-        $domain = ($_SERVER['HTTP_ORIGIN'] === 'http://localhost:3000') ? 'localhost:3000' : '.whoisextractor.com'; // Adjust if needed
+        $domain = ($_SERVER['HTTP_ORIGIN'] === 'http://localhost:3000') ? 'localhost' : '.whoisextractor.com'; 
 
-        //echo $domain; die;
+        // Determine if the connection is secure (HTTPS)
+        $isSecure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
 
-        header('Set-Cookie: authToken=' . $serialized . '; Domain=' . $domain . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . $ExpireTime . '; Path=/'); 
+        header('Set-Cookie: authToken=' . $serialized . '; Domain=' . $domain . '; HttpOnly; ' . ($isSecure ? 'Secure; ' : '') . 'SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'); 
 
         $response = [
             'status' => $results['result'],
