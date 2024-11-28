@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response = [
             'status' => $results['result'],
             'code' => 200,
+            'authToken' => $authToken,
             'Userdata' => $Userdata
         ];
 
