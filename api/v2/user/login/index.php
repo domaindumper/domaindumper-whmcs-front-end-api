@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response = [
             'status' => $results['result'],
             'code' => 200,
-            // 'authToken' => $authToken, // You can remove this if not needed in the response
+            'authToken' => $authToken, // You can remove this if not needed in the response
             'Userdata' => $Userdata
         ];
 
