@@ -11,7 +11,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 $ca = new ClientArea();
 
 // *** CORS Headers ***
-header('Access-Control-Allow-Origin: https://www.whoisextractor.com');
+header('Access-Control-Allow-Origin: https://www.whoisextractor.com'); 
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $email = !empty($data['email']) ? $data['email'] : '';
     $password2 = !empty($data['password']) ? $data['password'] : '';
+    $rememberMe = !empty($data['rememberMe']) ? $data['rememberMe'] : 0; // Get rememberMe from request
 
     $command = 'ValidateLogin';
     $postData = array(
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         unset($Userdata['users']);
 
         // Generate JWT Auth Token
-        $ExpireTime = time() + 3600; // Expiration time (1 hour)
+        $ExpireTime = time() + ($rememberMe ? (3600 * 24 * 30) : 3600); // 30 days if rememberMe is true, else 1 hour
 
         $payload = [
             'iss' => JWT_ISS,
