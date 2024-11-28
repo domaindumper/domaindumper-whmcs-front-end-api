@@ -25,8 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
 
     $results = localAPI($command, $postData);
 
-    // Prepare the response data
-
     $ResponseCode = 200;
 
     if ($results['result'] == 'success') {
@@ -44,38 +42,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
         unset($Userdata['users']);
 
         // Generate JWT Auth Token
-
         $ExpireTime = time() + 3600; // Expiration time (1 hour)
 
-        // Payload data
         $payload = [
-            'iss' => JWT_ISS, // Issuer (e.g., your application's domain)
-            'aud' => JWT_AUD, // Audience (e.g., the intended recipient)
-            'iat' => time(), // Issued at time
+            'iss' => JWT_ISS,
+            'aud' => JWT_AUD,
+            'iat' => time(),
             'exp' => $ExpireTime, 
             'data' => $Userdata,
         ];
 
-        // Generate the JWT
         $authToken = JWT::encode($payload, JWT_SECRET, JWT_ALGORITHM);
 
-        // Save the JWT token to database for revalidation and logout feature
         StoreSession($authToken, $Userdata['client_id'], $ExpireTime);
 
-        // Remove not useful data from user information
         $Userdata = refineUserInformation($Userdata); 
 
         // *** Set the JWT as an HTTP-only cookie ***
         $serialized = serialize('token', $authToken, [
-          'httpOnly' => true,
-        'secure' => false, // **No HTTPS for local development**
-        'sameSite' => 'Lax', // **Lax is generally suitable for localhost** 
-        'maxAge' => $ExpireTime - time(), 
-        'path' => '/', 
+            'httpOnly' => true,
+            'secure' => false, 
+            'sameSite' => 'Lax', 
+            'maxAge' => $ExpireTime - time(), 
+            'path' => '/', 
         ]);
+
+        // *** CORS Headers ***
+        header('Access-Control-Allow-Origin: https://your-frontend-domain.com'); // Replace with your frontend domain
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            http_response_code(200);
+            exit; // Terminate the request for OPTIONS
+        }
+
         header('Set-Cookie: ' . $serialized);
 
-        // Prepare the response data (you might not need to send the token in the response anymore)
         $response = [
             'status' => $results['result'],
             'code' => 200,
@@ -91,22 +95,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
         ];
     }
 
-
 } else {
-
-    // Handle invalid request method
     $ResponseCode = 405;
     $response = [
         'status' => 'error',
         'code' => 405,
         'message' => 'Method not allowed'
     ];
-
 }
 
 http_response_code($ResponseCode);
 header('Content-Type: application/json');
-//header('Access-Control-Allow-Origin: *'); // Replace with your frontend's origin
-//header('Access-Control-Allow-Credentials: true'); // Allow cookies to be included
 echo json_encode($response);
 ?>
