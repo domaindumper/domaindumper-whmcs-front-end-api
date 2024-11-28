@@ -16,6 +16,8 @@ $allowedOrigins = [
     'https://www.whoisextractor.com'
 ];
 
+echo $_SERVER['HTTP_HOST']; die();
+
 $origin = $_SERVER['HTTP_ORIGIN']; 
 
 if (in_array($origin, $allowedOrigins)) {
