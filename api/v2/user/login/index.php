@@ -10,7 +10,18 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 
 $ca = new ClientArea();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+// *** CORS Headers ***
+header('Access-Control-Allow-Origin: https://www.whoisextractor.com');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit; // Terminate the request for OPTIONS
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $data = json_decode(file_get_contents('php://input'), true);
 
@@ -66,18 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
             'maxAge' => $ExpireTime - time(), 
             'path' => '/', 
         ]);
-
-        // *** CORS Headers ***
-        header('Access-Control-Allow-Origin: https://www.whoisextractor.com'); // Replace with your frontend domain
-        header('Access-Control-Allow-Credentials: true');
-        header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-
-        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-            http_response_code(200);
-            exit; // Terminate the request for OPTIONS
-        }
-
         header('Set-Cookie: ' . $serialized);
 
         $response = [
@@ -95,7 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
         ];
     }
 
-} else {
+} else { 
+
+    // Handle invalid request method
     $ResponseCode = 405;
     $response = [
         'status' => 'error',
