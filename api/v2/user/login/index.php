@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || $_SERVER['REQUEST_METHOD'] == 'OPTIO
         ]);
 
         // *** CORS Headers ***
-        header('Access-Control-Allow-Origin: https://your-frontend-domain.com'); // Replace with your frontend domain
+        header('Access-Control-Allow-Origin: https://www.whoisextractor.com'); // Replace with your frontend domain
         header('Access-Control-Allow-Credentials: true');
         header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
