@@ -11,7 +11,17 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 $ca = new ClientArea();
 
 // *** CORS Headers ***
-header('Access-Control-Allow-Origin: http://localhost:3000');
+$allowedOrigins = [
+    'http://localhost:3000', 
+    'https://www.whoisextractor.com'
+];
+
+$origin = $_SERVER['HTTP_ORIGIN']; 
+
+if (in_array($origin, $allowedOrigins)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+}
+
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -27,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $email = !empty($data['email']) ? $data['email'] : '';
     $password2 = !empty($data['password']) ? $data['password'] : '';
-    $rememberMe = !empty($data['rememberMe']) ? $data['rememberMe'] : 0; // Get rememberMe from request
+    $rememberMe = !empty($data['rememberMe']) ? $data['rememberMe'] : 0; 
 
     $command = 'ValidateLogin';
     $postData = array(
@@ -60,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'iss' => JWT_ISS,
             'aud' => JWT_AUD,
             'iat' => time(),
-            'exp' => $ExpireTime,
+            'exp' => $ExpireTime, 
             'data' => $Userdata,
         ];
 
@@ -68,28 +78,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         StoreSession($authToken, $Userdata['client_id'], $ExpireTime);
 
-        $Userdata = refineUserInformation($Userdata);
+        $Userdata = refineUserInformation($Userdata); 
 
-        // *** Set the JWT as an HTTP-only cookie (Corrected) ***
-        $serialized = serialize($authToken);
-        header('Set-Cookie: whois_extractor_token=' . $serialized . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/');
+        // *** Set the JWT as an HTTP-only cookie ***
+        $serialized = serialize($authToken); 
+        header('Set-Cookie: authToken=' . $serialized . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'); 
 
         $response = [
             'status' => $results['result'],
             'code' => 200,
-            'authToken' => $authToken, // You can remove this if not needed in the response
             'Userdata' => $Userdata
         ];
 
     } else {
         $response = [
             'status' => $results['result'],
-            'code' => 200,
+            'code' => 200, 
             'message' => $results['message']
         ];
     }
 
-} else {
+} else { 
 
     // Handle invalid request method
     $ResponseCode = 405;
