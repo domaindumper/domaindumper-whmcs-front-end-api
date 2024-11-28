@@ -11,7 +11,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 $ca = new ClientArea();
 
 // *** CORS Headers ***
-header('Access-Control-Allow-Origin: https://www.whoisextractor.com'); 
+header('Access-Control-Allow-Origin: https://www.whoisextractor.com');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -70,15 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $Userdata = refineUserInformation($Userdata); 
 
-        // *** Set the JWT as an HTTP-only cookie ***
-        $serialized = serialize('token', $authToken, [
-            'httpOnly' => true,
-            'secure' => false, 
-            'sameSite' => 'Lax', 
-            'maxAge' => $ExpireTime - time(), 
-            'path' => '/', 
-        ]);
-        header('Set-Cookie: ' . $serialized);
+        // *** Set the JWT as an HTTP-only cookie (Corrected) ***
+        $serialized = serialize($authToken); 
+        header('Set-Cookie: authToken=' . $serialized . '; HttpOnly; Secure; SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'); 
 
         $response = [
             'status' => $results['result'],
