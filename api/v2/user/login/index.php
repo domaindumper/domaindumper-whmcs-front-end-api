@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $isSecure = ($domain === 'localhost') ? false : true; 
 
         // Conditionally add the Domain attribute
-        $cookieHeader = 'Set-Cookie: authToken=' . $serialized . '; HttpOnly; ' . ($isSecure ? 'Secure; Domain=' . $domain . ';' : '') . ' SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'; 
+        $cookieHeader = 'Set-Cookie: authToken=' . $authToken . '; HttpOnly; ' . ($isSecure ? 'Secure; Domain=' . $domain . ';' : '') . ' SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'; 
 
         header($cookieHeader);
 
