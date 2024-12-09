@@ -16,10 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $token = str_replace('Bearer ', '', $authorizationHeader); // Extract token from Bearer scheme
 
         try {
-            $decoded = JWT::decode($token, JWT_SECRET, [JWT_ALGORITHM]); 
 
             // Check if the token is valid in your database (replace with your actual logic)
-            $isValidToken = CheckSession($token); // Example function call
+            $isValidToken = isActiveSession($token); // Example function call
 
             if ($isValidToken) {
                 $response = ['status' => true]; // User is logged in

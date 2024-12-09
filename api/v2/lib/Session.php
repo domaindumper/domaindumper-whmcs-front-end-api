@@ -23,27 +23,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 //functoion start
 function StoreSession($authToken, $client_id, $ExpireTime)
 {
-    // Format the DateTime object as a MySQL-compatible string
-    $ExpireTime = date('Y-m-d H:i:s', $ExpireTime);
-
-    $CompressAuthToken = CompressAuthToken($authToken);
-
+    // Use prepared statements to prevent SQL injection
     Illuminate\Database\Capsule\Manager::table('tblclients')
-        ->updateOrInsert(
-            ['id' => $client_id],
-            ['authToken' => $CompressAuthToken, 'authTokenExpireAt' => $ExpireTime, 'updated_at' => date('Y-m-d H:i:s')]
-        );
+        ->where('id', $client_id)
+        ->update(['authToken' => CompressAuthToken($authToken), 'authTokenExpireAt' => $ExpireTime, 'updated_at' => date('Y-m-d H:i:s')]);
 }
 
 function DestroySession($authToken)
 {
-    $CompressAuthToken = CompressAuthToken($authToken);
-
-    // Remove the authToken from the database
-
-    Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $CompressAuthToken)->update(['authToken' => '']);
-
+    // Use prepared statements to prevent SQL injection
+    Illuminate\Database\Capsule\Manager::table('tblclients')
+        ->where('authToken', CompressAuthToken($authToken))
+        ->update(['authToken' => '']);
 }
+
 function UpdateSession($authToken)
 {
     $CompressAuthToken = CompressAuthToken($authToken);
@@ -74,35 +67,31 @@ function isActiveSession($authToken)
 {
     $CompressAuthToken = CompressAuthToken($authToken);
 
-    if (Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $CompressAuthToken)->exists()) {
+    $session = Illuminate\Database\Capsule\Manager::table('tblclients')
+        ->where('authToken', $CompressAuthToken)
+        ->first();
 
-        // Decode and verify the JWT
+    if ($session) {
         try {
-            $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]);
+            // Specify supported algorithms for security
+            $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]); 
 
-            // Check if the JWT is expired
-            $currentTimestamp = time();
-            if ($decoded->exp < $currentTimestamp) {
-
-                // if JWT is expired then return false and drop authToken from database
-
-                Illuminate\Database\Capsule\Manager::table('tblclients')->where('authToken', $authToken)->update(['authToken' => '']);
-
+            // Use timestamp from the database for more accurate comparison
+            if ($session->authTokenExpireAt < date('Y-m-d H:i:s')) { 
+                Illuminate\Database\Capsule\Manager::table('tblclients')
+                    ->where('authToken', $CompressAuthToken)
+                    ->update(['authToken' => '']);
                 return false;
             } else {
-
-                // if JWT is not expired then return true
-
                 return true;
             }
 
-
         } catch (Exception $e) {
-            //echo "Invalid JWT: " . $e->getMessage();
-
+            // Log the exception for debugging
+            error_log("JWT Verification Failed: " . $e->getMessage()); 
             return false;
         }
-    } {
+    } else {
         return false;
     }
 }
