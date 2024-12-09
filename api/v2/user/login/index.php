@@ -68,6 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Determine if the connection is secure (HTTPS) - using $domain check
         $isSecure = ($domain === 'localhost') ? false : true; 
 
+        $domain = 'localhost'; // for localhost testing
+
         // Conditionally add the Domain attribute
         $cookieHeader = 'Set-Cookie: authToken=' . $authToken . '; HttpOnly; ' . ($isSecure ? 'Secure; Domain=' . $domain . ';' : '') . ' SameSite=Lax; Max-Age=' . ($ExpireTime - time()) . '; Path=/'; 
 
