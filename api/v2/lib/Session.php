@@ -72,9 +72,7 @@ function isActiveSession($authToken)
         ->first();
 
     if ($session) {
-        try {
-            // Specify supported algorithms for security
-            $decoded = JWT::decode($authToken, JWT_SECRET, [JWT_ALGORITHM]); 
+        try { 
 
             // Use timestamp from the database for more accurate comparison
             if ($session->authTokenExpireAt < date('Y-m-d H:i:s')) { 
