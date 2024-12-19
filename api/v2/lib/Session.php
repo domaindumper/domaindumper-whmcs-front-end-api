@@ -68,13 +68,9 @@ function isActiveSession($authToken)
 {
     $CompressAuthToken = CompressAuthToken($authToken);
 
-    echo $CompressAuthToken;
-
     $session = Illuminate\Database\Capsule\Manager::table('tblclients')
         ->where('authToken', $CompressAuthToken)
         ->first();
-
-    echo $session->authTokenExpireAt;
 
     if ($session) {
         try { 
@@ -94,7 +90,7 @@ function isActiveSession($authToken)
 
         } catch (Exception $e) {
             // Log the exception for debugging
-            error_log("JWT Verification Failed: " . $e->getMessage()); 
+           // error_log("JWT Verification Failed: " . $e->getMessage()); 
             return false;
         }
     } else {

@@ -33,11 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     } else {
 
+        $Session = DestroySession($authToken);
+
         // Handle missing authorization header or invalid token
-        $ResponseCode = 401;
+        $ResponseCode = 200;
         $response = [
-            'status' => 'error',
-            'code' => 401,
+            'status' => 'success',
+            'code' => 200,
             'message' => 'You are already logged out or not logged in'
         ];
     }
