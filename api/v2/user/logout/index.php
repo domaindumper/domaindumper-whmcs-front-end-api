@@ -16,6 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      $data = json_decode(file_get_contents('php://input'), true);
      $authToken = isset($data['authToken']) ? $data['authToken'] : null;
 
+     echo $authToken;
+     die();
+
     if (isActiveSession($authToken)) {
 
         $Session = DestroySession($authToken);
