@@ -12,7 +12,9 @@ $ca = new ClientArea();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $authToken = $_REQUEST['authToken'];
+     // Get authToken from the request body
+     $data = json_decode(file_get_contents('php://input'), true);
+     $authToken = isset($data['authToken']) ? $data['authToken'] : null;
 
     if (isActiveSession($authToken)) {
 
