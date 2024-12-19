@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Kolkata'); // Set the default timezone
 // *** CORS Headers ***
 $allowedOrigins = [
     'http://localhost:3000',
