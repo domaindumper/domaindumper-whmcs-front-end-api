@@ -35,7 +35,7 @@ function DestroySession($authToken)
     // Use prepared statements to prevent SQL injection
     Illuminate\Database\Capsule\Manager::table('tblclients')
         ->where('authToken', CompressAuthToken($authToken))
-        ->update(['authToken' => '', 'authTokenExpireAt' => null, 'updated_at' => date('Y-m-d H:i:s')]);
+        ->update(['authToken' => '', 'authTokenExpireAt' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')]);
 }
 
 function UpdateSession($authToken)
