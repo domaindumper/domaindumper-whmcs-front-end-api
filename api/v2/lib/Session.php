@@ -67,15 +67,22 @@ function isActiveSession($authToken)
 {
     $CompressAuthToken = CompressAuthToken($authToken);
 
+    echo $CompressAuthToken;
+
     $session = Illuminate\Database\Capsule\Manager::table('tblclients')
         ->where('authToken', $CompressAuthToken)
         ->first();
+
+    echo $session->authTokenExpireAt;
 
     if ($session) {
         try { 
 
             // Use timestamp from the database for more accurate comparison
             if ($session->authTokenExpireAt < date('Y-m-d H:i:s')) { 
+
+                // Clear the authToken and authTokenExpireAt fields in the database if the token is expired
+
                 Illuminate\Database\Capsule\Manager::table('tblclients')
                     ->where('authToken', $CompressAuthToken)
                     ->update(['authToken' => '']);
