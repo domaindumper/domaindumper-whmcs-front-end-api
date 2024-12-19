@@ -4,12 +4,11 @@ use WHMCS\Database\Capsule;
 
 define('CLIENTAREA', true);
 
-require $_SERVER['DOCUMENT_ROOT'] . '/init.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/api/v2/vendor/autoload.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/api/v2/lib/Session.php';
+require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 
 $ca = new ClientArea();
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -18,6 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isActiveSession($authToken)) {
 
         $Session = DestroySession($authToken);
+
+        // Clear the authToken cookie
+        header('Set-Cookie: authToken=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/'); // Clear the cookie
 
         // Prepare the response data
         $ResponseCode = 200;
@@ -29,16 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     } else {
 
-        // Handle missing authorization header
-
+        // Handle missing authorization header or invalid token
         $ResponseCode = 401;
         $response = [
             'status' => 'error',
             'code' => 401,
-            'message' => 'You allready logout or not logged in'
+            'message' => 'You are already logged out or not logged in'
         ];
     }
-
 
 } else {
 
@@ -49,11 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'code' => 405,
         'message' => 'Method not allowed'
     ];
-
 }
-
-
 
 http_response_code($ResponseCode);
 header('Content-Type: application/json');
 echo json_encode($response);
+?>
