@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      $authToken = isset($data['authToken']) ? $data['authToken'] : null;
 
      echo $authToken;
-     die();
+
 
     if (isActiveSession($authToken)) {
 
