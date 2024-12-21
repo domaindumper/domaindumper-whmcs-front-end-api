@@ -10,102 +10,89 @@ require $_SERVER['DOCUMENT_ROOT'] . '/api/v2/lib/Session.php';
 
 $ca = new ClientArea();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'message' => 'Method Not Allowed']);
+    exit;
+}
+
+$data = json_decode(file_get_contents('php://input'), true);
+$resetToken = $data['reset_token'] ?? null;  // Null coalescing operator for cleaner code
+$password = $data['password'] ?? null;
+$password2 = $data['password2'] ?? null;
+
+if (!$resetToken) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Missing reset token.']);
+    exit;
+}
 
 
-    $reset_token = !empty($_REQUEST['reset_token']) ? $_REQUEST['reset_token'] : '';
-    $password = !empty($_REQUEST['password']) ? $_REQUEST['password'] : '';
-    $password2 = !empty($_REQUEST['password2']) ? $_REQUEST['password2'] : '';
-
-    if (isVaildPasswordResetToken($reset_token)) {
-
-        // Check for empty fields
-        if (empty($password) || empty($password2)) {
-
-            $ResponseCode = 400;
-
-            $response = [
-                'status' => 'error',
-                'code' => 400,
-                'message' => 'Please enter both passwords.'
-            ];
-        } else {
-            // Check if passwords match
-            if ($password === $password2) {
-
-                // Check if password is valid
-
-                if (isVaildPassword($password2)) {
-
-                    $encripted_password = password_hash($password2, PASSWORD_BCRYPT);
-
-                    // Now update the password
-
-                    Illuminate\Database\Capsule\Manager::table('tblusers')
-                        ->updateOrInsert(
-                            ['reset_token' => $reset_token],
-                            ['password' => $encripted_password, 'reset_token' => '', 'updated_at' => date('Y-m-d H:i:s')]
-                        );
+$client = Capsule::table('tblclients')
+    ->where('password_reset_token', $resetToken)
+    ->where('password_reset_token_expiry', '>', date('Y-m-d H:i:s'))
+    ->first();
 
 
-                    // Prepare the response data
+if (!$client) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid or expired reset token.']);
+    exit;
+}
 
-                    $ResponseCode = 200;
+if (empty($password) || empty($password2)) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Both passwords are required.']);
+    exit;
+}
 
-                    $response = [
-                        'status' => 'success',
-                        'code' => 200,
-                        'message' => 'Please log in again to continue as the password has been updated.'
-                    ];
+if ($password !== $password2) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Passwords do not match.']);
+    exit;
+}
+
+if (!isVaildPassword($password)) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Password must meet the specified criteria.']); // Be specific about criteria in your front-end messaging
+    exit;
+}
 
 
-                } else {
-                    $ResponseCode = 400;
-
-                    $response = [
-                        'status' => 'error',
-                        'code' => 400,
-                        'message' => 'Password must contain at least least one digit, one uppercase letter, one lowercase letter, one number, and one special character from: @$!%*#?&'
-                    ];
-                }
+$encryptedPassword = password_hash($password, PASSWORD_BCRYPT);
 
 
-            } else {
-                // Passwords don't match
-                $ResponseCode = 400;
+try {
+    Capsule::table('tblclients')
+        ->where('id', $client->id)
+        ->update([
+            'password' => $encryptedPassword,
+            'password_reset_token' => null,
+            'password_reset_token_expiry' => null,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
 
-                $response = [
-                    'status' => 'error',
-                    'code' => 400,
-                    'message' => 'There is a mismatch between your password and confirm password.'
-                ];
-            }
-        }
-
-    } else {
-        $ResponseCode = 400;
-        $response = [
-            'status' => 'error',
-            'code' => 400,
-            'message' => 'The password reset link you used to reset your password is no longer valid.'
-        ];
+    // Update tblusers as well (if necessary and if the structure is as described previously)
+    $userId = Capsule::table('tblusers')->where('client_id', $client->id)->first();
+    if ($userId) {
+      Capsule::table('tblusers')
+          ->where('id', $userId->id) // Use userId->id
+          ->update([
+              'password' => $encryptedPassword,
+              'updated_at' => date('Y-m-d H:i:s')
+          ]);
     }
 
 
-} else {
+    http_response_code(200);
+    echo json_encode(['status' => 'success', 'message' => 'Password reset successful. Please log in.']);
 
-    // Handle invalid request method
-    $ResponseCode = 405;
-    $response = [
-        'status' => 'error',
-        'code' => 405,
-        'message' => 'Method not allowed'
-    ];
-
+} catch (Exception $e) {
+    http_response_code(500);
+    log_message("Password Reset Error: ".$e->getMessage(), "error"); // Log the error for debugging.  Consider a more robust logging solution
+    echo json_encode(['status' => 'error', 'message' => 'An error occurred during password reset.']); // Generic message for security
 }
 
 
 
-http_response_code($ResponseCode);
-header('Content-Type: application/json');
-echo json_encode($response);
+?>
