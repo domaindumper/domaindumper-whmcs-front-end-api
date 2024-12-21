@@ -89,7 +89,7 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    //log_message("Password Reset Error: ".$e->getMessage(), "error"); // Log the error for debugging.  Consider a more robust logging solution
+    print_r("Password Reset Error: ".$e->getMessage(), "error"); // Log the error for debugging.  Consider a more robust logging solution
     echo json_encode(['status' => 'error', 'message' => 'An error occurred during password reset.']); // Generic message for security
 }
 
