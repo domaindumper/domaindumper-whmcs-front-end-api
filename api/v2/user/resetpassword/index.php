@@ -21,14 +21,14 @@ function sendPasswordResetEmail($client) {
             'password_reset_token_expiry' => $expiry,
         ]);
 
-    $Domain = Capsule::table('tbldomains')
+    $Domain = Capsule::table('tblconfiguration')
         ->where('setting', 'Domain')
         ->first();
 
     $resetLink = $Domain->value . "/reset/redeem/" . $token;
 
 
-    $Signature = $Client = Capsule::table('tblclients')
+    $Signature = $Client = Capsule::table('tblconfiguration')
     ->where('setting', 'Signature')
     ->first();
 
