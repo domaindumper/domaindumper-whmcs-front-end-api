@@ -34,6 +34,8 @@ $client = Capsule::table('tblclients')
     ->where('password_reset_token_expiry', '>', date('Y-m-d H:i:s'))
     ->first();
 
+    print_r($client); die();
+
 if (!$client) {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Invalid or expired reset token.']);
