@@ -25,8 +25,7 @@ function sendPasswordResetEmail($client) {
         ->where('setting', 'Domain')
         ->first();
 
-    $resetLink = $Domain->value . "/reset/redeem/" . $token;
-
+    $resetLink = $Domain->value . "/account/forgot-password/" . $token;
 
     $Signature = $Client = Capsule::table('tblconfiguration')
     ->where('setting', 'Signature')
@@ -101,7 +100,7 @@ if ($Client) {
     $response = [
         'status' => 'error',
         'code' => 404,
-        'message' => 'Email address not found.'
+        'message' => 'Can\'t find that email. Try again?',
     ];
 }
 
