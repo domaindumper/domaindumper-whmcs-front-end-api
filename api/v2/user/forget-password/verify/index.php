@@ -61,22 +61,22 @@ if (!isVaildPassword($password)) {
 
 $encryptedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-echo $encryptedPassword;
+// echo $encryptedPassword;
 
-print_r($client); die();
+// print_r($client); die();
 
 try {
     Capsule::table('tblclients')
         ->where('id', $client->id)
         ->update([
             'password' => $encryptedPassword,
-            'password_reset_token' => null,
-            'password_reset_token_expiry' => null,
+            //'password_reset_token' => null,
+            //'password_reset_token_expiry' => null,
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
     // Update tblusers as well (if necessary and if the structure is as described previously)
-    $userId = Capsule::table('tblusers')->where('client_id', $client->id)->first();
+    $userId = Capsule::table('tblusers')->where('email', $client->email)->first();
     if ($userId) {
       Capsule::table('tblusers')
           ->where('id', $userId->id) // Use userId->id
