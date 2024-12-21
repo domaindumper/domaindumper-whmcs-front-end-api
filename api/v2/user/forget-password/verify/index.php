@@ -103,7 +103,7 @@ try {
 
 
     http_response_code(200);
-    echo json_encode(['status' => 'success', 'message' => 'Password reset successful. Please log in.']);
+    echo json_encode(['status' => 'success', 'message' => 'Password reset successful. Please log in to continue.']);
 
 } catch (Exception $e) {
     http_response_code(500);
