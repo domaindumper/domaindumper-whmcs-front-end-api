@@ -21,7 +21,7 @@ $resetToken = $data['token'] ?? null;  // Null coalescing operator for cleaner c
 $password = $data['password'] ?? null;
 $password2 = $data['password2'] ?? null;
 
-print($data);
+print_r($data);
 
 if (!$resetToken) {
     http_response_code(400);
