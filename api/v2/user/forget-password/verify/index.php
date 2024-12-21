@@ -97,7 +97,7 @@ try {
         'id' => $client->id,
         'customtype' => 'general',
         'customsubject' => 'Your Password Has Been Changed',
-        'custommessage' => "Dear {$client->firstname},\n\nYour password has been successfully updated.\n\nIf you did not initiate this password change, please contact support immediately.\n\n---\n" . $Signature->value,
+        'custommessage' => "Dear {$client->firstname},\n\nYour password has been successfully updated.\n\nIf you did not initiate this password change, please contact support immediately.\n\n" . $Signature->value,
     ];
     $results = localAPI($command, $postData);
 
