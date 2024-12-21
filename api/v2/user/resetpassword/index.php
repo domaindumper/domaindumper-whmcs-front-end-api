@@ -74,14 +74,14 @@ if ($Client) {
     if ($Client->password_reset_token && $Client->password_reset_token_expiry > date('Y-m-d H:i:s')) {
         $lastSent = strtotime($Client->password_reset_token_expiry) - (2 * 60 * 60);  // Correct calculation of last sent time
         $timeDiff = time() - $lastSent;
-        if ($timeDiff > 120) {
+        if ($timeDiff > 60) {
             $response = sendPasswordResetEmail($Client);
         } else {
             http_response_code(429);
             $response = [
                 'status' => 'error',
                 'code' => 429,
-                'message' => 'Please wait 2 minutes before requesting another password reset email.',
+                'message' => 'Please wait 60 seconds before requesting another password reset email.',
             ];
         }
     } else {
