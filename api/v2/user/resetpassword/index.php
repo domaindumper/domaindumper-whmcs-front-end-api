@@ -25,7 +25,7 @@ function sendPasswordResetEmail($client) {
         ->where('setting', 'Domain')
         ->first();
 
-    $resetLink = $Domain->value . "/reset/redeem/" . $token;
+    $resetLink = $Domain->value . "/account/forgot-password/" . $token;
 
 
     $Signature = $Client = Capsule::table('tblconfiguration')
