@@ -27,12 +27,10 @@ if (!$resetToken) {
     exit;
 }
 
-
 $client = Capsule::table('tblclients')
     ->where('password_reset_token', $resetToken)
     ->where('password_reset_token_expiry', '>', date('Y-m-d H:i:s'))
     ->first();
-
 
 if (!$client) {
     http_response_code(400);
