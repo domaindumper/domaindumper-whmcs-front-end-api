@@ -21,7 +21,16 @@ function sendPasswordResetEmail($client) {
             'password_reset_token_expiry' => $expiry,
         ]);
 
-    $resetLink = "https://admin.whoisextractor.com/index.php/password/reset/redeem/" . $token;
+    $Domain = Capsule::table('tbldomains')
+        ->where('setting', 'Domain')
+        ->first();
+
+    $resetLink = $Domain->value . "/reset/redeem/" . $token;
+
+
+    $Signature = $Client = Capsule::table('tblclients')
+    ->where('setting', 'Signature')
+    ->first();
 
     $command = 'SendEmail';
     $postData = [
@@ -29,7 +38,7 @@ function sendPasswordResetEmail($client) {
         'id' => $client->id,
         'customtype' => 'general',
         'customsubject' => 'Password Reset Request',
-        'custommessage' => "Dear {$client->firstname},\n\nTo reset your password, please click on the link below.\n\n<a href=\"{$resetLink}\">Reset your password</a>\n\nIf you're having trouble, try copying and pasting the following URL into your browser:\n{$resetLink}\n\nIf you did not request this reset, you can ignore this email. It will expire in 2 hours.\n\n---\nWhoisextractor\nhttp://www.whoisextractor.com",
+        'custommessage' => "Dear {$client->firstname},\n\nTo reset your password, please click on the link below.\n\n<a href=\"{$resetLink}\">Reset your password</a>\n\nIf you're having trouble, try copying and pasting the following URL into your browser:\n{$resetLink}\n\nIf you did not request this reset, you can ignore this email. It will expire in 2 hours.\n\n---\n{$Signature->value}",
     ];
 
     $results = localAPI($command, $postData);
