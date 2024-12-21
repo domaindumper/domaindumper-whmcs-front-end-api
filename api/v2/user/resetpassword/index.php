@@ -15,30 +15,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $email = !empty($data['email']) ? $data['email'] : '';
 
-    // No reCAPTCHA verification here 
-
-    $command = 'ResetPassword';
-    $postData = array(
-        'email' => $email
-    );
-
-    $results = localAPI($command, $postData);
+    $Client = Illuminate\Database\Capsule\Manager::table('tblclients')
+        ->where('email ', $email)
+        ->first();
 
     $ResponseCode = 200;
 
-    if ($results['result'] == 'success') {
+    if ($Client) {
 
         $response = [
-            'status' => $results['result'],
+            'status' => 'success',
             'code' => 200,
             'message' => 'If you are a registered user, you will be sent an email with a password reset link.'
         ];
 
     } else {
         $response = [
-            'status' => $results['result'],
+            'status' => 'error',
             'code' => 200,
-            'message' => $results['message']
+            'message' => 'If you are a registered user, you will be sent an email with a password reset link.'
         ];
     }
 
