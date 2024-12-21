@@ -10,75 +10,79 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 
 $ca = new ClientArea();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'code' => 405, 'message' => 'Method not allowed']);
+    exit;
+}
 
-    $data = json_decode(file_get_contents('php://input'), true);
-    $email = !empty($data['email']) ? $data['email'] : '';
+$data = json_decode(file_get_contents('php://input'), true);
+$email = isset($data['email']) ? filter_var($data['email'], FILTER_VALIDATE_EMAIL) : null;
 
-    $Client = Illuminate\Database\Capsule\Manager::table('tblclients')
-        ->where('email ', $email)
-        ->first();
+if (!$email) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'code' => 400, 'message' => 'Invalid email address.']);
+    exit;
+}
 
-    $ResponseCode = 200;
 
-    if ($Client) {
+$Client = Illuminate\Database\Capsule\Manager::table('tblclients')
+    ->where('email', $email)
+    ->first();
 
-        // Generate a random password reset token and store password_reset_token and password_reset_token_expiry in tblclients table
+if ($Client) {
+    $token = bin2hex(random_bytes(32)); // Use a cryptographically secure method for token generation
+    $expiry = date('Y-m-d H:i:s', strtotime('+2 hour'));
 
-        $password_reset_token = bin2hex(random_bytes(100));
+    Illuminate\Database\Capsule\Manager::table('tblclients')
+        ->where('email', $email)
+        ->update([
+            'password_reset_token' => $token,
+            'password_reset_token_expiry' => $expiry
+        ]);
 
-        $password_reset_token_expiry = date('Y-m-d H:i:s', strtotime('+2 hour'));   // Token expires in 2 hours
+    // Construct the reset link (replace with your actual URL)
+    $resetLink = "https://yourdomain.com/reset-password.php?token=" . $token;
 
-        Illuminate\Database\Capsule\Manager::table('tblclients')
-            ->where('email', $email)
-            ->update([
-                'password_reset_token' => $password_reset_token,
-                'password_reset_token_expiry' => $password_reset_token_expiry
-            ]);
 
-        // Send an email to the user with a password reset link
+    $command = 'SendEmail';
+    $postData = [
+        'messagename' => 'Password Reset', // Use a dedicated email template
+        'id' => $Client->id,
+        'customtype' => 'general',
+        'customsubject' => 'Password Reset Request',
+        'custommessage' => "Click the following link to reset your password: " . $resetLink,
+    ];
 
-        $command = 'SendEmail';
-        $postData = array(
-            'messagename' => 'Client Signup Email',
-            'id' => $Client->id,
-            'customtype' => 'general',
-            'customsubject' => 'Product Welcome Email',
-            'custommessage' => '<p>Thank you for choosing us</p><p>Your custom is appreciated</p><p>{$custommerge}<br /></p>',
-            //'customvars' => base64_encode(serialize(array("custommerge"=>$populatedvar1, "custommerge2"=>$populatedvar2))),
-        );
+    $results = localAPI($command, $postData);
 
-        $results = localAPI($command, $postData);
-        print_r($results);
-
-        // Prepare the response data
-
+    if ($results['result'] === 'success') {
+        http_response_code(200);
         $response = [
             'status' => 'success',
             'code' => 200,
-            'message' => 'If you are a registered user, you will be sent an email with a password reset link.'
+            'message' => 'If you are a registered user, you will receive an email with a password reset link.'
         ];
-
     } else {
+        http_response_code(500); // Use appropriate error code
         $response = [
             'status' => 'error',
-            'code' => 200,
-            'message' => 'If you are a registered user, you will be sent an email with a password reset link.'
+            'code' => 500,
+            'message' => 'Failed to send password reset email. Please try again later.'
         ];
     }
 
 } else {
-
-    // Handle invalid request method
-    $ResponseCode = 405;
+    http_response_code(404);
     $response = [
         'status' => 'error',
-        'code' => 405,
-        'message' => 'Method not allowed'
+        'code' => 404,
+        'message' => 'Email address not found.'
     ];
 }
 
-http_response_code($ResponseCode);
+
 header('Content-Type: application/json');
 echo json_encode($response);
+
 ?>
