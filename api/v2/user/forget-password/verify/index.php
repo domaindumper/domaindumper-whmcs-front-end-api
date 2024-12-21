@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
-$resetToken = $data['reset_token'] ?? null;  // Null coalescing operator for cleaner code
+$resetToken = $data['token'] ?? null;  // Null coalescing operator for cleaner code
 $password = $data['password'] ?? null;
 $password2 = $data['password2'] ?? null;
 
