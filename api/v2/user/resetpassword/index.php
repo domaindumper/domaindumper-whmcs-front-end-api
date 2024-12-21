@@ -72,7 +72,8 @@ $Client = Capsule::table('tblclients')
 
 if ($Client) {
     if ($Client->password_reset_token && $Client->password_reset_token_expiry > date('Y-m-d H:i:s')) {
-        $timeDiff = strtotime($Client->password_reset_token_expiry) - time();
+        $lastSent = strtotime($Client->password_reset_token_expiry) - (2 * 60 * 60);  // Correct calculation of last sent time
+        $timeDiff = time() - $lastSent;
         if ($timeDiff > 120) {
             $response = sendPasswordResetEmail($Client);
         } else {
@@ -95,7 +96,7 @@ if ($Client) {
     ];
 }
 
-http_response_code($response['code'] ?? 200);  // Set appropriate response code
+http_response_code($response['code'] ?? 200);
 header('Content-Type: application/json');
 echo json_encode($response);
 
