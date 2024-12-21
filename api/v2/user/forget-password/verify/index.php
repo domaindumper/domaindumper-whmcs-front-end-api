@@ -70,8 +70,8 @@ try {
         ->where('id', $client->id)
         ->update([
             'password' => $encryptedPassword,
-            //'password_reset_token' => null,
-            //'password_reset_token_expiry' => null,
+            'password_reset_token' => null,
+            'password_reset_token_expiry' => null,
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
@@ -86,6 +86,21 @@ try {
           ]);
     }
 
+        // Send password changed email notification
+        $Signature = Capsule::table('tblconfiguration')
+        ->where('setting', 'Signature')
+        ->first();
+
+    $command = 'SendEmail';
+    $postData = [
+        'messagename' => 'Password Changed',
+        'id' => $client->id,
+        'customtype' => 'general',
+        'customsubject' => 'Your Password Has Been Changed',
+        'custommessage' => "Dear {$client->firstname},\n\nYour password has been successfully updated.\n\nIf you did not initiate this password change, please contact support immediately.\n\n---\n" . $Signature->value,
+    ];
+    $results = localAPI($command, $postData);
+
 
     http_response_code(200);
     echo json_encode(['status' => 'success', 'message' => 'Password reset successful. Please log in.']);
@@ -95,7 +110,5 @@ try {
     print_r("Password Reset Error: ".$e->getMessage(), "error"); // Log the error for debugging.  Consider a more robust logging solution
     echo json_encode(['status' => 'error', 'message' => 'An error occurred during password reset.']); // Generic message for security
 }
-
-
 
 ?>
