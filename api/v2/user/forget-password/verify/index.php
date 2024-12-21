@@ -21,7 +21,7 @@ $resetToken = $data['token'] ?? null;  // Null coalescing operator for cleaner c
 $password = $data['password'] ?? null;
 $password2 = $data['password2'] ?? null;
 
-print_r($data);
+//print_r($data);
 
 if (!$resetToken) {
     http_response_code(400);
@@ -89,7 +89,7 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    log_message("Password Reset Error: ".$e->getMessage(), "error"); // Log the error for debugging.  Consider a more robust logging solution
+    //log_message("Password Reset Error: ".$e->getMessage(), "error"); // Log the error for debugging.  Consider a more robust logging solution
     echo json_encode(['status' => 'error', 'message' => 'An error occurred during password reset.']); // Generic message for security
 }
 
