@@ -29,7 +29,7 @@ function sendPasswordResetEmail($client) {
         'id' => $client->id,
         'customtype' => 'general',
         'customsubject' => 'Password Reset Request',
-        'custommessage' => "Dear {$client->firstname} {$client->lastname},\n\nTo reset your password, please click on the link below.\n\n<a href=\"{$resetLink}\">Reset your password</a>\n\nIf you're having trouble, try copying and pasting the following URL into your browser:\n{$resetLink}\n\nIf you did not request this reset, you can ignore this email. It will expire in 2 hours.\n\n---\nWhoisextractor\nhttp://www.whoisextractor.com",
+        'custommessage' => "Dear {$client->firstname},\n\nTo reset your password, please click on the link below.\n\n<a href=\"{$resetLink}\">Reset your password</a>\n\nIf you're having trouble, try copying and pasting the following URL into your browser:\n{$resetLink}\n\nIf you did not request this reset, you can ignore this email. It will expire in 2 hours.\n\n---\nWhoisextractor\nhttp://www.whoisextractor.com",
     ];
 
     $results = localAPI($command, $postData);
