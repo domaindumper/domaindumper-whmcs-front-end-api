@@ -18,6 +18,27 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
+// Product More details for SEO and other purposes
+
+$Products = array();
+
+$Products[] = array(
+    'id' => 1,
+    'title' => 'Whois Database',
+    'description_long' => 'Whois Database',
+    'description_sort' => 'Whois Database',
+    'images' => array(
+        'https://www.example.com/images/product1.jpg',
+        'https://www.example.com/images/product1-1.jpg',
+        'https://www.example.com/images/product1-2.jpg',
+    ),
+    'slug_page' => '/whois-database/',
+    'sku' => '2025',
+    'mpn' => '2024',
+    'related' => array(2, 3, 4),
+    'col' => 'col-lg-6',
+);
+
 
 $command = 'GetProducts';
 $postData = array(
@@ -25,46 +46,41 @@ $postData = array(
 );
 
 $results = localAPI($command, $postData);
-print_r($results);
 
-
-if (!$email) {
+if (!$results || !isset($results['products']['product']) || !is_array($results['products']['product'])) {
     http_response_code(400);
-    echo json_encode(['status' => 'error', 'code' => 400, 'message' => 'Invalid email address.']);
+    echo json_encode(['status' => 'error', 'code' => 400, 'message' => 'Products not found or unexpected API response']);
     exit;
 }
 
-$Client = Capsule::table('tblclients')
-    ->where('email', $email)
-    ->first();
+$apiProducts = $results['products']['product'];
+$mergedProducts = [];
 
-if ($Client) {
-    if ($Client->password_reset_token && $Client->password_reset_token_expiry > date('Y-m-d H:i:s')) {
-        $lastSent = strtotime($Client->password_reset_token_expiry) - (2 * 60 * 60);  // Correct calculation of last sent time
-        $timeDiff = time() - $lastSent;
-        if ($timeDiff > 60) {
-            $response = sendPasswordResetEmail($Client);
-        } else {
-            http_response_code(429);
-            $response = [
-                'status' => 'error',
-                'code' => 429,
-                'message' => 'Please wait 60 seconds before requesting another password reset email.',
-            ];
-        }
+foreach ($apiProducts as $apiProduct) {
+    $productId = (int)$apiProduct['pid'];
+
+    $customProduct = array_filter($Products, function ($p) use ($productId) {
+        return isset($p['id']) && (int)$p['id'] === $productId;
+    });
+
+    if (!empty($customProduct)) {
+        $customProduct = reset($customProduct);
+        $mergedProduct = array_merge($apiProduct, $customProduct);
     } else {
-        $response = sendPasswordResetEmail($Client);
+        $mergedProduct = $apiProduct;
     }
-} else {
-    http_response_code(404);
-    $response = [
-        'status' => 'error',
-        'code' => 404,
-        'message' => 'Can\'t find that email. Try again?',
-    ];
+
+    $mergedProducts[] = $mergedProduct;
 }
 
-http_response_code($response['code'] ?? 200);
+
+$response = [
+    'status' => 'success',
+    'code' => 200,
+    'data' => $mergedProducts, // Use merged data
+];
+
+http_response_code(200);
 header('Content-Type: application/json');
 echo json_encode($response);
 
