@@ -24,6 +24,10 @@ $Products = [
         'slug_page' => '/whois-database/',
         'sku' => '2025',
         'related' => [2, 3, 4],
+        'col' => 'col-lg-6',
+        'tags' => [
+            ['title' => 'Daily Website Data', 'slug' => '/website-database/daily-website-data/'], ['title' => 'Historical Website Data', 'slug' => '/website-database/historical-website-data/']
+        ],
     ],
     [
         'id' => 2,
@@ -37,8 +41,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 3,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -50,8 +54,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 4,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -63,8 +67,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 5,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -76,8 +80,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 6,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -89,8 +93,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 7,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -102,8 +106,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 7,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -115,8 +119,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 8,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -128,8 +132,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 9,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -141,8 +145,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 10,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -154,8 +158,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 11,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -167,8 +171,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 12,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -180,8 +184,8 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
-     [
+    ],
+    [
         'id' => 13,
         'title' => 'Domain Backordering',
         'description_long' => 'Domain Backordering long description...',
@@ -193,7 +197,7 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => '2026',
         'related' => [1, 3],
-     ],
+    ],
 ];
 
 // Get all product IDs from the custom product array
@@ -202,11 +206,11 @@ $customProductIds = array_column($Products, 'id');
 // Determine if a specific product ID is requested
 // Check for pid in POST data (Prioritize POST over GET/REQUEST)
 $data = json_decode(file_get_contents('php://input'), true);  // Get POST data
-$requestedProductId = isset($data['pid']) ? (int)$data['pid'] : null;
+$requestedProductId = isset($data['pid']) ? (int) $data['pid'] : null;
 
 // If not found in POST, check GET/REQUEST
 if ($requestedProductId === null) {
-    $requestedProductId = isset($_REQUEST['pid']) ? (int)$_REQUEST['pid'] : null;
+    $requestedProductId = isset($_REQUEST['pid']) ? (int) $_REQUEST['pid'] : null;
 }
 
 
@@ -248,8 +252,8 @@ $apiProducts = $results['products']['product'];
 $mergedProducts = [];
 
 foreach ($apiProducts as $apiProduct) {
-    $productId = (int)$apiProduct['pid'];
-    $customProduct = array_filter($Products, fn($p) => (int)$p['id'] === $productId);
+    $productId = (int) $apiProduct['pid'];
+    $customProduct = array_filter($Products, fn($p) => (int) $p['id'] === $productId);
 
     $mergedProduct = !empty($customProduct) ? array_merge($apiProduct, reset($customProduct)) : $apiProduct;
     $mergedProducts[] = $mergedProduct;
