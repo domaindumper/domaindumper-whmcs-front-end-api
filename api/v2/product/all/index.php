@@ -254,7 +254,6 @@ foreach ($apiProducts as $apiProduct) {
 
     // Remove unwanted keys
     unset($mergedProduct['product_url']);
-    unset($mergedProduct['configoptions']);
 
     ksort($mergedProduct); // Sort keys alphabetically within each product
 
