@@ -16,49 +16,29 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-// Product More details for SEO and other purposes
+// Products array (shortened and with example data)
+$Products = [
+    [
+        'id' => 1,
+        'title' => 'Whois Database',
+        'description_long' => 'Whois Database long description...',
+        'description_short' => 'Whois Database short description',
+        'images' => [
+            'image1.jpg',
+            'image2.jpg',
+        ],
+        'slug_page' => '/whois-database/',
+        'sku' => '2025',
+        'related' => [2, 3, 4],
+    ],
+    // ... more products
+];
 
-$Products = array();
-
-$Products[] = array(
-    'id' => 1,
-    'title' => 'Whois Database',
-    'description_long' => 'Whois Database',
-    'description_sort' => 'Whois Database',
-    'images' => array(
-        'https://www.example.com/images/product1.jpg',
-        'https://www.example.com/images/product1-1.jpg',
-        'https://www.example.com/images/product1-2.jpg',
-    ),
-    'slug_page' => '/whois-database/',
-    'sku' => '2025',
-    'mpn' => '2024',
-    'related' => array(2, 3, 4),
-    'col' => 'col-lg-6',
-);
-
-$Products[] = array(
-    'id' => 2,
-    'title' => 'Whois Database',
-    'description_long' => 'Whois Database',
-    'description_sort' => 'Whois Database',
-    'images' => array(
-        'https://www.example.com/images/product1.jpg',
-        'https://www.example.com/images/product1-1.jpg',
-        'https://www.example.com/images/product1-2.jpg',
-    ),
-    'slug_page' => '/whois-database/',
-    'sku' => '2025',
-    'mpn' => '2024',
-    'related' => array(2, 3, 4),
-    'col' => 'col-lg-6',
-);
-
+// Dynamically get product IDs from the $Products array
+$productIds = array_column($Products, 'id');
 
 $command = 'GetProducts';
-$postData = array(
-    'pid' => '1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14', // Product IDs separated by commas
-);
+$postData = ['pid' => implode(',', $productIds)];
 
 $results = localAPI($command, $postData);
 
@@ -75,7 +55,7 @@ foreach ($apiProducts as $apiProduct) {
     $productId = (int)$apiProduct['pid'];
 
     $customProduct = array_filter($Products, function ($p) use ($productId) {
-        return isset($p['id']) && (int)$p['id'] === $productId;
+        return (int)$p['id'] === $productId; // Type casting for comparison
     });
 
     if (!empty($customProduct)) {
@@ -88,11 +68,10 @@ foreach ($apiProducts as $apiProduct) {
     $mergedProducts[] = $mergedProduct;
 }
 
-
 $response = [
     'status' => 'success',
     'code' => 200,
-    'data' => $mergedProducts, // Use merged data
+    'data' => $mergedProducts,
 ];
 
 http_response_code(200);
