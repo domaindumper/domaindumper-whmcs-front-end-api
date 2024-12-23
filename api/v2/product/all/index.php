@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 $command = 'GetProducts';
 $postData = array(
-    'pid' => '1',
+    'pid' => '1, 2, 3', // Product IDs
 );
 
 $results = localAPI($command, $postData);
