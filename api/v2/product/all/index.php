@@ -200,21 +200,19 @@ $Products = [
     ],
 ];
 
-// Get all product IDs from the custom product array
+// Get all custom product IDs
 $customProductIds = array_column($Products, 'id');
 
-// Determine if a specific product ID is requested
-// Check for pid in POST data (Prioritize POST over GET/REQUEST)
-$data = json_decode(file_get_contents('php://input'), true);  // Get POST data
-$requestedProductId = isset($data['pid']) ? (int) $data['pid'] : null;
+// Get requested product ID (prioritize POST)
+$data = json_decode(file_get_contents('php://input'), true);
+$requestedProductId = isset($data['pid']) ? (int)$data['pid'] : null;
 
-// If not found in POST, check GET/REQUEST
+// Fallback to GET/REQUEST if not in POST
 if ($requestedProductId === null) {
-    $requestedProductId = isset($_REQUEST['pid']) ? (int) $_REQUEST['pid'] : null;
+    $requestedProductId = isset($_REQUEST['pid']) ? (int)$_REQUEST['pid'] : null;
 }
 
-
-// If a specific product ID is requested, check if it exists in your custom products
+// Determine API product IDs based on request
 if ($requestedProductId) {
     $productExists = in_array($requestedProductId, $customProductIds, true);
     if (!$productExists) {
@@ -224,23 +222,20 @@ if ($requestedProductId) {
     }
     $apiProductIds = [$requestedProductId];
 } else {
-    // If no specific product ID is requested, use all IDs from custom products
     $apiProductIds = $customProductIds;
 }
 
 
 $command = 'GetProducts';
 
-// If the $apiProductIds array is empty, it means there are no custom products to retrieve.
 if (empty($apiProductIds)) {
-    http_response_code(404); // 404 Not Found if there are no products
+    http_response_code(404);
     echo json_encode(['status' => 'error', 'message' => 'No products found.']);
     exit;
 }
 
 $postData = ['pid' => implode(',', $apiProductIds)];
 $results = localAPI($command, $postData);
-
 
 if (!$results || !isset($results['products']['product']) || !is_array($results['products']['product'])) {
     http_response_code(500);
@@ -252,22 +247,16 @@ $apiProducts = $results['products']['product'];
 $mergedProducts = [];
 
 foreach ($apiProducts as $apiProduct) {
-    $productId = (int) $apiProduct['pid'];
-    $customProduct = array_filter($Products, fn($p) => (int) $p['id'] === $productId);
-
+    $productId = (int)$apiProduct['pid'];
+    $customProduct = array_filter($Products, fn($p) => (int)$p['id'] === $productId);
     $mergedProduct = !empty($customProduct) ? array_merge($apiProduct, reset($customProduct)) : $apiProduct;
     $mergedProducts[] = $mergedProduct;
 }
 
-
-
-// Determine the response data based on whether a specific product was requested
-if ($requestedProductId) {
-    $response = ['status' => 'success', 'code' => 200, 'data' => ['product' => $mergedProducts[0]]];
-} else {
-    $response = ['status' => 'success', 'code' => 200, 'data' => ['products' => $mergedProducts]];
-}
-
+// Build response
+$response = $requestedProductId
+    ? ['status' => 'success', 'code' => 200, 'data' => ['product' => $mergedProducts[0]]]
+    : ['status' => 'success', 'code' => 200, 'data' => ['products' => $mergedProducts]];
 
 http_response_code($response['code']);
 header('Content-Type: application/json');
