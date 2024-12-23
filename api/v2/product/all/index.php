@@ -52,10 +52,10 @@ $apiProducts = $results['products']['product'];
 $mergedProducts = [];
 
 foreach ($apiProducts as $apiProduct) {
-    $productId = (int)$apiProduct['pid'];
+    $productId = (int) $apiProduct['pid'];
 
     $customProduct = array_filter($Products, function ($p) use ($productId) {
-        return (int)$p['id'] === $productId; // Type casting for comparison
+        return (int) $p['id'] === $productId; // Type casting for comparison
     });
 
     if (!empty($customProduct)) {
@@ -68,10 +68,12 @@ foreach ($apiProducts as $apiProduct) {
     $mergedProducts[] = $mergedProduct;
 }
 
+$AllProducts['products'] = $mergedProducts;
+
 $response = [
     'status' => 'success',
     'code' => 200,
-    'data' => $mergedProducts,
+    'data' => $AllProducts,
 ];
 
 http_response_code(200);
