@@ -253,7 +253,15 @@ foreach ($apiProducts as $apiProduct) {
     $mergedProducts[] = $mergedProduct;
 }
 
-// Build response
+
+// Sort the merged products by 'id' in ascending order
+usort($mergedProducts, function ($a, $b) {
+    return $a['id'] <=> $b['id'];
+});
+
+
+
+// Build response (no changes here)
 $response = $requestedProductId
     ? ['status' => 'success', 'code' => 200, 'data' => ['product' => $mergedProducts[0]]]
     : ['status' => 'success', 'code' => 200, 'data' => ['products' => $mergedProducts]];
@@ -261,5 +269,4 @@ $response = $requestedProductId
 http_response_code($response['code']);
 header('Content-Type: application/json');
 echo json_encode($response);
-
 ?>
