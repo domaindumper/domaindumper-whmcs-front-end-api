@@ -12,7 +12,7 @@ $ca = new ClientArea();
 
 
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
     echo json_encode(['status' => 'error', 'code' => 405, 'message' => 'Method not allowed']);
     exit;
