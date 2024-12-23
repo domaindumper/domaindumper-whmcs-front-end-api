@@ -26,7 +26,8 @@ $Products = [
         'related' => [2, 3, 4],
         'col' => 'col-lg-6',
         'tags' => [
-            ['title' => 'Daily Website Data', 'slug' => '/website-database/daily-website-data/'], ['title' => 'Historical Website Data', 'slug' => '/website-database/historical-website-data/']
+            ['title' => 'Daily Website Data', 'slug' => '/website-database/daily-website-data/'],
+            ['title' => 'Historical Website Data', 'slug' => '/website-database/historical-website-data/']
         ],
     ],
     [
