@@ -252,6 +252,10 @@ foreach ($apiProducts as $apiProduct) {
     $customProduct = array_filter($Products, fn($p) => (int)$p['id'] === $productId);
     $mergedProduct = !empty($customProduct) ? array_merge($apiProduct, reset($customProduct)) : $apiProduct;
 
+    // Remove unwanted keys
+    unset($mergedProduct['product_url']);
+    unset($mergedProduct['configoptions']);
+
     ksort($mergedProduct); // Sort keys alphabetically within each product
 
     $mergedProducts[] = $mergedProduct;
