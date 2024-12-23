@@ -45,7 +45,15 @@ $Products = [
 $customProductIds = array_column($Products, 'id');
 
 // Determine if a specific product ID is requested
-$requestedProductId = isset($_REQUEST['pid']) ? (int)$_REQUEST['pid'] : null;
+// Check for pid in POST data (Prioritize POST over GET/REQUEST)
+$data = json_decode(file_get_contents('php://input'), true);  // Get POST data
+$requestedProductId = isset($data['pid']) ? (int)$data['pid'] : null;
+
+// If not found in POST, check GET/REQUEST
+if ($requestedProductId === null) {
+    $requestedProductId = isset($_REQUEST['pid']) ? (int)$_REQUEST['pid'] : null;
+}
+
 
 // If a specific product ID is requested, check if it exists in your custom products
 if ($requestedProductId) {
@@ -105,4 +113,5 @@ if ($requestedProductId) {
 http_response_code($response['code']);
 header('Content-Type: application/json');
 echo json_encode($response);
+
 ?>
