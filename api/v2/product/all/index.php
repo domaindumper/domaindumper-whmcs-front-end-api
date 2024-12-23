@@ -250,7 +250,7 @@ foreach ($apiProducts as $apiProduct) {
     $productId = (int)$apiProduct['pid'];
     $customProduct = array_filter($Products, fn($p) => (int)$p['id'] === $productId);
     $mergedProduct = !empty($customProduct) ? array_merge($apiProduct, reset($customProduct)) : $apiProduct;
-    $mergedProducts[] = reset($mergedProduct);
+    $mergedProducts[] = $mergedProduct;
 }
 
 // Build response
