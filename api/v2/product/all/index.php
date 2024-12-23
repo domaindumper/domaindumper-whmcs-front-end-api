@@ -10,74 +10,90 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 
 $ca = new ClientArea();
 
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    http_response_code(405);
-    echo json_encode(['status' => 'error', 'code' => 405, 'message' => 'Method not allowed']);
-    exit;
-}
+// Determine request method and handle accordingly
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    $productId = isset($data['pid']) ? (int)$data['pid'] : null;
 
-// Products array (shortened and with example data)
-$Products = [
-    [
-        'id' => 1,
-        'title' => 'Whois Database',
-        'description_long' => 'Whois Database long description...',
-        'description_short' => 'Whois Database short description',
-        'images' => [
-            'image1.jpg',
-            'image2.jpg',
-        ],
-        'slug_page' => '/whois-database/',
-        'sku' => '2025',
-        'related' => [2, 3, 4],
-    ],
-    // ... more products
-];
+     if ($productId === null || $productId <= 0) {
+            http_response_code(400);
+            echo json_encode(['status' => 'error', 'message' => 'Invalid product ID.']);
+            exit;
+     }
 
-// Dynamically get product IDs from the $Products array
-$productIds = array_column($Products, 'id');
+    $command = 'GetProducts';
+    $postData = ['pid' => $productId];
 
-$command = 'GetProducts';
-$postData = ['pid' => implode(',', $productIds)];
 
-$results = localAPI($command, $postData);
+    $results = localAPI($command, $postData);
 
-if (!$results || !isset($results['products']['product']) || !is_array($results['products']['product'])) {
-    http_response_code(400);
-    echo json_encode(['status' => 'error', 'code' => 400, 'message' => 'Products not found or unexpected API response']);
-    exit;
-}
+        if (!$results || !isset($results['products']['product'][0])) {
+            http_response_code(404);
+            echo json_encode(['status' => 'error', 'message' => 'Product not found.']);
+            exit;
+        }
 
-$apiProducts = $results['products']['product'];
-$mergedProducts = [];
+        $apiProduct = $results['products']['product'][0]; // Get the single product
 
-foreach ($apiProducts as $apiProduct) {
-    $productId = (int) $apiProduct['pid'];
+        $response = [
+            'status' => 'success',
+            'code' => 200,
+            'data' => ['product' => $apiProduct], // Include the 'product' key
+        ];
 
-    $customProduct = array_filter($Products, function ($p) use ($productId) {
-        return (int) $p['id'] === $productId; // Type casting for comparison
-    });
 
-    if (!empty($customProduct)) {
-        $customProduct = reset($customProduct);
-        $mergedProduct = array_merge($apiProduct, $customProduct);
-    } else {
-        $mergedProduct = $apiProduct;
+} else if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+
+
+    // Products array (add your actual product data here)
+    $Products = [
+        // ... your product data ...
+    ];
+
+
+    $productIds = array_column($Products, 'id');
+
+
+    $command = 'GetProducts';
+    $postData = !empty($productIds) ? ['pid' => implode(',', $productIds)] : []; // Handle empty $productIds
+
+    $results = localAPI($command, $postData);
+
+    if (!$results || !isset($results['products']['product']) || !is_array($results['products']['product'])) {
+        http_response_code(400); // Or 404 if no products are expected when empty.
+        echo json_encode(['status' => 'error', 'message' => 'Products not found or unexpected API response.']);
+        exit;
     }
 
-    $mergedProducts[] = $mergedProduct;
+    $apiProducts = $results['products']['product'];
+    $mergedProducts = [];
+
+    foreach ($apiProducts as $apiProduct) {
+        $productId = (int)$apiProduct['pid'];
+
+        $customProduct = array_filter($Products, function ($p) use ($productId) {
+            return (int)$p['id'] === $productId;
+        });
+
+        $mergedProduct = !empty($customProduct) ? array_merge($apiProduct, reset($customProduct)) : $apiProduct;
+        $mergedProducts[] = $mergedProduct;
+    }
+
+    $response = [
+        'status' => 'success',
+        'code' => 200,
+        'data' => ['products' => $mergedProducts], // Use 'products' key for the array
+    ];
+
+} else {
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'message' => 'Method Not Allowed']);
+    exit;
 }
 
-$AllProducts['products'] = $mergedProducts;
 
-$response = [
-    'status' => 'success',
-    'code' => 200,
-    'data' => $AllProducts,
-];
 
-http_response_code(200);
+http_response_code($response['code']);
 header('Content-Type: application/json');
 echo json_encode($response);
-
 ?>
