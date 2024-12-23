@@ -250,11 +250,13 @@ foreach ($apiProducts as $apiProduct) {
     $productId = (int)$apiProduct['pid'];
     $customProduct = array_filter($Products, fn($p) => (int)$p['id'] === $productId);
     $mergedProduct = !empty($customProduct) ? array_merge($apiProduct, reset($customProduct)) : $apiProduct;
+
+    ksort($mergedProduct); // Sort keys alphabetically within each product
+
     $mergedProducts[] = $mergedProduct;
 }
 
-
-// Sort the merged products by 'id' in ascending order
+// The usort block to sort by ID remains the same:
 usort($mergedProducts, function ($a, $b) {
     return $a['id'] <=> $b['id'];
 });
