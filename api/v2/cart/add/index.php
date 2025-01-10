@@ -47,7 +47,6 @@ if ($authToken) {
 
 // 3. Add to cart
 try {
-    Capsule::beginTransaction(); 
 
     // Find or create a cart
     $cart = Capsule::table('carts')
@@ -89,7 +88,7 @@ try {
         ]);
     }
 
-    Capsule::commit();
+    
 
     http_response_code(200);
     echo json_encode(['status' => 'success', 'message' => 'Product added to cart']);
