@@ -94,7 +94,7 @@ try {
     echo json_encode(['status' => 'success', 'message' => 'Product added to cart']);
 
 } catch (Exception $e) {
-    Capsule::rollback();
+    
 
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Failed to add product to cart']);
