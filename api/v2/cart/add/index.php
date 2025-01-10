@@ -59,7 +59,7 @@ try {
         })
         ->first();
 
-        echo 'runing here';
+        echo 'runing here1';
 
     if (!$cart) {
         $cart = Capsule::table('carts')->create([
