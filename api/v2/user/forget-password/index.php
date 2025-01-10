@@ -1,4 +1,6 @@
 <?php
+// api/v2/user/forget-password/index.php
+
 use WHMCS\ClientArea;
 use WHMCS\Database\Capsule;
 
