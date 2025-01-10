@@ -25,6 +25,8 @@ $customfields = $data['customfields'] ?? null;
 $authToken = $data['authToken'] ?? null;
 $sessionId = $data['sessionId'] ?? null;
 
+print_r($data);
+
 // 1. Validate input data
 if (empty($productId)) {
     http_response_code(400);
