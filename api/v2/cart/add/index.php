@@ -48,8 +48,6 @@ if ($authToken) {
 // 3. Add to cart
 try {
 
-    echo 'runing here';
-
     // Find or create a cart
     $cart = Capsule::table('carts')
         ->where(function ($query) use ($userId, $sessionId) {
@@ -60,6 +58,8 @@ try {
             }
         })
         ->first();
+
+        echo 'runing here';
 
     if (!$cart) {
         $cart = Capsule::table('carts')->create([
