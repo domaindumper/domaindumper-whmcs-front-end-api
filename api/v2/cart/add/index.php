@@ -58,12 +58,12 @@ try {
             'user_id' => $userId,
             'session_id' => $sessionId,
         ]);
-        $cart = Capsule::table('carts')->where('cart_id', $cartId)->first(); 
+        $cart = Capsule::table('carts')->where('id', $cartId)->first(); // Use 'id' to find the cart
     }
 
     // Check for existing product with the same configoptions in 'cart_items'
     $cartItem = Capsule::table('cart_items')
-        ->where('cart_id', $cart->cart_id)
+        ->where('cart_id', $cart->id) // Use 'id' to reference the cart ID
         ->where('product_id', $productId)
         ->where('config_options', json_encode($configoptions))
         ->first();
@@ -71,7 +71,7 @@ try {
     if (!$cartItem) { 
         // Add new cart item to 'cart_items'
         Capsule::table('cart_items')->insert([
-            'cart_id' => $cart->cart_id,  
+            'cart_id' => $cart->id,        // Use 'id' to reference the cart ID
             'product_id' => $productId, 
             'quantity' => 1, 
             'config_options' => json_encode($configoptions), 
@@ -81,7 +81,7 @@ try {
 
     // Get all cart items with configoptions from 'cart_items'
     $cartItems = Capsule::table('cart_items')
-        ->where('cart_id', $cart->cart_id)
+        ->where('cart_id', $cart->id)   // Use 'id' to reference the cart ID
         ->get();
 
     Capsule::commit();
