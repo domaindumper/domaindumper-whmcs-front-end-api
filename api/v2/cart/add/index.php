@@ -25,8 +25,6 @@ $customfields = $data['customfields'] ?? null;
 $authToken = $data['authToken'] ?? null;
 $sessionId = $data['sessionId'] ?? null;
 
-print_r($data);
-
 // 1. Validate input data
 if (empty($productId)) {
     http_response_code(400);
@@ -49,6 +47,7 @@ if ($authToken) {
 
 // 3. Add to cart
 try {
+    Capsule::beginTransaction(); 
 
     // Find or create a cart
     $cart = Capsule::table('carts')
@@ -61,13 +60,15 @@ try {
         })
         ->first();
 
-        echo 'runing here1';
-
     if (!$cart) {
-        $cart = Capsule::table('carts')->create([
+        // Use insertGetId() to insert and get the ID
+        $cartId = Capsule::table('carts')->insertGetId([
             'user_id' => $userId,
             'session_id' => $sessionId,
         ]);
+
+        // Fetch the cart data after insertion
+        $cart = Capsule::table('carts')->find($cartId); 
     }
 
     // Check for existing product in the cart
@@ -83,22 +84,22 @@ try {
             ->update(['quantity' => $cartItem->quantity + 1]);
     } else {
         // Add new cart item
-        Capsule::table('carts')->create([
+        Capsule::table('carts')->insert([ // Use insert() here as well
             'id' => $cart->id, 
             'product_id' => $productId,
             'quantity' => 1,
-            'configoptions' => json_encode($configoptions), // Store as JSON
-            'customfields' => json_encode($customfields),   // Store as JSON
+            'configoptions' => json_encode($configoptions), 
+            'customfields' => json_encode($customfields),   
         ]);
     }
 
-    
+    Capsule::commit();
 
     http_response_code(200);
     echo json_encode(['status' => 'success', 'message' => 'Product added to cart']);
 
 } catch (Exception $e) {
-    
+    Capsule::rollback();
 
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Failed to add product to cart']);
