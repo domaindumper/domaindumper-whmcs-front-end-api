@@ -62,40 +62,41 @@ try {
         $cart = Capsule::table('carts')->find($cartId); 
     }
 
-    // Check for existing product in the cart
+    // Check for existing product with the same configoptions in the cart
     $cartItem = Capsule::table('carts')
         ->where('id', $cart->id)
         ->where('product_id', $productId)
+        ->where('configoptions', json_encode($configoptions))
         ->first();
 
-    if ($cartItem) {
-        // Update existing cart item quantity
-        Capsule::table('carts')
-            ->where('id', $cartItem->id)
-            ->update(['quantity' => $cartItem->quantity + 1]);
-    } else {
-        // Add new cart item
+    if (!$cartItem) { 
+        // Add new cart item (quantity is always 1)
         Capsule::table('carts')->insert([
             'product_id' => $productId,
-            'quantity' => 1,
+            'quantity' => 1, 
             'configoptions' => json_encode($configoptions), 
             'customfields' => json_encode($customfields),   
         ]);
-    }
+    } 
+
+    // Get all cart items with configoptions
+    $cartItems = Capsule::table('carts')
+        ->where('id', $cart->id)
+        ->get();
 
     Capsule::commit();
 
     http_response_code(200);
-    echo json_encode(['status' => 'success', 'message' => 'Product added to cart']);
+    echo json_encode([
+        'status' => 'success', 
+        'message' => 'Product added to cart',
+        'cartItems' => $cartItems 
+    ]);
 
 } catch (Exception $e) {
     Capsule::rollback();
 
     http_response_code(500);
-
-    // Use print_r for debugging (remove or comment out in production)
     print_r($e->getMessage()); 
-
-    // Optionally, echo a generic error message to the user
     // echo json_encode(['status' => 'error', 'message' => 'Failed to add product to cart']); 
 }
