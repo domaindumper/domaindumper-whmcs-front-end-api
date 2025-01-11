@@ -33,16 +33,10 @@ if (empty($productId)) {
 }
 // Add more validation for $configoptions, $customfields as needed
 
-// 2. Authenticate user (if logged in)
+// 2. Get user ID from token (if provided)
 $userId = null;
 if ($authToken) {
-    if (isActiveSession($authToken)) {
-        $userId = GetSession($authToken);
-    } else {
-        http_response_code(401); // Unauthorized
-        echo json_encode(['status' => 'error', 'message' => 'Invalid or expired authentication token']);
-        exit;
-    }
+    $userId = GetSession($authToken); 
 }
 
 // 3. Add to cart
@@ -70,7 +64,7 @@ try {
 
     // Check for existing product in the cart
     $cartItem = Capsule::table('carts')
-        ->where('id', $cart->id) 
+        ->where('id', $cart->id)
         ->where('product_id', $productId)
         ->first();
 
@@ -80,8 +74,8 @@ try {
             ->where('id', $cartItem->id)
             ->update(['quantity' => $cartItem->quantity + 1]);
     } else {
-        // Add new cart item (removed 'id' from insert)
-        Capsule::table('carts')->insert([ 
+        // Add new cart item
+        Capsule::table('carts')->insert([
             'product_id' => $productId,
             'quantity' => 1,
             'configoptions' => json_encode($configoptions), 
@@ -98,6 +92,10 @@ try {
     Capsule::rollback();
 
     http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'Failed to add product to cart']);
+
+    // Use print_r for debugging (remove or comment out in production)
     print_r($e->getMessage()); 
+
+    // Optionally, echo a generic error message to the user
+    // echo json_encode(['status' => 'error', 'message' => 'Failed to add product to cart']); 
 }
