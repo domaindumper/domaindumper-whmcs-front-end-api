@@ -102,5 +102,5 @@ try {
 
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Failed to add product to cart']);
-    error_log($e->getMessage()); 
+    print_r($e->getMessage()); 
 }
