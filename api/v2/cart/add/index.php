@@ -61,19 +61,16 @@ try {
         ->first();
 
     if (!$cart) {
-        // Use insertGetId() to insert and get the ID
         $cartId = Capsule::table('carts')->insertGetId([
             'user_id' => $userId,
             'session_id' => $sessionId,
         ]);
-
-        // Fetch the cart data after insertion
         $cart = Capsule::table('carts')->find($cartId); 
     }
 
     // Check for existing product in the cart
     $cartItem = Capsule::table('carts')
-        ->where('id', $cart->id)
+        ->where('id', $cart->id) 
         ->where('product_id', $productId)
         ->first();
 
@@ -83,9 +80,8 @@ try {
             ->where('id', $cartItem->id)
             ->update(['quantity' => $cartItem->quantity + 1]);
     } else {
-        // Add new cart item
-        Capsule::table('carts')->insert([ // Use insert() here as well
-            'id' => $cart->id, 
+        // Add new cart item (removed 'id' from insert)
+        Capsule::table('carts')->insert([ 
             'product_id' => $productId,
             'quantity' => 1,
             'configoptions' => json_encode($configoptions), 
