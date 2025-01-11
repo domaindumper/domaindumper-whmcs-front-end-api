@@ -1,6 +1,6 @@
 <?php
 // api/v2/cart/add/index.php
-
+die();
 use WHMCS\ClientArea;
 use WHMCS\Database\Capsule;
 
