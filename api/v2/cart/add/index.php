@@ -58,7 +58,9 @@ try {
             'user_id' => $userId,
             'session_id' => $sessionId,
         ]);
-        $cart = Capsule::table('carts')->find($cartId); 
+
+        // Use cart_id to find the cart
+        $cart = Capsule::table('carts')->where('cart_id', $cartId)->first(); 
     }
 
     // Check for existing product with the same configoptions in 'cart_items'
@@ -80,9 +82,7 @@ try {
     } 
 
     // Get all cart items with configoptions from 'cart_items'
-    $cartItems = Capsule::table('cart_items')
-        ->where('cart_id', $cart->cart_id)
-        ->get();
+    $cart = Capsule::table('carts')->find($cartId);
 
     Capsule::commit();
 
