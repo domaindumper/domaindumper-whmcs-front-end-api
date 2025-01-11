@@ -42,7 +42,7 @@ if ($authToken) {
 try {
     Capsule::beginTransaction(); 
 
-    // Find or create a cart
+    // Find or create a cart in the 'carts' table
     $cart = Capsule::table('carts')
         ->where(function ($query) use ($userId, $sessionId) {
             if ($userId) {
@@ -61,26 +61,27 @@ try {
         $cart = Capsule::table('carts')->find($cartId); 
     }
 
-    // Check for existing product with the same configoptions in the cart
-    $cartItem = Capsule::table('carts')
-        ->where('id', $cart->id)
+    // Check for existing product with the same configoptions in 'cart_items'
+    $cartItem = Capsule::table('cart_items')
+        ->where('cart_id', $cart->cart_id)
         ->where('product_id', $productId)
-        ->where('configoptions', json_encode($configoptions))
+        ->where('config_options', json_encode($configoptions))
         ->first();
 
     if (!$cartItem) { 
-        // Add new cart item (quantity is always 1)
-        Capsule::table('carts')->insert([
-            'product_id' => $productId,  // Removed 'id' => $cart->id
+        // Add new cart item to 'cart_items'
+        Capsule::table('cart_items')->insert([
+            'cart_id' => $cart->cart_id,  
+            'product_id' => $productId, 
             'quantity' => 1, 
-            'configoptions' => json_encode($configoptions), 
-            'customfields' => json_encode($customfields)
+            'config_options' => json_encode($configoptions), 
+            'custom_fields' => json_encode($customfields)
         ]);
     } 
 
-    // Get all cart items with configoptions
-    $cartItems = Capsule::table('carts')
-        ->where('id', $cart->id)
+    // Get all cart items with configoptions from 'cart_items'
+    $cartItems = Capsule::table('cart_items')
+        ->where('cart_id', $cart->cart_id)
         ->get();
 
     Capsule::commit();
