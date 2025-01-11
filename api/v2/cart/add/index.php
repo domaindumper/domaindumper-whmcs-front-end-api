@@ -31,7 +31,6 @@ if (empty($productId)) {
     echo json_encode(['status' => 'error', 'message' => 'Product ID is required']);
     exit;
 }
-// Add more validation for $configoptions, $customfields as needed
 
 // 2. Get user ID from token (if provided)
 $userId = null;
@@ -72,10 +71,11 @@ try {
     if (!$cartItem) { 
         // Add new cart item (quantity is always 1)
         Capsule::table('carts')->insert([
+            'id' => $cart->id, // Associate with the cart ID
             'product_id' => $productId,
             'quantity' => 1, 
             'configoptions' => json_encode($configoptions), 
-            'customfields' => json_encode($customfields),   
+            'customfields' => json_encode($customfields)
         ]);
     } 
 
@@ -95,8 +95,6 @@ try {
 
 } catch (Exception $e) {
     Capsule::rollback();
-
     http_response_code(500);
     print_r($e->getMessage()); 
-    // echo json_encode(['status' => 'error', 'message' => 'Failed to add product to cart']); 
 }
