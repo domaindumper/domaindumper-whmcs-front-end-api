@@ -71,8 +71,7 @@ try {
     if (!$cartItem) { 
         // Add new cart item (quantity is always 1)
         Capsule::table('carts')->insert([
-            'id' => $cart->id, // Associate with the cart ID
-            'product_id' => $productId,
+            'product_id' => $productId,  // Removed 'id' => $cart->id
             'quantity' => 1, 
             'configoptions' => json_encode($configoptions), 
             'customfields' => json_encode($customfields)
