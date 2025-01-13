@@ -34,7 +34,6 @@ if (empty($productId)) {
 
 // Check if the product ID exists in tblproducts
 $productExists = Capsule::table('tblproducts')->where('id', $productId)->exists();
-
 if (!$productExists) {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Incorrect product ID']);
@@ -97,6 +96,42 @@ try {
     $cartItems = Capsule::table('cart_items')
         ->where('cart_id', $cart->id)
         ->get();
+
+    // Get product details for each cart item
+    foreach ($cartItems as &$item) {
+        $command = 'GetProducts';
+        $postData = [
+            'pid' => $item->product_id,
+        ];
+        $productDetails = localAPI($command, $postData);
+
+        // Extract product name and pricing details
+        $productName = $productDetails['products']['product'][0]['name'];
+        $pricing = $productDetails['products']['product'][0]['pricing'];
+
+        $price = [];
+        foreach (['INR', 'USD'] as $currency) {
+            if (!empty($pricing[$currency]['monthly'])) {
+                $price[$currency] = [
+                    'amount' => $pricing[$currency]['monthly'],
+                    'type' => 'monthly' 
+                ];
+            } elseif (!empty($pricing[$currency]['annually'])) {
+                $price[$currency] = [
+                    'amount' => $pricing[$currency]['annually'],
+                    'type' => 'annually' 
+                ];
+            } 
+        }
+
+        // Add product details to the cart item
+        $item->productDetails = [
+            'name' => $productName,
+            'price' => $price
+        ];
+    }
+    unset($item); // Unset the reference variable
+
 
     Capsule::commit();
 
