@@ -127,6 +127,8 @@ try {
     }
     unset($item); 
 
+    // Get total product count
+    $totalProducts = count($cartItems); 
 
     Capsule::commit();
 
@@ -134,7 +136,8 @@ try {
     echo json_encode([
         'status' => 'success', 
         'message' => 'Product added to cart',
-        'cartItems' => $cartItems 
+        'cartItems' => $cartItems,
+        'totalProducts' => $totalProducts
     ]);
 
 } catch (Exception $e) {
