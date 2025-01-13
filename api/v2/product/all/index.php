@@ -53,7 +53,7 @@ $Products = [
             'image4.jpg',
         ],
         'slug_page' => '/whois-database/worldwide-whois/',
-        'sku' => '2026-3',
+        'sku' => '2025-3',
         'related' => [1, 4],
     ],
     [
@@ -97,15 +97,15 @@ $Products = [
     ],
     [
         'id' => 7,
-        'title' => 'Domain Backordering',
-        'description_long' => 'Domain Backordering long description...',
-        'description_short' => 'Domain Backordering short description',
+        'title' => 'US WHOIS Database: Daily Updates',
+        'description_long' => 'Stay ahead of the curve with our Daily US WHOIS Database. Get access to the latest domain registration information, including owner details, contact information, and historical records. Our data is accurate, reliable, and updated every day, giving you the insights you need to make informed decisions.',
+        'description_short' => 'Get daily updates on US domain ownership and registration details.',
         'images' => [
             'image3.jpg',
             'image4.jpg',
         ],
-        'slug_page' => '/domain-backordering/',
-        'sku' => '2026',
+        'slug_page' => '/whois-database/whois-by-country/us-whois/',
+        'sku' => '2024-7',
         'related' => [1, 3],
     ],
     [
