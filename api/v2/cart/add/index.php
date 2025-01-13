@@ -32,6 +32,15 @@ if (empty($productId)) {
     exit;
 }
 
+// Check if the product ID exists in tblproducts
+$productExists = Capsule::table('tblproducts')->where('id', $productId)->exists();
+
+if (!$productExists) {
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Incorrect product ID']);
+    exit;
+}
+
 // 2. Get user ID from token (if provided)
 $userId = null;
 if ($authToken) {
