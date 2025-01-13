@@ -162,20 +162,20 @@ $Products = [
     ],
     [
         'id' => 11,
-        'title' => 'Domain Backordering',
-        'description_long' => 'Domain Backordering long description...',
-        'description_short' => 'Domain Backordering short description',
+        'title' => 'Website Detailed Daily Data - Accurate & Fresh',
+        'description_short' => 'Get daily updates on website data, including emails and tech stacks.',
+        'description_long' => 'Our Website Detailed Daily Data provides a wealth of information on over 320,000 websites. This database is updated daily, ensuring you have access to the freshest data available.  We scrape real data from live websites, including email addresses, technology stacks, contact details, social media links, and more. Use this data for lead generation, market research, competitor analysis, and a variety of other business applications.',
         'images' => [
             'image3.jpg',
             'image4.jpg',
         ],
-        'slug_page' => '/domain-backordering/',
+        'slug_page' => '/website-database/daily-website-data/',
         'sku' => '2026',
         'related' => [1, 3],
     ],
     [
         'id' => 12,
-        'title' => 'Domain Backordering',
+        'title' => 'Website Detailed Daily Data - Trial 7 Days',
         'description_long' => 'Domain Backordering long description...',
         'description_short' => 'Domain Backordering short description',
         'images' => [
@@ -188,9 +188,9 @@ $Products = [
     ],
     [
         'id' => 13,
-        'title' => 'Domain Backordering',
-        'description_long' => 'Domain Backordering long description...',
-        'description_short' => 'Domain Backordering short description',
+        'title' => 'India Data - 150 Crore Records - Comprehensive Coverage',
+        'description_short' => 'Access the largest and most comprehensive Pan India Database with 150 crore records.',
+        'description_long' => 'Our Pan India Database is the largest and most comprehensive collection of data on individuals and businesses across India. With 150 crore records, this database provides unparalleled coverage for your research, marketing, and analytical needs.  The data includes demographics, contact information, and other valuable insights.  Empower your business decisions with our Pan India Database.',
         'images' => [
             'image3.jpg',
             'image4.jpg',
