@@ -105,7 +105,7 @@ $Products = [
             'image4.jpg',
         ],
         'slug_page' => '/whois-database/whois-by-country/us-whois/',
-        'sku' => '2024-7',
+        'sku' => '2025-7',
         'related' => [1, 3],
     ],
     [
