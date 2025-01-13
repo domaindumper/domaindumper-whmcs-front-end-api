@@ -149,9 +149,9 @@ $Products = [
     ],
     [
         'id' => 10,
-        'title' => 'Domain Backordering',
-        'description_long' => 'Domain Backordering long description...',
-        'description_short' => 'Domain Backordering short description',
+        'title' => 'Daily Registered Domains with API - No WHOIS',
+        'description_short' => 'Access a daily updated list of new domain names via our API.',
+        'description_long' => 'Streamline your domain research with our Daily Registered Domains API. This API provides access to a freshly updated list of newly registered domain names every 24 hours. Integrate it with your application to automate downloads and seamlessly incorporate the data into your workflows. While it doesn\'t include WHOIS data, it\'s a valuable resource for domain analysis, market research, and identifying potential new competitors.',
         'images' => [
             'image3.jpg',
             'image4.jpg',
