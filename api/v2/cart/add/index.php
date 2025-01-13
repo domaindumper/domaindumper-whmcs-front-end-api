@@ -111,29 +111,16 @@ try {
 
         $price = [];
         foreach (['INR', 'USD'] as $currency) {
-            // Check if monthly price is valid (not '0.00' or '-1.00')
-            if (
-                $pricing[$currency]['monthly'] !== '0.00' && 
-                $pricing[$currency]['monthly'] !== '-1.00'
-            ) {
-                $price[$currency] = [
-                    'amount' => $pricing[$currency]['monthly'],
-                    'type' => 'monthly' 
-                ];
-            } elseif (
-                $pricing[$currency]['annually'] !== '0.00' && 
-                $pricing[$currency]['annually'] !== '-1.00'
-            ) {
-                $price[$currency] = [
-                    'amount' => $pricing[$currency]['annually'],
-                    'type' => 'annually' 
-                ];
-            } 
+            // Include both monthly and annually prices, without the 'type' key
+            $price[$currency] = [
+                'monthly' => $pricing[$currency]['monthly'], 
+                'annually' => $pricing[$currency]['annually']
+            ];
         }
 
         // Add product details to the cart item
         $item->productDetails = [
-            'id' => $item->product_id,
+            'id' => $item->product_id, 
             'name' => $productName,
             'price' => $price
         ];
