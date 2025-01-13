@@ -123,9 +123,9 @@ $Products = [
     ],
     [
         'id' => 8,
-        'title' => 'Domain Backordering',
-        'description_long' => 'Domain Backordering long description...',
-        'description_short' => 'Domain Backordering short description',
+        'title' => 'Australia - Whois Database',
+        'description_short' => 'Access the most up-to-date and comprehensive WHOIS data for Australian domains.',
+        'description_long' => 'Our Australia WHOIS Database provides comprehensive and accurate WHOIS records for millions of domains registered in Australia. This database is updated daily, ensuring you have access to the freshest data available. Use this data for lead generation, market research, competitor analysis, and more.',
         'images' => [
             'image3.jpg',
             'image4.jpg',
@@ -136,14 +136,14 @@ $Products = [
     ],
     [
         'id' => 9,
-        'title' => 'Domain Backordering',
-        'description_long' => 'Domain Backordering long description...',
-        'description_short' => 'Domain Backordering short description',
+        'title' => 'Historical WHOIS Database - Access Past Domain Data',
+        'description_short' => 'Need to research past domain ownership? Download our historical WHOIS database.',
+        'description_long' => 'Step back in time with our Old WHOIS Database. This comprehensive archive allows you to access domain registration data from previous years, going all the way back to 2011. Select the year and month you\'re interested in and download the corresponding WHOIS records. This data is invaluable for historical domain research, investigating ownership changes, and understanding domain trends over time.',
         'images' => [
             'image3.jpg',
             'image4.jpg',
         ],
-        'slug_page' => '/domain-backordering/',
+        'slug_page' => '/whois-database/historical-whois/',
         'sku' => '2026',
         'related' => [1, 3],
     ],
