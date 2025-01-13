@@ -133,6 +133,7 @@ try {
 
         // Add product details to the cart item
         $item->productDetails = [
+            'id' => $item->product_id,
             'name' => $productName,
             'price' => $price
         ];
