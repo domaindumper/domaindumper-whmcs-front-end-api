@@ -3,7 +3,8 @@
 use WHMCS\Mail\Mailer;
 use WHMCS\Mail\Message;
 
-require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
+require_once '../../init.php';
+require_once '../../vendor/whmcs/whmcs-foundation/lib/Mail/Mailer.php';
 
 $email = 'srapsware@gmail.com';
 $subject = 'Your Subject';
