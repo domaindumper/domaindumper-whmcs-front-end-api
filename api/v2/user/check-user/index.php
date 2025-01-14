@@ -38,11 +38,12 @@ try {
         // 1. Generate OTP
         $otp = mt_rand(100000, 999999);
 
-        // 2. Store OTP in email_verification table
-        Capsule::table('email_verification')->insert([
-            'email' => $email,
-            'otp' => $otp
-        ]);
+        // 2. Insert or update OTP in email_verification table
+        Capsule::table('email_verification')
+            ->updateOrInsert(
+                ['email' => $email], // Where clause (find by email)
+                ['otp' => $otp, 'updated_at' => Capsule::raw('CURRENT_TIMESTAMP')] // Update or insert data
+            );
 
         // 3. Send OTP email using localAPI
         $signature = Capsule::table('tblconfiguration')
