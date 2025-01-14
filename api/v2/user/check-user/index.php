@@ -53,6 +53,7 @@ try {
         $postData = [
             'messagename' => 'OTP Verification',
             'customtype' => 'general',
+            'id' => 504,
             'customsubject' => 'OTP Verification',
             'email' => $email,
             'custommessage' => "Your OTP for verification is: " . $otp . "\n\n---\n" . $signature->value,
