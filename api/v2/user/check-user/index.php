@@ -32,8 +32,41 @@ if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 try {
     $exists = Capsule::table('tblclients')->where('email', $email)->exists(); 
 
+    if (!$exists) {
+        // User does not exist, send OTP email
+
+        // 1. Generate OTP
+        $otp = mt_rand(100000, 999999);
+
+        // 2. Store OTP in email_verification table
+        Capsule::table('email_verification')->insert([
+            'email' => $email,
+            'otp' => $otp
+        ]);
+
+        // 3. Send OTP email using localAPI
+        $signature = Capsule::table('tblconfiguration')
+            ->where('setting', 'Signature')
+            ->first();
+
+        $command = 'SendEmail';
+        $postData = [
+            'messagename' => 'OTP Verification',
+            'customtype' => 'general',
+            'customsubject' => 'OTP Verification',
+            'email' => $email,
+            'custommessage' => "Your OTP for verification is: " . $otp . "\n\n---\n" . $signature->value,
+        ];
+
+        $results = localAPI($command, $postData);
+
+        if ($results['result'] !== 'success') {
+            // Handle email sending error (e.g., log the error)
+        }
+    }
+
     http_response_code(200);
-    echo json_encode(['exists' => $exists]); // Return the boolean value directly
+    echo json_encode(['exists' => $exists]); 
 
 } catch (Exception $e) {
     http_response_code(500);
