@@ -23,12 +23,35 @@ $Products = [
         ],
         'slug_page' => '/whois-database/whois-by-country/india-whois/',
         'sku' => 'DB-WHOIS-IN-01',
+        'mpn' => 'DB-WHOIS-IN-01-ID',
         'related' => [2, 3, 4],
         'col' => 'col-lg-6',
         'tags' => [
             ['title' => 'Daily Website Data', 'slug' => '/website-database/daily-website-data/'],
             ['title' => 'Historical Website Data', 'slug' => '/website-database/historical-website-data/']
         ],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/', // Link to your return policy page
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 2,
@@ -42,6 +65,10 @@ $Products = [
         'slug_page' => '/domain-name-list/new-domains/',
         'sku' => 'DB-DOM-GLB-02',
         'related' => [4],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 3,
@@ -55,6 +82,10 @@ $Products = [
         'slug_page' => '/whois-database/worldwide-whois/',
         'sku' => 'DB-WHOIS-GLB-03',
         'related' => [1, 4],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 4,
@@ -68,6 +99,10 @@ $Products = [
         'slug_page' => '/domain-name-list/all-domains/',
         'sku' => 'DB-DOM-GLB-04',
         'related' => [2],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 5,
@@ -81,6 +116,10 @@ $Products = [
         'slug_page' => '/website-database/historical-website-data/',
         'sku' => 'DB-WEB-GLB-05',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 6,
@@ -94,6 +133,10 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-WHOIS-GLB-06',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 7,
@@ -107,6 +150,10 @@ $Products = [
         'slug_page' => '/whois-database/whois-by-country/us-whois/',
         'sku' => 'DB-WHOIS-US-07',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 8,
@@ -120,6 +167,10 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-WHOIS-AU-08',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 9,
@@ -133,6 +184,10 @@ $Products = [
         'slug_page' => '/whois-database/historical-whois/',
         'sku' => 'DB-WHOIS-OLD-09',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 10,
@@ -146,6 +201,10 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-DOM-GLB-10',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 11,
@@ -159,6 +218,10 @@ $Products = [
         'slug_page' => '/website-database/daily-website-data/',
         'sku' => 'DB-WEB-GLB-11',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 12,
@@ -172,6 +235,10 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-WEB-GLB-12',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
     [
         'id' => 13,
@@ -185,6 +252,10 @@ $Products = [
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-ALL-IN-13',
         'related' => [1, 3],
+        'google_product_category' => 'Software > Business & Productivity Software',
+        'condition' => 'new',
+        'availability' => 'in stock',
+        'downloadable' => 'yes',
     ],
 ];
 
@@ -193,11 +264,11 @@ $customProductIds = array_column($Products, 'id');
 
 // Get requested product ID (prioritize POST)
 $data = json_decode(file_get_contents('php://input'), true);
-$requestedProductId = isset($data['pid']) ? (int)$data['pid'] : null;
+$requestedProductId = isset($data['pid']) ? (int) $data['pid'] : null;
 
 // Fallback to GET/REQUEST if not in POST
 if ($requestedProductId === null) {
-    $requestedProductId = isset($_REQUEST['pid']) ? (int)$_REQUEST['pid'] : null;
+    $requestedProductId = isset($_REQUEST['pid']) ? (int) $_REQUEST['pid'] : null;
 }
 
 // Determine API product IDs based on request
@@ -235,8 +306,8 @@ $apiProducts = $results['products']['product'];
 $mergedProducts = [];
 
 foreach ($apiProducts as $apiProduct) {
-    $productId = (int)$apiProduct['pid'];
-    $customProduct = array_filter($Products, fn($p) => (int)$p['id'] === $productId);
+    $productId = (int) $apiProduct['pid'];
+    $customProduct = array_filter($Products, fn($p) => (int) $p['id'] === $productId);
     $mergedProduct = !empty($customProduct) ? array_merge($apiProduct, reset($customProduct)) : $apiProduct;
 
     // Remove unwanted keys
