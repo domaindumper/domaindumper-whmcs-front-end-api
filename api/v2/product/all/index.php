@@ -50,7 +50,7 @@ $Products = [
             'support' => 'Email and chat support'
         ],
         'delivery_method' => 'digital download',
-        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/', // Link to your return policy page
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
         'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
@@ -64,11 +64,30 @@ $Products = [
         ],
         'slug_page' => '/domain-name-list/new-domains/',
         'sku' => 'DB-DOM-GLB-02',
+        'mpn' => 'DB-DOM-GLB-02-ID',
         'related' => [4],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 3,
@@ -81,11 +100,30 @@ $Products = [
         ],
         'slug_page' => '/whois-database/worldwide-whois/',
         'sku' => 'DB-WHOIS-GLB-03',
+        'mpn' => 'DB-WHOIS-GLB-03-ID',
         'related' => [1, 4],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 4,
@@ -98,11 +136,30 @@ $Products = [
         ],
         'slug_page' => '/domain-name-list/all-domains/',
         'sku' => 'DB-DOM-GLB-04',
+        'mpn' => 'DB-DOM-GLB-04-ID',
         'related' => [2],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 5,
@@ -115,11 +172,30 @@ $Products = [
         ],
         'slug_page' => '/website-database/historical-website-data/',
         'sku' => 'DB-WEB-GLB-05',
+        'mpn' => 'DB-WEB-GLB-05-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 6,
@@ -132,11 +208,30 @@ $Products = [
         ],
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-WHOIS-GLB-06',
+        'mpn' => 'DB-WHOIS-GLB-06-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 7,
@@ -149,11 +244,30 @@ $Products = [
         ],
         'slug_page' => '/whois-database/whois-by-country/us-whois/',
         'sku' => 'DB-WHOIS-US-07',
+        'mpn' => 'DB-WHOIS-US-07-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 8,
@@ -166,11 +280,30 @@ $Products = [
         ],
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-WHOIS-AU-08',
+        'mpn' => 'DB-WHOIS-AU-08-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 9,
@@ -183,11 +316,30 @@ $Products = [
         ],
         'slug_page' => '/whois-database/historical-whois/',
         'sku' => 'DB-WHOIS-OLD-09',
+        'mpn' => 'DB-WHOIS-OLD-09-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 10,
@@ -200,11 +352,30 @@ $Products = [
         ],
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-DOM-GLB-10',
+        'mpn' => 'DB-DOM-GLB-10-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 11,
@@ -217,11 +388,30 @@ $Products = [
         ],
         'slug_page' => '/website-database/daily-website-data/',
         'sku' => 'DB-WEB-GLB-11',
+        'mpn' => 'DB-WEB-GLB-11-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 12,
@@ -234,11 +424,30 @@ $Products = [
         ],
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-WEB-GLB-12',
+        'mpn' => 'DB-WEB-GLB-12-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
     [
         'id' => 13,
@@ -251,11 +460,30 @@ $Products = [
         ],
         'slug_page' => '/domain-backordering/',
         'sku' => 'DB-ALL-IN-13',
+        'mpn' => 'DB-ALL-IN-13-ID',
         'related' => [1, 3],
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
         'downloadable' => 'yes',
+        'brand' => 'Whoisextractor',
+        'identifier_exists' => 'yes',
+        'product_type' => 'Database',
+        'features' => [
+            'Real-time WHOIS lookups',
+            'Historical WHOIS records',
+            'Bulk domain analysis',
+            'Domain ownership identification',
+            'Domain expiry monitoring'
+        ],
+        'api_details' => [
+            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
+            'request_limit' => '500 requests/month',
+            'support' => 'Email and chat support'
+        ],
+        'delivery_method' => 'digital download',
+        'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
+        'terms_of_service' => 'https://www.whoisextractor.com/tos/terms-and-conditions/'
     ],
 ];
 
