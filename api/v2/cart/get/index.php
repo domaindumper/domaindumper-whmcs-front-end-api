@@ -97,7 +97,28 @@ try {
             $item->config_options !== null && 
             $item->config_options !== ''
         ) {
-            $item->productDetails['config_options'] = json_decode($item->config_options, true);
+            $configOptions = json_decode($item->config_options, true);
+            $decodedConfigOptions = []; // Array to store decoded config options
+
+            foreach ($configOptions['configoption'] as $optionId => $subOptionId) {
+                // Get the option name from tblproductconfigoptions
+                $optionName = Capsule::table('tblproductconfigoptions')
+                    ->where('id', $optionId)
+                    ->value('optionname');
+
+                // Get the sub-option name (real value) from tblproductconfigoptionssub
+                $subOptionName = Capsule::table('tblproductconfigoptionssub')
+                    ->where('id', $subOptionId)
+                    ->value('optionname');
+
+                // Add the decoded config option to the array
+                $decodedConfigOptions[] = [
+                    'name' => $optionName,
+                    'value' => $subOptionName
+                ];
+            }
+
+            $item->productDetails['config_options'] = $decodedConfigOptions;
         }
     }
     unset($item);
