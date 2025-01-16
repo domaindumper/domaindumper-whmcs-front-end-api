@@ -9,7 +9,7 @@ define('CLIENTAREA', true);
 require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/v2/product/products.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/v2/product/products.php'; 
 
 $ca = new ClientArea();
 
@@ -112,17 +112,26 @@ try {
 
         $price = [];
         foreach (['INR', 'USD'] as $currency) {
-            // Include both monthly and annually prices, without the 'type' key
             $price[$currency] = [
-                'monthly' => $pricing[$currency]['monthly'], 
+                'monthly' => $pricing[$currency]['monthly'],
                 'annually' => $pricing[$currency]['annually']
             ];
+        }
+
+        // Get product image from $Products array
+        $productImage = '';
+        foreach ($Products as $product) {
+            if ($product['id'] == $item->product_id) {
+                $productImage = $product['images'][0]; 
+                break;
+            }
         }
 
         // Add product details to the cart item
         $item->productDetails = [
             'id' => $item->product_id, 
             'name' => $productName,
+            'image' => $productImage, 
             'price' => $price
         ];
     }
