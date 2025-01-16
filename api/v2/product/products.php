@@ -1,5 +1,9 @@
 <?php 
+
+//api/v2/product/products.php
+
 // Custom Products array (populate with your actual data)
+
 $Products = [
     [
         'id' => 1,
