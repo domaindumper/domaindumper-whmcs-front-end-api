@@ -72,9 +72,19 @@ try {
             ];
         }
 
+        // Get product image from $Products array
+        $productImage = '';
+        foreach ($Products as $product) {
+            if ($product['id'] == $item->product_id) {
+                $productImage = $product['images'][0];
+                break;
+            }
+        }
+
         $item->productDetails = [
             'id' => $item->product_id,
             'name' => $productName,
+            'image' => $productImage,
             'price' => $price
         ];
     }
