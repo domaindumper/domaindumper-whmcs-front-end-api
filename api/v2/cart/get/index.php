@@ -90,6 +90,11 @@ try {
             'image' => $productImage,
             'price' => $price
         ];
+
+        // Add config_options if they exist
+        if (!empty($item->config_options)) {
+            $item->productDetails['config_options'] = json_decode($item->config_options, true); 
+        }
     }
     unset($item);
 
