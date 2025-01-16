@@ -120,9 +120,11 @@ try {
 
         // Get product image from $Products array
         $productImage = '';
+        $productSKU = '';
         foreach ($Products as $product) {
             if ($product['id'] == $item->product_id) {
                 $productImage = $product['images'][0]; 
+                $productSKU = $product['sku'];
                 break;
             }
         }
@@ -131,6 +133,7 @@ try {
         $item->productDetails = [
             'id' => $item->product_id, 
             'name' => $productName,
+            'sku' => $productSKU,
             'image' => $productImage, 
             'price' => $price
         ];
