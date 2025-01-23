@@ -62,7 +62,7 @@ try {
 
     // Remove the cart item from cart_items table
     $deleted = Capsule::table('cart_items')
-        ->where('cart_item_id', $productId) // Use $productId here
+        ->where('id', $productId) // Use $productId here
         ->where('cart_id', $cart->id)
         ->delete();
 
