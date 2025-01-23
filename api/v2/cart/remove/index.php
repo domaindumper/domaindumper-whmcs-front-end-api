@@ -13,7 +13,9 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 $ca = new ClientArea();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    // ... (handle invalid request method)
+    http_response_code(405);
+    echo json_encode(['status' => 'error', 'message' => 'Method Not Allowed']);
+    exit;
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
@@ -23,7 +25,9 @@ $sessionId = $data['sessionId'] ?? null;
 
 // 1. Validate input data
 if (empty($cartItemId)) {
-    // ... (return error: cart item ID is required)
+    http_response_code(400);
+    echo json_encode(['status' => 'error', 'message' => 'Cart item ID is required']);
+    exit;
 }
 
 // 2. Get user ID from token (if provided)
@@ -39,18 +43,24 @@ try {
     // Find the cart
     $cart = Capsule::table('carts')
         ->where(function ($query) use ($userId, $sessionId) {
-            // ... (find cart by user_id or session_id)
+            if ($userId) {
+                $query->where('user_id', $userId);
+            } else {
+                $query->where('session_id', $sessionId);
+            }
         })
         ->first();
 
     if (!$cart) {
-        // ... (return error: cart not found)
+        http_response_code(404); 
+        echo json_encode(['status' => 'error', 'message' => 'Cart not found']);
+        exit;
     }
 
     // Remove the cart item from cart_items table
     $deleted = Capsule::table('cart_items')
-        ->where('cart_item_id', $cartItemId) 
-        ->where('cart_id', $cart->id) // Ensure the item belongs to the cart
+        ->where('cart_item_id', $cartItemId)
+        ->where('cart_id', $cart->id)
         ->delete();
 
     if ($deleted) {
@@ -61,11 +71,17 @@ try {
 
         Capsule::commit();
 
-        // ... (return success response)
+        // Return a success response
+        http_response_code(200);
+        echo json_encode(['status' => 'success', 'message' => 'Item removed from cart']); 
     } else {
-        // ... (return error: failed to remove item)
+        Capsule::rollback();
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'Failed to remove item from cart']);
     }
 
 } catch (Exception $e) {
-    // ... (handle error)
+    Capsule::rollback();
+    http_response_code(500);
+    print_r($e->getMessage());
 }
