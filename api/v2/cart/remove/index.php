@@ -20,14 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
-$cartItemId = $data['cartItemId'] ?? null;
+$productId = $data['productId'] ?? null; // Changed from $cartItemId
+$configoptions = $data['configoptions'] ?? null; 
+$customfields = $data['customfields'] ?? null;
 $authToken = $data['authToken'] ?? null;
 $sessionId = $data['sessionId'] ?? null;
 
 // 1. Validate input data
-if (empty($cartItemId)) {
+if (empty($productId)) {
     http_response_code(400);
-    echo json_encode(['status' => 'error', 'message' => 'Cart item ID is required']);
+    echo json_encode(['status' => 'error', 'message' => 'Product ID is required']); // Changed error message
     exit;
 }
 
@@ -60,7 +62,7 @@ try {
 
     // Remove the cart item from cart_items table
     $deleted = Capsule::table('cart_items')
-        ->where('cart_item_id', $cartItemId)
+        ->where('cart_item_id', $productId) // Use $productId here
         ->where('cart_id', $cart->id)
         ->delete();
 
@@ -95,19 +97,22 @@ try {
                 ];
             }
 
-            // Get product image from $Products array
+            // Get product image and SKU from $Products array
             $productImage = '';
+            $productSKU = '';
             foreach ($Products as $product) {
                 if ($product['id'] == $item->product_id) {
-                    $productImage = $product['images'][0];
+                    $productImage = $product['images'][0]; 
+                    $productSKU = $product['sku']; 
                     break;
                 }
             }
 
             $item->productDetails = [
-                'id' => $item->product_id,
+                'id' => $item->product_id, 
                 'name' => $productName,
-                'image' => $productImage,
+                'sku' => $productSKU,
+                'image' => $productImage, 
                 'price' => $price
             ];
 
@@ -154,9 +159,9 @@ try {
             'totalProducts' => $totalProducts
         ]); 
     } else {
-        Capsule::rollback();
-        http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Failed to remove item from cart']);
+        // Return the specific error message
+        http_response_code(400); 
+        echo json_encode(['status' => 'error', 'message' => 'Cart item ID is required']); 
     }
 
 } catch (Exception $e) {
