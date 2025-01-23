@@ -9,6 +9,7 @@ define('CLIENTAREA', true);
 require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/v2/product/products.php'; 
 
 $ca = new ClientArea();
 
@@ -69,11 +70,89 @@ try {
             ->where('id', $cart->id)
             ->update(['updated_at' => Capsule::raw('CURRENT_TIMESTAMP')]);
 
+        // Get all cart items with configoptions from 'cart_items'
+        $cartItems = Capsule::table('cart_items')
+            ->where('cart_id', $cart->id)
+            ->get();
+
+        // Get product details for each cart item
+        foreach ($cartItems as &$item) {
+            $command = 'GetProducts';
+            $postData = [
+                'pid' => $item->product_id,
+            ];
+            $productDetails = localAPI($command, $postData);
+
+            // Extract product name and pricing details
+            $productName = $productDetails['products']['product'][0]['name'];
+            $pricing = $productDetails['products']['product'][0]['pricing'];
+
+            $price = [];
+            foreach (['INR', 'USD'] as $currency) {
+                $price[$currency] = [
+                    'monthly' => $pricing[$currency]['monthly'],
+                    'annually' => $pricing[$currency]['annually']
+                ];
+            }
+
+            // Get product image from $Products array
+            $productImage = '';
+            foreach ($Products as $product) {
+                if ($product['id'] == $item->product_id) {
+                    $productImage = $product['images'][0];
+                    break;
+                }
+            }
+
+            $item->productDetails = [
+                'id' => $item->product_id,
+                'name' => $productName,
+                'image' => $productImage,
+                'price' => $price
+            ];
+
+            // Add config_options if they exist
+            if (
+                !empty($item->config_options) && 
+                $item->config_options !== null && 
+                $item->config_options !== ''
+            ) {
+                $configOptions = json_decode($item->config_options, true);
+                $decodedConfigOptions = [];
+
+                foreach ($configOptions['configoption'] as $optionId => $subOptionId) {
+                    $optionName = Capsule::table('tblproductconfigoptions')
+                        ->where('id', $optionId)
+                        ->value('optionname');
+
+                    $subOptionName = Capsule::table('tblproductconfigoptionssub')
+                        ->where('id', $subOptionId)
+                        ->value('optionname');
+
+                    $decodedConfigOptions[] = [
+                        'name' => $optionName,
+                        'value' => $subOptionName
+                    ];
+                }
+
+                $item->productDetails['config_options'] = $decodedConfigOptions;
+            }
+        }
+        unset($item);
+
+        // Get total product count
+        $totalProducts = count($cartItems);
+
         Capsule::commit();
 
-        // Return a success response
+        // Return a success response with cart items and totalProducts
         http_response_code(200);
-        echo json_encode(['status' => 'success', 'message' => 'Item removed from cart']); 
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'Item removed from cart',
+            'cartItems' => $cartItems,
+            'totalProducts' => $totalProducts
+        ]); 
     } else {
         Capsule::rollback();
         http_response_code(500);
