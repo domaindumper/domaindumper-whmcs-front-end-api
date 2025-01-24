@@ -185,7 +185,7 @@ try {
 
         http_response_code(200); 
         echo json_encode([
-            'status' => 'info', 
+            'status' => 'success', 
             'message' => 'Product is already in the cart', 
             'cartItems' => $cartItems, 
             'totalProducts' => $totalProducts 
