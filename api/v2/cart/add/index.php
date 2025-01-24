@@ -86,104 +86,104 @@ try {
             'config_options' => json_encode($configoptions), 
             'custom_fields' => json_encode($customfields)
         ]);
+    } 
 
-        // Update updated_at in the 'carts' table
-        Capsule::table('carts')
-            ->where('id', $cart->id)
-            ->update(['updated_at' => Capsule::raw('CURRENT_TIMESTAMP')]); 
+    // Update updated_at in the 'carts' table
+    Capsule::table('carts')
+        ->where('id', $cart->id)
+        ->update(['updated_at' => Capsule::raw('CURRENT_TIMESTAMP')]); 
 
-        // Get all cart items with configoptions from 'cart_items'
-        $cartItems = Capsule::table('cart_items')
-            ->where('cart_id', $cart->id)
-            ->get();
+    // Get all cart items with configoptions from 'cart_items'
+    $cartItems = Capsule::table('cart_items')
+        ->where('cart_id', $cart->id)
+        ->get();
 
-        // Get product details for each cart item
-        foreach ($cartItems as &$item) {
-            $command = 'GetProducts';
-            $postData = [
-                'pid' => $item->product_id,
+    // Get product details for each cart item
+    foreach ($cartItems as &$item) {
+        $command = 'GetProducts';
+        $postData = [
+            'pid' => $item->product_id,
+        ];
+        $productDetails = localAPI($command, $postData);
+
+        // Extract product name and pricing details
+        $productName = $productDetails['products']['product'][0]['name'];
+        $pricing = $productDetails['products']['product'][0]['pricing'];
+
+        $price = [];
+        foreach (['INR', 'USD'] as $currency) {
+            $price[$currency] = [
+                'monthly' => $pricing[$currency]['monthly'],
+                'annually' => $pricing[$currency]['annually']
             ];
-            $productDetails = localAPI($command, $postData);
+        }
 
-            // Extract product name and pricing details
-            $productName = $productDetails['products']['product'][0]['name'];
-            $pricing = $productDetails['products']['product'][0]['pricing'];
+        // Get product image and SKU from $Products array
+        $productImage = '';
+        $productSKU = '';
+        foreach ($Products as $product) {
+            if ($product['id'] == $item->product_id) {
+                $productImage = $product['images'][0]; 
+                $productSKU = $product['sku'];
+                break;
+            }
+        }
 
-            $price = [];
-            foreach (['INR', 'USD'] as $currency) {
-                $price[$currency] = [
-                    'monthly' => $pricing[$currency]['monthly'],
-                    'annually' => $pricing[$currency]['annually']
+        // Add product details to the cart item
+        $item->productDetails = [
+            'id' => $item->product_id, 
+            'name' => $productName,
+            'sku' => $productSKU,
+            'image' => $productImage, 
+            'price' => $price
+        ];
+
+        // Add config_options if they exist
+        if (
+            !empty($item->config_options) && 
+            $item->config_options !== null && 
+            $item->config_options !== ''
+        ) {
+            $configOptions = json_decode($item->config_options, true);
+            $decodedConfigOptions = [];
+
+            foreach ($configOptions['configoption'] as $optionId => $subOptionId) {
+                $optionName = Capsule::table('tblproductconfigoptions')
+                    ->where('id', $optionId)
+                    ->value('optionname');
+
+                $subOptionName = Capsule::table('tblproductconfigoptionssub')
+                    ->where('id', $subOptionId)
+                    ->value('optionname');
+
+                $decodedConfigOptions[] = [
+                    'name' => $optionName,
+                    'value' => $subOptionName
                 ];
             }
 
-            // Get product image and SKU from $Products array
-            $productImage = '';
-            $productSKU = '';
-            foreach ($Products as $product) {
-                if ($product['id'] == $item->product_id) {
-                    $productImage = $product['images'][0]; 
-                    $productSKU = $product['sku'];
-                    break;
-                }
-            }
-
-            // Add product details to the cart item
-            $item->productDetails = [
-                'id' => $item->product_id, 
-                'name' => $productName,
-                'sku' => $productSKU,
-                'image' => $productImage, 
-                'price' => $price
-            ];
-
-            // Add config_options if they exist
-            if (
-                !empty($item->config_options) && 
-                $item->config_options !== null && 
-                $item->config_options !== ''
-            ) {
-                $configOptions = json_decode($item->config_options, true);
-                $decodedConfigOptions = [];
-
-                foreach ($configOptions['configoption'] as $optionId => $subOptionId) {
-                    $optionName = Capsule::table('tblproductconfigoptions')
-                        ->where('id', $optionId)
-                        ->value('optionname');
-
-                    $subOptionName = Capsule::table('tblproductconfigoptionssub')
-                        ->where('id', $subOptionId)
-                        ->value('optionname');
-
-                    $decodedConfigOptions[] = [
-                        'name' => $optionName,
-                        'value' => $subOptionName
-                    ];
-                }
-
-                $item->productDetails['config_options'] = $decodedConfigOptions;
-            }
+            $item->productDetails['config_options'] = $decodedConfigOptions;
         }
-        unset($item);
+    }
+    unset($item);
 
-        // Get total product count
-        $totalProducts = count($cartItems); 
+    // Get total product count
+    $totalProducts = count($cartItems); 
 
-        Capsule::commit();
+    Capsule::commit();
 
-        http_response_code(200);
+    http_response_code(200);
+
+    if (!$cartItem) {
+        // New item added
         echo json_encode([
             'status' => 'success', 
             'message' => 'Product added to cart',
             'cartItems' => $cartItems,
             'totalProducts' => $totalProducts
         ]);
-
     } else {
-        // Item already in cart, return a message
-        Capsule::commit(); 
-
-        http_response_code(200); 
+        // Item already in cart
         echo json_encode([
             'status' => 'success', 
             'message' => 'Product is already in the cart', 
