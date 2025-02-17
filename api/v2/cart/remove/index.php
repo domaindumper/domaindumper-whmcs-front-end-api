@@ -173,10 +173,16 @@ try {
 
         // Calculate GST (inclusive) and total for each currency
         foreach ($totals as &$currencyTotal) {
-            // For inclusive GST, we calculate backwards from the subtotal
             $subtotal = $currencyTotal['subtotal'];
-            $currencyTotal['gst'] = round($subtotal - ($subtotal / 1.18), 2); // Extract 18% GST from subtotal
-            $currencyTotal['total'] = $subtotal; // Total equals subtotal for inclusive GST
+            
+            // Apply GST only for INR currency
+            if ($currency === 'INR') {
+                $currencyTotal['gst'] = round($subtotal - ($subtotal / 1.18), 2); // Extract 18% GST from subtotal
+            } else {
+                $currencyTotal['gst'] = 0; // No GST for USD
+            }
+            
+            $currencyTotal['total'] = $subtotal; // Total equals subtotal (inclusive GST for INR)
             
             // Format numbers to 2 decimal places
             $currencyTotal['subtotal'] = number_format($subtotal, 2, '.', '');

@@ -163,12 +163,18 @@ try {
     // Get total product count
     $totalProducts = count($cartItems);
 
-    // Calculate GST and total for each currency
-    foreach ($totals as &$currencyTotal) {
+    // Replace the GST calculation section with:
+    foreach ($totals as $currency => &$currencyTotal) {
         $subtotal = $currencyTotal['subtotal'];
-        // For inclusive GST, we calculate backwards from the subtotal (18% GST)
-        $currencyTotal['gst'] = round($subtotal - ($subtotal / 1.18), 2);
-        $currencyTotal['total'] = $subtotal; // Total equals subtotal for inclusive GST
+        
+        // Apply GST only for INR currency
+        if ($currency === 'INR') {
+            $currencyTotal['gst'] = round($subtotal - ($subtotal / 1.18), 2); // Extract 18% GST from subtotal
+        } else {
+            $currencyTotal['gst'] = 0; // No GST for USD
+        }
+        
+        $currencyTotal['total'] = $subtotal; // Total equals subtotal (inclusive GST for INR)
         
         // Format numbers to 2 decimal places
         $currencyTotal['subtotal'] = number_format($subtotal, 2, '.', '');
