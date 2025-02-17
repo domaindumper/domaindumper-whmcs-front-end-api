@@ -185,7 +185,7 @@ try {
     } else {
         // Item already in cart
         echo json_encode([
-            'status' => 'success', 
+            'status' => 'exists', 
             'message' => 'Product is already in the cart', 
             'cartItems' => $cartItems, 
             'totalProducts' => $totalProducts 
