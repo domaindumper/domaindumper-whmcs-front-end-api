@@ -20,13 +20,17 @@ try {
         ->get();
 
     $formattedData = [];
+    $totalDataCount = 0;
     foreach ($oldDatabase as $record) {
+        $currentCount = is_numeric($record->data_count) ? (float)$record->data_count : 0;
+        $totalDataCount += $currentCount;
+        
         $formattedData[] = [
             'id' => $record->id,
             'period' => getConfigurableOptionName($record->month) . '-' . getConfigurableOptionName($record->year),
             'year' => $record->year,
             'month' => $record->month,
-            'dataCount' => is_numeric($record->data_count) ? number_format((float)$record->data_count) : '0',
+            'dataCount' => is_numeric($record->data_count) ? number_format($currentCount) : '0',
             'size' => $record->size,
             'productId' => 9
         ];
@@ -36,7 +40,8 @@ try {
         'status' => 'success',
         'code' => 200,
         'data' => $formattedData,
-        'total' => count($formattedData)
+        'total' => count($formattedData),
+        'totalDataCount' => number_format($totalDataCount)
     ];
 
 } catch (Exception $e) {
