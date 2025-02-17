@@ -27,7 +27,7 @@ try {
             'year' => $record->year,
             'month' => $record->month,
             'monthName' => getConfigurableOptionName($record->month),
-            'dataCount' => number_format((float)$record->data_count), // Cast to float
+            'dataCount' => is_numeric($record->data_count) ? number_format((float)$record->data_count) : '0',
             'size' => $record->size,
             'productId' => 9
         ];
@@ -59,23 +59,19 @@ http_response_code($responseCode);
 echo json_encode($response, JSON_PRETTY_PRINT);
 
 /**
- * Helper function to get month name
+ * Helper function to get configurable option name from database
+ * @param int $id The option ID to look up
+ * @return string The option name
  */
-function getConfigurableOptionName($month) {
-    $months = [
-        '01' => 'January',
-        '02' => 'February',
-        '03' => 'March',
-        '04' => 'April',
-        '05' => 'May',
-        '06' => 'June',
-        '07' => 'July',
-        '08' => 'August',
-        '09' => 'September',
-        '10' => 'October',
-        '11' => 'November',
-        '12' => 'December'
-    ];
-    
-    return isset($months[$month]) ? $months[$month] : $month;
+function getConfigurableOptionName($id) {
+    try {
+        $product = Illuminate\Database\Capsule\Manager::table("tblproductconfigoptionssub")
+            ->where('id', $id)
+            ->first();
+            
+        return $product ? $product->optionname : '';
+    } catch (Exception $e) {
+        // Return empty string or ID if query fails
+        return '';
+    }
 }
