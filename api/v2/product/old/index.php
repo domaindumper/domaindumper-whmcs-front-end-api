@@ -26,7 +26,6 @@ try {
             'period' => getConfigurableOptionName($record->month) . '-' . getConfigurableOptionName($record->year),
             'year' => $record->year,
             'month' => $record->month,
-            'monthName' => getConfigurableOptionName($record->month),
             'dataCount' => is_numeric($record->data_count) ? number_format((float)$record->data_count) : '0',
             'size' => $record->size,
             'productId' => 9
