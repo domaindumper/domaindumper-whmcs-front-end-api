@@ -53,6 +53,20 @@ try {
         ->where('cart_id', $cart->id)
         ->get();
 
+    // Initialize totals array
+    $totals = [
+        'INR' => [
+            'subtotal' => 0,
+            'gst' => 0,
+            'total' => 0
+        ],
+        'USD' => [
+            'subtotal' => 0,
+            'gst' => 0,
+            'total' => 0
+        ]
+    ];
+
     foreach ($cartItems as &$item) {
         $command = 'GetProducts';
         $postData = [
@@ -120,19 +134,39 @@ try {
 
             $item->productDetails['config_options'] = $decodedConfigOptions;
         }
+
+        // Calculate totals for each currency
+        foreach (['INR', 'USD'] as $currency) {
+            // Assuming monthly price is being used - modify if using different billing cycle
+            $price = (float)$price[$currency]['monthly'];
+            $totals[$currency]['subtotal'] += $price;
+        }
     }
     unset($item);
 
     // Get total product count
     $totalProducts = count($cartItems);
 
+    // Calculate GST and total for each currency
+    foreach ($totals as &$currencyTotal) {
+        $currencyTotal['gst'] = round($currencyTotal['subtotal'] * 0.18, 2); // 18% GST
+        $currencyTotal['total'] = $currencyTotal['subtotal'] + $currencyTotal['gst'];
+        
+        // Format numbers to 2 decimal places
+        $currencyTotal['subtotal'] = number_format($currencyTotal['subtotal'], 2, '.', '');
+        $currencyTotal['gst'] = number_format($currencyTotal['gst'], 2, '.', '');
+        $currencyTotal['total'] = number_format($currencyTotal['total'], 2, '.', '');
+    }
+    unset($currencyTotal);
+
     http_response_code(200);
     echo json_encode([
         'status' => 'success',
         'message' => 'Cart details retrieved', 
         'cartItems' => $cartItems,
-        'totalProducts' => $totalProducts
-    ]);
+        'totalProducts' => $totalProducts,
+        'totals' => $totals
+    ], JSON_PRETTY_PRINT);
 
 } catch (Exception $e) {
     http_response_code(500);
