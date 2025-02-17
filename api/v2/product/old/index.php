@@ -6,6 +6,7 @@ define('CLIENTAREA', true);
 
 require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
 
 $ca = new ClientArea();
 $responseCode = 200;
