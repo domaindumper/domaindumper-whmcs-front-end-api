@@ -149,23 +149,39 @@ try {
         $totalProducts = count($cartItems);
 
         // Calculate totals for each currency
-        $totals = [];
-        foreach (['INR', 'USD'] as $currency) {
-            $monthlyTotal = 0;
-            $annuallyTotal = 0;
+        $totals = [
+            'INR' => [
+                'subtotal' => 0,
+                'gst' => 0,
+                'total' => 0
+            ],
+            'USD' => [
+                'subtotal' => 0,
+                'gst' => 0,
+                'total' => 0
+            ]
+        ];
 
-            foreach ($cartItems as $item) {
+        foreach ($cartItems as $item) {
+            foreach (['INR', 'USD'] as $currency) {
                 if (isset($item->productDetails['price'][$currency])) {
-                    $monthlyTotal += floatval($item->productDetails['price'][$currency]['monthly']);
-                    $annuallyTotal += floatval($item->productDetails['price'][$currency]['annually']);
+                    $monthlyPrice = floatval($item->productDetails['price'][$currency]['monthly']);
+                    $totals[$currency]['subtotal'] += $monthlyPrice;
                 }
             }
-
-            $totals[$currency] = [
-                'monthly' => number_format($monthlyTotal, 2, '.', ''),
-                'annually' => number_format($annuallyTotal, 2, '.', '')
-            ];
         }
+
+        // Calculate GST and total for each currency
+        foreach ($totals as &$currencyTotal) {
+            $currencyTotal['gst'] = round($currencyTotal['subtotal'] * 0.18, 2); // 18% GST
+            $currencyTotal['total'] = $currencyTotal['subtotal'] + $currencyTotal['gst'];
+            
+            // Format numbers to 2 decimal places
+            $currencyTotal['subtotal'] = number_format($currencyTotal['subtotal'], 2, '.', '');
+            $currencyTotal['gst'] = number_format($currencyTotal['gst'], 2, '.', '');
+            $currencyTotal['total'] = number_format($currencyTotal['total'], 2, '.', '');
+        }
+        unset($currencyTotal);
 
         Capsule::commit();
 
