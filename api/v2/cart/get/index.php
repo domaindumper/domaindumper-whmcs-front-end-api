@@ -165,11 +165,13 @@ try {
 
     // Calculate GST and total for each currency
     foreach ($totals as &$currencyTotal) {
-        $currencyTotal['gst'] = round($currencyTotal['subtotal'] * 0.18, 2); // 18% GST
-        $currencyTotal['total'] = $currencyTotal['subtotal'] + $currencyTotal['gst'];
+        $subtotal = $currencyTotal['subtotal'];
+        // For inclusive GST, we calculate backwards from the subtotal (18% GST)
+        $currencyTotal['gst'] = round($subtotal - ($subtotal / 1.18), 2);
+        $currencyTotal['total'] = $subtotal; // Total equals subtotal for inclusive GST
         
         // Format numbers to 2 decimal places
-        $currencyTotal['subtotal'] = number_format($currencyTotal['subtotal'], 2, '.', '');
+        $currencyTotal['subtotal'] = number_format($subtotal, 2, '.', '');
         $currencyTotal['gst'] = number_format($currencyTotal['gst'], 2, '.', '');
         $currencyTotal['total'] = number_format($currencyTotal['total'], 2, '.', '');
     }
