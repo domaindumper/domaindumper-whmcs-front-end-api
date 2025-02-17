@@ -80,10 +80,19 @@ try {
 
         $price = [];
         foreach (['INR', 'USD'] as $currency) {
-            $price[$currency] = [
-                'monthly' => $pricing[$currency]['monthly'],
-                'annually' => $pricing[$currency]['annually']
-            ];
+            // Check if pricing exists for this currency
+            if (isset($pricing[$currency])) {
+                $price[$currency] = [
+                    'monthly' => isset($pricing[$currency]['monthly']) ? $pricing[$currency]['monthly'] : 0,
+                    'annually' => isset($pricing[$currency]['annually']) ? $pricing[$currency]['annually'] : 0
+                ];
+            } else {
+                // Set default values if currency pricing not found
+                $price[$currency] = [
+                    'monthly' => 0,
+                    'annually' => 0
+                ];
+            }
         }
 
         // Get product image from $Products array
@@ -135,14 +144,21 @@ try {
             $item->productDetails['config_options'] = $decodedConfigOptions;
         }
 
-        // Calculate totals for each currency
+        // Calculate totals for each currency with validation
         foreach (['INR', 'USD'] as $currency) {
-            // Assuming monthly price is being used - modify if using different billing cycle
-            $price = (float)$price[$currency]['monthly'];
-            $totals[$currency]['subtotal'] += $price;
+            if (isset($price[$currency]['monthly'])) {
+                $priceValue = (float)$price[$currency]['monthly'];
+                if (!isset($totals[$currency]['subtotal'])) {
+                    $totals[$currency]['subtotal'] = 0;
+                }
+                $totals[$currency]['subtotal'] += $priceValue;
+            }
         }
     }
     unset($item);
+
+    // Debug logging for totals (optional)
+    error_log('Totals before GST: ' . print_r($totals, true));
 
     // Get total product count
     $totalProducts = count($cartItems);
