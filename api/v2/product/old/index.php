@@ -27,7 +27,7 @@ try {
             'year' => $record->year,
             'month' => $record->month,
             'monthName' => getConfigurableOptionName($record->month),
-            'dataCount' => number_format($record->data_count),
+            'dataCount' => number_format((float)$record->data_count), // Cast to float
             'size' => $record->size,
             'productId' => 9
         ];
