@@ -148,15 +148,35 @@ try {
         // Get total product count
         $totalProducts = count($cartItems);
 
+        // Calculate totals for each currency
+        $totals = [];
+        foreach (['INR', 'USD'] as $currency) {
+            $monthlyTotal = 0;
+            $annuallyTotal = 0;
+
+            foreach ($cartItems as $item) {
+                if (isset($item->productDetails['price'][$currency])) {
+                    $monthlyTotal += floatval($item->productDetails['price'][$currency]['monthly']);
+                    $annuallyTotal += floatval($item->productDetails['price'][$currency]['annually']);
+                }
+            }
+
+            $totals[$currency] = [
+                'monthly' => number_format($monthlyTotal, 2, '.', ''),
+                'annually' => number_format($annuallyTotal, 2, '.', '')
+            ];
+        }
+
         Capsule::commit();
 
-        // Return a success response with cart items and totalProducts
+        // Return a success response with cart items, totalProducts, and totals
         http_response_code(200);
         echo json_encode([
             'status' => 'success', 
             'message' => 'Item removed from cart',
             'cartItems' => $cartItems,
-            'totalProducts' => $totalProducts
+            'totalProducts' => $totalProducts,
+            'totals' => $totals
         ]); 
     } else {
         // Return the specific error message
