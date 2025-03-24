@@ -52,27 +52,65 @@ class Authorization {
 
     private function getAuthorizationHeader() {
         $auth = null;
+        $possibleHeaders = [
+            'Authorization',
+            'HTTP_AUTHORIZATION',
+            'REDIRECT_HTTP_AUTHORIZATION',
+            'HTTP_X_AUTHORIZATION',
+            'X-Authorization'
+        ];
         
-        // Check multiple locations for the Authorization header
-        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
-            $auth = $_SERVER['HTTP_AUTHORIZATION'];
-        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
-            $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-        } elseif (function_exists('apache_request_headers')) {
-            $requestHeaders = apache_request_headers();
-            if (isset($requestHeaders['Authorization'])) {
-                $auth = $requestHeaders['Authorization'];
+        // Debug collection
+        $headerDebug = [];
+        
+        // Method 1: Check $_SERVER
+        foreach ($_SERVER as $key => $value) {
+            $headerDebug['SERVER_' . $key] = $value;
+            if (in_array($key, $possibleHeaders)) {
+                $auth = $value;
+                $headerDebug['found_in'] = '_SERVER[' . $key . ']';
+                break;
             }
-        } elseif (isset($_SERVER['CONTENT_TYPE'])) {
-            // Some Plesk configurations might send it as a custom header
-            foreach (getallheaders() as $name => $value) {
-                if (strtolower($name) === 'authorization') {
+        }
+        
+        // Method 2: Check apache_request_headers()
+        if (!$auth && function_exists('apache_request_headers')) {
+            $apacheHeaders = apache_request_headers();
+            $headerDebug['apache_headers'] = $apacheHeaders;
+            
+            foreach ($apacheHeaders as $key => $value) {
+                if (in_array(strtolower($key), array_map('strtolower', $possibleHeaders))) {
                     $auth = $value;
+                    $headerDebug['found_in'] = 'apache_headers[' . $key . ']';
                     break;
                 }
             }
         }
-
+        
+        // Method 3: Check getallheaders()
+        if (!$auth) {
+            $allHeaders = getallheaders();
+            $headerDebug['all_headers'] = $allHeaders;
+            
+            foreach ($allHeaders as $key => $value) {
+                if (in_array(strtolower($key), array_map('strtolower', $possibleHeaders))) {
+                    $auth = $value;
+                    $headerDebug['found_in'] = 'getallheaders[' . $key . ']';
+                    break;
+                }
+            }
+        }
+        
+        // Log debug information
+        error_log('Header Debug: ' . print_r($headerDebug, true));
+        
+        if (!$auth) {
+            $this->throwError(401, 'No authorization header found', [
+                'debug_info' => $headerDebug,
+                'possible_headers' => $possibleHeaders
+            ]);
+        }
+        
         return $auth;
     }
 
