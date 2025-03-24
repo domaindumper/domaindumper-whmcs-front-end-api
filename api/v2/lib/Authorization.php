@@ -22,37 +22,35 @@ class Authorization {
         // Clean the token - remove Bearer prefix and any whitespace/newlines
         $this->token = trim(str_replace('Bearer', '', $authHeader));
         
-        $this->decodeToken();
-    }
-
-    private function decodeToken() {
         try {
-            // First try decoding without any algorithm restrictions
+            // Use same JWT configuration as login page
             $this->decoded = JWT::decode(
                 $this->token,
-                new Key(JWT_SECRET, 'HS256')
+                new Key(JWT_SECRET, JWT_ALGORITHM)
             );
             
-            if (!isset($this->decoded->data->client_id)) {
+            // Validate required claims
+            if (!isset($this->decoded->iss) || $this->decoded->iss !== JWT_ISS ||
+                !isset($this->decoded->aud) || $this->decoded->aud !== JWT_AUD ||
+                !isset($this->decoded->exp) || !isset($this->decoded->data->client_id)) {
                 throw new Exception('Invalid token structure');
             }
 
-            // Check expiration time
+            // Check expiration
             if ($this->decoded->exp < time()) {
                 throw new Exception('Token has expired');
             }
 
             $this->userId = $this->decoded->data->client_id;
-            
-            // Verify token matches stored session
-            $storedToken = Capsule::table('tblclients')
-                ->where('id', $this->userId)
-                ->value('authToken');
-                
-            if (empty($storedToken) || CompressAuthToken($this->token) !== $storedToken) {
-                throw new Exception('Invalid session');
-            }
 
+        } catch (\Firebase\JWT\ExpiredException $e) {
+            $this->throwError(401, 'Token has expired');
+        } catch (\Firebase\JWT\SignatureInvalidException $e) {
+            $this->throwError(401, 'Invalid token signature');
+        } catch (\Firebase\JWT\BeforeValidException $e) {
+            $this->throwError(401, 'Token not yet valid');
+        } catch (\DomainException $e) {
+            $this->throwError(401, 'Invalid token format');
         } catch (Exception $e) {
             $this->throwError(401, $e->getMessage());
         }
