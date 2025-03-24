@@ -27,22 +27,34 @@ class Authorization {
 
     private function decodeToken() {
         try {
+            // Use same algorithm as login page
             $this->decoded = JWT::decode(
-                $this->token, 
-                new Key(JWT_SECRET, 'HS256')  // Explicitly set algorithm to HS256
+                $this->token,
+                new Key(JWT_SECRET, JWT_ALGORITHM)
             );
             
             if (!isset($this->decoded->data->client_id)) {
                 throw new Exception('Invalid token structure');
             }
 
-            $this->userId = $this->decoded->data->client_id;
-            
+            // Check expiration time
             if ($this->decoded->exp < time()) {
                 throw new Exception('Token has expired');
             }
+
+            $this->userId = $this->decoded->data->client_id;
+            
+            // Verify token matches stored session
+            $storedToken = Capsule::table('tblclients')
+                ->where('id', $this->userId)
+                ->value('authToken');
+                
+            if (empty($storedToken) || CompressAuthToken($this->token) !== $storedToken) {
+                throw new Exception('Invalid session');
+            }
+
         } catch (Exception $e) {
-            $this->throwError(401, 'Invalid token: ' . $e->getMessage());
+            $this->throwError(401, $e->getMessage());
         }
     }
 
