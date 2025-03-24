@@ -14,8 +14,7 @@ $ca = new ClientArea();
 try {
     // Initialize authorization
     $auth = new Authorization();
-    $auth->validateRequest();
-    $userId = $auth->getUserId();
+    $userId = $auth->validateRequest(); // This will handle validation and return userId
 
     switch ($_SERVER['REQUEST_METHOD']) {
         case 'GET':
