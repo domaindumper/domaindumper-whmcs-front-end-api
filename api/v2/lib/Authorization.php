@@ -27,12 +27,10 @@ class Authorization {
 
     private function decodeToken() {
         try {
-            // Allow the HS256 algorithm explicitly
-            JWT::$supported_algs = ['HS256' => ['hash_hmac', 'SHA256']];
-            
+            // First try decoding without any algorithm restrictions
             $this->decoded = JWT::decode(
                 $this->token,
-                new Key(JWT_SECRET, 'HS256') // Explicitly use HS256
+                new Key(JWT_SECRET, 'HS256')
             );
             
             if (!isset($this->decoded->data->client_id)) {
