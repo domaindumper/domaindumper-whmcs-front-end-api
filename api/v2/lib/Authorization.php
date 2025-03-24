@@ -14,6 +14,8 @@ class Authorization {
 
     private function validateAuthHeader() {
         $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
+
+        echo $authHeader;
         
         if (empty($authHeader)) {
             $this->throwError(401, 'X-Authorization header is required');
