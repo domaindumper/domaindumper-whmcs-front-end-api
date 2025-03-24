@@ -14,8 +14,6 @@ class Authorization {
 
     private function validateAuthHeader() {
         $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
-
-        echo JWT_SECRET;
         
         if (empty($authHeader)) {
             $this->throwError(401, 'X-Authorization header is required');
@@ -25,11 +23,8 @@ class Authorization {
         $this->token = trim(str_replace('Bearer', '', $authHeader));
         
         try {
-            // Use same JWT configuration as login page
-            $this->decoded = JWT::decode(
-                $this->token,
-                new Key(JWT_SECRET, JWT_ALGORITHM)
-            );
+            // Use same decode method as login page
+            $this->decoded = JWT::decode($this->token, JWT_SECRET, [JWT_ALGORITHM]);
             
             // Validate required claims
             if (!isset($this->decoded->iss) || $this->decoded->iss !== JWT_ISS ||
