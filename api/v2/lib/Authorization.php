@@ -9,7 +9,13 @@ class Authorization {
     private $userId;
 
     public function __construct() {
+        // Remove constructor validation
+    }
+
+    // Add validateRequest method
+    public function validateRequest() {
         $this->validateAuthHeader();
+        return $this->userId;
     }
 
     private function validateAuthHeader() {
