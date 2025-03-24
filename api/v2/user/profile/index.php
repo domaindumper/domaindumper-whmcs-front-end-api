@@ -17,77 +17,98 @@ try {
     $auth->validateRequest();
     $userId = $auth->getUserId();
 
-    if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
-        // Get PUT data
-        $putData = json_decode(file_get_contents('php://input'), true);
-        
-        // Required fields validation
-        $requiredFields = ['firstname', 'lastname', 'email', 'phonenumber'];
-        foreach ($requiredFields as $field) {
-            if (!isset($putData[$field]) || empty($putData[$field])) {
-                throw new Exception("Field {$field} is required");
+    switch ($_SERVER['REQUEST_METHOD']) {
+        case 'GET':
+            $command = 'GetClientsDetails';
+            $postData = array(
+                'clientid' => $userId,
+                'stats' => true,
+            );
+
+            $results = localAPI($command, $postData);
+            
+            if ($results['result'] !== 'success') {
+                throw new Exception('Failed to fetch profile data');
             }
-        }
 
-        // Update client details
-        $command = 'UpdateClient';
-        $postData = array(
-            'clientid' => $userId,
-            'firstname' => $putData['firstname'],
-            'lastname' => $putData['lastname'],
-            'email' => $putData['email'],
-            'phonenumber' => $putData['phonenumber'],
-            'companyname' => $putData['companyname'] ?? '',
-            'address1' => $putData['address1'] ?? '',
-            'address2' => $putData['address2'] ?? '',
-            'city' => $putData['city'] ?? '',
-            'state' => $putData['state'] ?? '',
-            'postcode' => $putData['postcode'] ?? '',
-            'country' => $putData['country'] ?? ''
-        );
+            $response = [
+                'status' => 'success',
+                'code' => 200,
+                'data' => refineUserInformation($results['client'])
+            ];
+            break;
 
-        $results = localAPI($command, $postData);
+        case 'PUT':
+            $putData = json_decode(file_get_contents('php://input'), true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception('Invalid JSON payload');
+            }
+            
+            // Required fields validation
+            $requiredFields = ['firstname', 'lastname', 'email', 'phonenumber'];
+            $missingFields = [];
+            
+            foreach ($requiredFields as $field) {
+                if (!isset($putData[$field]) || empty($putData[$field])) {
+                    $missingFields[] = $field;
+                }
+            }
+            
+            if (!empty($missingFields)) {
+                throw new Exception('Required fields missing: ' . implode(', ', $missingFields));
+            }
 
-        if ($results['result'] == 'success') {
+            // Validate email format
+            if (!filter_var($putData['email'], FILTER_VALIDATE_EMAIL)) {
+                throw new Exception('Invalid email format');
+            }
+
+            // Update client details
+            $command = 'UpdateClient';
+            $postData = array(
+                'clientid' => $userId,
+                'firstname' => trim($putData['firstname']),
+                'lastname' => trim($putData['lastname']),
+                'email' => trim($putData['email']),
+                'phonenumber' => trim($putData['phonenumber']),
+                'companyname' => trim($putData['companyname'] ?? ''),
+                'address1' => trim($putData['address1'] ?? ''),
+                'address2' => trim($putData['address2'] ?? ''),
+                'city' => trim($putData['city'] ?? ''),
+                'state' => trim($putData['state'] ?? ''),
+                'postcode' => trim($putData['postcode'] ?? ''),
+                'country' => trim($putData['country'] ?? '')
+            );
+
+            $results = localAPI($command, $postData);
+
+            if ($results['result'] !== 'success') {
+                throw new Exception($results['message'] ?? 'Failed to update profile');
+            }
+
             $response = [
                 'status' => 'success',
                 'code' => 200,
                 'message' => 'Profile updated successfully',
-                'data' => $results['client']
+                'data' => refineUserInformation($results['client'])
             ];
-        } else {
-            throw new Exception($results['message'] ?? 'Failed to update profile');
-        }
-    } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        // Get client details
-        $command = 'GetClientsDetails';
-        $postData = array(
-            'clientid' => $userId,
-            'stats' => true,
-        );
+            break;
 
-        $results = localAPI($command, $postData);
-        
-        if ($results['result'] == 'success') {
-            $response = [
-                'status' => 'success',
-                'code' => 200,
-                'data' => $results['client']
-            ];
-        } else {
-            throw new Exception('Failed to fetch profile data');
-        }
+        default:
+            throw new Exception('Method not allowed', 405);
     }
 
 } catch (Exception $e) {
-    http_response_code(500);
+    $statusCode = ($e->getCode() >= 400 && $e->getCode() < 600) ? $e->getCode() : 500;
+    
     $response = [
         'status' => 'error',
-        'code' => 500,
+        'code' => $statusCode,
         'message' => $e->getMessage()
     ];
 }
 
 header('Content-Type: application/json');
 echo json_encode($response);
-?>
+exit();
