@@ -13,27 +13,67 @@ class Authorization {
     }
 
     private function validateAuthHeader() {
-        $headers = getallheaders();
+        // Get headers from multiple sources for Plesk compatibility
+        $headers = $this->getAllHeaders();
         
-        // Debug: Capture all headers
+        // Debug information
         $debugHeaders = [
             'all_headers' => $headers,
-            'auth_header' => isset($headers['Authorization']) ? $headers['Authorization'] : 'Not Set',
-            'raw_auth_header' => $_SERVER['HTTP_AUTHORIZATION'] ?? 'Not Set in $_SERVER',
+            'apache_headers' => apache_request_headers(),
+            'server_vars' => $_SERVER,
             'request_method' => $_SERVER['REQUEST_METHOD']
         ];
-        
-        $authHeader = isset($headers['Authorization']) ? $headers['Authorization'] : '';
-        
-        // Check for Bearer token format
-        if (empty($authHeader) || !preg_match('/^Bearer\s+(.+)$/', $authHeader, $matches)) {
-            $this->throwError(401, 'Authorization header must be in format: Bearer {token}', $debugHeaders);
+
+        // Try to get Authorization header
+        $authHeader = $this->getAuthorizationHeader();
+        $debugHeaders['found_auth_header'] = $authHeader;
+
+        if (empty($authHeader)) {
+            $this->throwError(401, 'No Authorization header found', $debugHeaders);
         }
 
-        $this->token = $matches[1];
+        // Remove 'Bearer ' if it exists
+        $this->token = str_replace('Bearer ', '', $authHeader);
         $debugHeaders['extracted_token'] = $this->token;
         
         $this->decodeToken($debugHeaders);
+    }
+
+    private function getAllHeaders() {
+        $headers = [];
+        foreach ($_SERVER as $key => $value) {
+            if (substr($key, 0, 5) === 'HTTP_') {
+                $header = str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))));
+                $headers[$header] = $value;
+            }
+        }
+        return $headers;
+    }
+
+    private function getAuthorizationHeader() {
+        $auth = null;
+        
+        // Check multiple locations for the Authorization header
+        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $auth = $_SERVER['HTTP_AUTHORIZATION'];
+        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        } elseif (function_exists('apache_request_headers')) {
+            $requestHeaders = apache_request_headers();
+            if (isset($requestHeaders['Authorization'])) {
+                $auth = $requestHeaders['Authorization'];
+            }
+        } elseif (isset($_SERVER['CONTENT_TYPE'])) {
+            // Some Plesk configurations might send it as a custom header
+            foreach (getallheaders() as $name => $value) {
+                if (strtolower($name) === 'authorization') {
+                    $auth = $value;
+                    break;
+                }
+            }
+        }
+
+        return $auth;
     }
 
     private function decodeToken($debugHeaders = []) {
@@ -66,11 +106,8 @@ class Authorization {
             'message' => $message,
             'debug' => [
                 'headers' => $debugInfo,
-                'server_vars' => [
-                    'REQUEST_METHOD' => $_SERVER['REQUEST_METHOD'],
-                    'HTTP_AUTHORIZATION' => $_SERVER['HTTP_AUTHORIZATION'] ?? 'Not Set',
-                    'CONTENT_TYPE' => $_SERVER['CONTENT_TYPE'] ?? 'Not Set'
-                ]
+                'php_sapi' => PHP_SAPI,
+                'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'unknown'
             ]
         ], JSON_PRETTY_PRINT);
         exit;
