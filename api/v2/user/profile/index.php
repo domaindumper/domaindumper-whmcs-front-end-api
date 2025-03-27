@@ -45,7 +45,7 @@ try {
             }
             
             // Required fields validation
-            $requiredFields = ['firstname', 'lastname', 'email', 'phonenumber'];
+            $requiredFields = ['firstname', 'lastname', 'phonenumber'];
             $missingFields = [];
             
             foreach ($requiredFields as $field) {
@@ -56,11 +56,6 @@ try {
             
             if (!empty($missingFields)) {
                 throw new Exception('Required fields missing: ' . implode(', ', $missingFields));
-            }
-
-            // Validate email format
-            if (!filter_var($putData['email'], FILTER_VALIDATE_EMAIL)) {
-                throw new Exception('Invalid email format');
             }
 
             // Update client details
