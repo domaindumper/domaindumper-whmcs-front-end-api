@@ -123,16 +123,32 @@ function isVaildPassword($password)
 
 function refineUserInformation($Userdata)
 {
-
-    $keysToUnset = ['users', 'userid', 'client_id', 'id', 'owner_user_id', 'uuid'];
-
-    foreach ($keysToUnset as $key) {
-        if (array_key_exists($key, $Userdata)) {
-            //unset($Userdata[$key]);
-        }
+    if (!is_array($Userdata)) {
+        return null;
     }
 
-    return $Userdata;
+    // Define the fields we want to keep
+    $allowedFields = [
+        'firstname',
+        'lastname',
+        'email',
+        'phonenumber',
+        'companyname',
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'postcode',
+        'country'
+    ];
+
+    // Create new array with only allowed fields
+    $refinedData = [];
+    foreach ($allowedFields as $field) {
+        $refinedData[$field] = $Userdata[$field] ?? '';
+    }
+
+    return $refinedData;
 }
 
 function CompressAuthToken($authToken)
