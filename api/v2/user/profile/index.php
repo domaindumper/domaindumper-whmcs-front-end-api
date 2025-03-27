@@ -44,7 +44,7 @@ try {
                 throw new Exception('Invalid JSON payload');
             }
             
-            // Required fields validation
+            // Required fields validation - remove email from required fields
             $requiredFields = ['firstname', 'lastname', 'phonenumber'];
             $missingFields = [];
             
@@ -58,21 +58,20 @@ try {
                 throw new Exception('Required fields missing: ' . implode(', ', $missingFields));
             }
 
-            // Update client details
+            // Update client details - only include fields that are provided
             $command = 'UpdateClient';
             $postData = array(
                 'clientid' => $userId,
                 'firstname' => trim($putData['firstname']),
                 'lastname' => trim($putData['lastname']),
-                'email' => trim($putData['email']),
                 'phonenumber' => trim($putData['phonenumber']),
                 'companyname' => trim($putData['companyname'] ?? ''),
                 'address1' => trim($putData['address1'] ?? ''),
                 'address2' => trim($putData['address2'] ?? ''),
                 'city' => trim($putData['city'] ?? ''),
                 'state' => trim($putData['state'] ?? ''),
-                'postcode' => trim($putData['postcode'] ?? ''),
-                'country' => trim($putData['country'] ?? '')
+                'postcode' => trim($putData['postcode'] ?? '')
+                // Removed email and country from update data
             );
 
             $results = localAPI($command, $postData);
