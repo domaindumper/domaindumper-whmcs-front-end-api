@@ -131,13 +131,15 @@ function refineUserInformation($Userdata)
     $allowedFields = [
         'firstname',
         'lastname',
+        'email',
         'phonenumber',
         'companyname',
         'address1',
         'address2',
         'city',
         'state',
-        'postcode'
+        'postcode',
+        'country'
     ];
 
     // Create new array with only allowed fields
