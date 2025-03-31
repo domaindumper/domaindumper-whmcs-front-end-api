@@ -6,27 +6,32 @@ define('CLIENTAREA', true);
 
 require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Authorization.php';
 
 $ca = new ClientArea();
 
 try {
-    // Initialize authorization
-    $auth = new Authorization();
-    $userId = $auth->validateRequest();
+    // Get JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    // Validate JSON
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        throw new Exception('Invalid JSON payload', 400);
+    }
 
-    // Get invoice ID from URL
-    $invoiceId = basename($_SERVER['REQUEST_URI']);
-    if (!$invoiceId) {
+    // Check if Id exists in payload
+    if (!isset($input['Id'])) {
         throw new Exception('Invoice ID is required', 400);
     }
 
-    // Get invoice from WHMCS
+    $invoiceId = (int)$input['Id'];
+    if ($invoiceId <= 0) {
+        throw new Exception('Invalid invoice ID', 400);
+    }
+
+    // Get invoice from WHMCS without user validation
     $command = 'GetInvoice';
     $postData = array(
-        'invoiceid' => $invoiceId,
-        'userid' => $userId
+        'invoiceid' => $invoiceId
     );
 
     $results = localAPI($command, $postData);
@@ -50,18 +55,18 @@ try {
             'currency_code' => $results['currency'],
             'currency_prefix' => $results['currency_prefix'],
             'currency_suffix' => $results['currency_suffix'],
-            'client_name' => $results['client']['firstname'] . ' ' . $results['client']['lastname'],
-            'billing_address' => $results['client']['address1'],
-            'billing_city' => $results['client']['city'],
-            'billing_state' => $results['client']['state'],
-            'billing_zip' => $results['client']['postcode'],
-            'country' => $results['client']['country'],
             'items' => array_map(function($item) {
                 return [
                     'description' => htmlspecialchars(trim($item['description'])),
                     'amount' => (float)$item['amount']
                 ];
             }, $results['items']['item'])
+        ];
+
+        // Only include minimal client details for privacy
+        $invoice['client'] = [
+            'name' => $results['client']['firstname'] . ' ' . substr($results['client']['lastname'], 0, 1) . '.',
+            'company' => $results['client']['companyname'] ? $results['client']['companyname'] : null
         ];
 
         $response = [
