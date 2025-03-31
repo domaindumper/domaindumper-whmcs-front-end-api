@@ -4,6 +4,10 @@ use WHMCS\Database\Capsule;
 
 define('CLIENTAREA', true);
 
+// Define token expiration constants
+define('TOKEN_EXPIRY_REMEMBER', 7 * 24 * 3600);     // 7 days for remember me
+define('TOKEN_EXPIRY_NORMAL', 24 * 3600);           // 24 hours for normal session
+
 require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
@@ -43,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         unset($Userdata['users']);
 
         // Generate JWT Auth Token
-        $ExpireTime = time() + ($rememberMe ? (3600 * 24 * 30) : 3600); 
+        $ExpireTime = time() + ($rememberMe ? TOKEN_EXPIRY_REMEMBER : TOKEN_EXPIRY_NORMAL);
 
         $payload = [
             'iss' => JWT_ISS,
