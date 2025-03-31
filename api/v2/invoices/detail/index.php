@@ -36,15 +36,16 @@ try {
 
     $results = localAPI($command, $postData);
 
-    echo '<pre>';
-
-    print_r($results);
-    echo '</pre>';
-
-    die();
-    // Check if the API call was successful
-
     if ($results['result'] == 'success') {
+        // Get client details using userid
+        $command = 'GetClientsDetails';
+        $clientPostData = array(
+            'clientid' => $results['userid'],
+            'stats' => false
+        );
+
+        $clientResults = localAPI($command, $clientPostData);
+
         // Process invoice data
         $invoice = [
             'id' => (int)$results['invoiceid'],
@@ -71,10 +72,11 @@ try {
             }, $results['items']['item'])
         ];
 
-        // Only include minimal client details for privacy
+        // Include client details from the separate API call
         $invoice['client'] = [
-            'name' => $results['client']['firstname'] . ' ' . substr($results['client']['lastname'], 0, 1) . '.',
-            'company' => $results['client']['companyname'] ? $results['client']['companyname'] : null
+            'name' => $clientResults['firstname'] . ' ' . substr($clientResults['lastname'], 0, 1) . '.',
+            'company' => !empty($clientResults['companyname']) ? $clientResults['companyname'] : null,
+            'email' => $clientResults['email']
         ];
 
         $response = [
