@@ -19,7 +19,7 @@ if (empty($authHeader)) {
     echo json_encode([
         'status' => 'error',
         'message' => 'No authorization token provided'
-    ]);
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -32,7 +32,7 @@ try {
     $command = 'GetInvoices';
     $postData = array(
         'userid' => $userId,
-        'limitnum' => 100 // Adjust limit as needed
+        'limitnum' => 100
     );
 
     $results = localAPI($command, $postData);
@@ -40,25 +40,31 @@ try {
     if ($results['result'] == 'success' && isset($results['invoices']['invoice'])) {
         // Process invoices
         $invoices = array_map(function($invoice) {
+            // Sanitize and format data
             return [
-                'id' => $invoice['id'],
-                'invoice_number' => $invoice['invoicenum'],
-                'date_created' => $invoice['date'],
-                'date_due' => $invoice['duedate'],
-                'date_paid' => $invoice['datepaid'],
-                'subtotal' => $invoice['subtotal'],
-                'credit' => $invoice['credit'],
-                'tax' => $invoice['tax'],
-                'tax2' => $invoice['tax2'],
-                'total' => $invoice['total'],
-                'balance' => $invoice['balance'],
-                'status' => ucfirst($invoice['status']),
-                'payment_method' => $invoice['paymentmethod'],
-                'currency_code' => $invoice['currencycode'],
-                'currency_prefix' => $invoice['currency_prefix'],
-                'currency_suffix' => $invoice['currency_suffix'],
-                'notes' => $invoice['notes'],
-                'items' => isset($invoice['items']['item']) ? $invoice['items']['item'] : []
+                'id' => (int)$invoice['id'],
+                'invoice_number' => htmlspecialchars(trim($invoice['invoicenum'])),
+                'date_created' => date('Y-m-d H:i:s', strtotime($invoice['date'])),
+                'date_due' => date('Y-m-d H:i:s', strtotime($invoice['duedate'])),
+                'date_paid' => !empty($invoice['datepaid']) ? date('Y-m-d H:i:s', strtotime($invoice['datepaid'])) : null,
+                'subtotal' => (float)$invoice['subtotal'],
+                'credit' => (float)$invoice['credit'],
+                'tax' => (float)$invoice['tax'],
+                'tax2' => (float)$invoice['tax2'],
+                'total' => (float)$invoice['total'],
+                'balance' => (float)$invoice['balance'],
+                'status' => htmlspecialchars(ucfirst(trim($invoice['status']))),
+                'payment_method' => htmlspecialchars(trim($invoice['paymentmethod'])),
+                'currency_code' => htmlspecialchars(trim($invoice['currencycode'])),
+                'currency_prefix' => htmlspecialchars(trim($invoice['currency_prefix'])),
+                'currency_suffix' => htmlspecialchars(trim($invoice['currency_suffix'])),
+                'notes' => htmlspecialchars(trim($invoice['notes'])),
+                'items' => isset($invoice['items']['item']) ? array_map(function($item) {
+                    return [
+                        'description' => htmlspecialchars(trim($item['description'])),
+                        'amount' => (float)$item['amount']
+                    ];
+                }, $invoice['items']['item']) : []
             ];
         }, $results['invoices']['invoice']);
 
@@ -89,8 +95,9 @@ try {
             ]
         ];
 
+        header('Content-Type: application/json; charset=utf-8');
         http_response_code(200);
-        echo json_encode($response);
+        echo json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR);
 
     } else {
         throw new Exception($results['message'] ?? 'Failed to fetch invoices');
@@ -100,17 +107,17 @@ try {
     $errorMessage = $e->getMessage();
     $statusCode = 500;
 
-    // Handle JWT expiration
     if (strpos($errorMessage, 'expired')) {
         $statusCode = 401;
         $errorMessage = 'Session expired, please login again';
     }
 
+    header('Content-Type: application/json; charset=utf-8');
     http_response_code($statusCode);
     echo json_encode([
         'status' => 'error',
         'code' => $statusCode,
         'message' => $errorMessage
-    ]);
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 }
 ?>
