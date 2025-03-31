@@ -36,6 +36,10 @@ try {
 
     $results = localAPI($command, $postData);
 
+    echo '<pre>';
+    print_r($results);
+    echo '</pre>';
+
     if ($results['result'] == 'success') {
         // Get client details using userid
         $command = 'GetClientsDetails';
