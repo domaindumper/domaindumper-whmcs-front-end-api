@@ -36,6 +36,14 @@ try {
 
     $results = localAPI($command, $postData);
 
+    echo '<pre>';
+
+    print_r($results);
+    echo '</pre>';
+
+    die();
+    // Check if the API call was successful
+
     if ($results['result'] == 'success') {
         // Process invoice data
         $invoice = [
