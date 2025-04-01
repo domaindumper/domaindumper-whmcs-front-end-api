@@ -129,6 +129,7 @@ function refineUserInformation($Userdata)
 
     // Define the fields we want to keep
     $allowedFields = [
+        'client_id',
         'firstname',
         'lastname',
         'email',
