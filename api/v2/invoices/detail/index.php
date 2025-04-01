@@ -82,6 +82,7 @@ try {
 
         // Include client details from the separate API call
         $invoice['client'] = [
+            'id' => (int)$clientResults['userid'],
             'name' => $clientResults['firstname'] . ' ' . substr($clientResults['lastname'], 0, 1) . '.',
             'company' => !empty($clientResults['companyname']) ? $clientResults['companyname'] : null,
             'country_code' => $clientResults['countrycode'] ?? null
