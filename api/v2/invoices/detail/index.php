@@ -46,8 +46,9 @@ try {
 
         $clientResults = localAPI($command, $clientPostData);
 
-        // Get currency details from database
+        // Get currency details directly from tblcurrencies table
         $currencyDetails = Capsule::table('tblcurrencies')
+            ->select(['prefix', 'suffix', 'code', 'format', 'rate'])
             ->where('code', $clientResults['currency_code'])
             ->first();
 
@@ -69,6 +70,8 @@ try {
             'currency_code' => $clientResults['currency_code'],
             'currency_prefix' => $currencyDetails ? $currencyDetails->prefix : '',
             'currency_suffix' => $currencyDetails ? $currencyDetails->suffix : '',
+            'currency_format' => $currencyDetails ? $currencyDetails->format : 1,
+            'currency_rate' => $currencyDetails ? (float)$currencyDetails->rate : 1.00000,
             'items' => array_map(function($item) {
                 return [
                     'description' => htmlspecialchars(trim($item['description'])),
