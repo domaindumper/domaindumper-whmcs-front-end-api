@@ -46,6 +46,11 @@ try {
 
         $clientResults = localAPI($command, $clientPostData);
 
+        // Get currency details from database
+        $currencyDetails = Capsule::table('tblcurrencies')
+            ->where('code', $clientResults['currency_code'])
+            ->first();
+
         // Process invoice data
         $invoice = [
             'id' => (int)$results['invoiceid'],
@@ -62,8 +67,8 @@ try {
             'status' => ucfirst($results['status']),
             'payment_method' => $results['paymentmethod'],
             'currency_code' => $clientResults['currency_code'],
-            'currency_prefix' => $clientResults['currency_prefix'],
-            'currency_suffix' => $clientResults['currency_suffix'],
+            'currency_prefix' => $currencyDetails ? $currencyDetails->prefix : '',
+            'currency_suffix' => $currencyDetails ? $currencyDetails->suffix : '',
             'items' => array_map(function($item) {
                 return [
                     'description' => htmlspecialchars(trim($item['description'])),
