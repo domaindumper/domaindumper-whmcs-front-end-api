@@ -36,10 +36,6 @@ try {
 
     $results = localAPI($command, $postData);
 
-    echo '<pre>';
-    print_r($results);
-    echo '</pre>';
-
     if ($results['result'] == 'success') {
         // Get client details using userid
         $command = 'GetClientsDetails';
@@ -65,9 +61,9 @@ try {
             'balance' => (float)$results['balance'],
             'status' => ucfirst($results['status']),
             'payment_method' => $results['paymentmethod'],
-            'currency_code' => $results['currency'],
-            'currency_prefix' => $results['currency_prefix'],
-            'currency_suffix' => $results['currency_suffix'],
+            'currency_code' => $clientResults['currency_code'],
+            'currency_prefix' => $clientResults['currency_prefix'],
+            'currency_suffix' => $clientResults['currency_suffix'],
             'items' => array_map(function($item) {
                 return [
                     'description' => htmlspecialchars(trim($item['description'])),
