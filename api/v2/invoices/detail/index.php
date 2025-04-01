@@ -89,36 +89,37 @@ try {
 
         // Get transaction history if invoice is paid
         if ($results['status'] === 'Paid') {
-            // Get transactions from database
-            $transactions = Capsule::table('tbltransaction_history')
+            // Get transactions from tblaccounts
+            $transactions = Capsule::table('tblaccounts')
                 ->select([
                     'id',
-                    'transaction_id',
+                    'date',
                     'gateway',
-                    'remote_status',
-                    'completed',
                     'description',
-                    'amount',
-                    'created_at',
-                    'updated_at'
+                    'amountin',
+                    'amountout',
+                    'fees',
+                    'transid',
+                    'currency',
+                    'rate'
                 ])
-                ->where('invoice_id', $results['invoiceid'])
-                ->where('completed', 1)
-                ->orderBy('created_at', 'desc')
+                ->where('invoiceid', $results['invoiceid'])
+                ->orderBy('date', 'desc')
                 ->get();
 
             if ($transactions->count() > 0) {
                 $invoice['transactions'] = $transactions->map(function($transaction) use ($currencyDetails) {
                     return [
                         'id' => (int)$transaction->id,
-                        'transaction_id' => $transaction->transaction_id,
+                        'transaction_id' => $transaction->transid,
                         'gateway' => $transaction->gateway,
-                        'status' => $transaction->remote_status,
                         'description' => $transaction->description,
-                        'amount' => (float)$transaction->amount,
+                        'amount_in' => (float)$transaction->amountin,
+                        'amount_out' => (float)$transaction->amountout,
+                        'fees' => (float)$transaction->fees,
+                        'date' => $transaction->date,
                         'currency_code' => $currencyDetails->code ?? null,
-                        'created_at' => $transaction->created_at,
-                        'updated_at' => $transaction->updated_at
+                        'exchange_rate' => (float)$transaction->rate
                     ];
                 })->toArray();
             } else {
