@@ -87,6 +87,47 @@ try {
             'country_code' => $clientResults['countrycode'] ?? null
         ];
 
+        // Get transaction history if invoice is paid
+        if ($results['status'] === 'Paid') {
+            // Get transactions from database
+            $transactions = Capsule::table('tbltransaction_history')
+                ->select([
+                    'id',
+                    'transaction_id',
+                    'gateway',
+                    'remote_status',
+                    'completed',
+                    'description',
+                    'amount',
+                    'created_at',
+                    'updated_at'
+                ])
+                ->where('invoice_id', $results['invoiceid'])
+                ->where('completed', 1)
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            if ($transactions->count() > 0) {
+                $invoice['transactions'] = $transactions->map(function($transaction) use ($currencyDetails) {
+                    return [
+                        'id' => (int)$transaction->id,
+                        'transaction_id' => $transaction->transaction_id,
+                        'gateway' => $transaction->gateway,
+                        'status' => $transaction->remote_status,
+                        'description' => $transaction->description,
+                        'amount' => (float)$transaction->amount,
+                        'currency_code' => $currencyDetails->code ?? null,
+                        'created_at' => $transaction->created_at,
+                        'updated_at' => $transaction->updated_at
+                    ];
+                })->toArray();
+            } else {
+                $invoice['transactions'] = [];
+            }
+        } else {
+            $invoice['transactions'] = [];
+        }
+
         $response = [
             'status' => 'success',
             'code' => 200,
