@@ -84,6 +84,7 @@ try {
         $invoice['client'] = [
             'name' => $clientResults['firstname'] . ' ' . substr($clientResults['lastname'], 0, 1) . '.',
             'company' => !empty($clientResults['companyname']) ? $clientResults['companyname'] : null,
+            'country_code' => $clientResults['countrycode'] ?? null
         ];
 
         $response = [
