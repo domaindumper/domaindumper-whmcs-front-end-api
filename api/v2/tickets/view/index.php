@@ -31,8 +31,7 @@ try {
     // Get ticket details
     $command = 'GetTicket';
     $postData = array(
-        'ticketid' => $input['ticketId'],
-        'clientid' => $userId
+        'ticketid' => $input['ticketId']
     );
 
     $results = localAPI($command, $postData);
@@ -42,74 +41,71 @@ try {
         $ticket = [
             'id' => (int)$results['ticketid'],
             'tid' => htmlspecialchars(trim($results['tid'])),
+            'department_id' => (int)$results['deptid'],
+            'department_name' => htmlspecialchars(trim($results['deptname'])),
+            'user_id' => (int)$results['userid'],
+            'contact_id' => (int)$results['contactid'],
             'date_created' => date('Y-m-d H:i:s', strtotime($results['date'])),
-            'date_updated' => date('Y-m-d H:i:s', strtotime($results['lastreply'])),
             'subject' => htmlspecialchars(trim($results['subject'])),
             'status' => htmlspecialchars(ucfirst(trim($results['status']))),
-            // Fix field names to match WHMCS API response
-            'urgency' => htmlspecialchars(ucfirst(trim($results['priority']))),         // Changed from urgency to priority
-            'department' => htmlspecialchars(trim($results['deptname'])),               // Changed from department to deptname
-            'last_reply_by' => htmlspecialchars(trim($results['lastreplier'])),        // Changed from last_reply_by to lastreplier
-            'unread' => (bool)$results['unread'],
+            'priority' => htmlspecialchars(ucfirst(trim($results['priority']))),
+            'last_reply' => date('Y-m-d H:i:s', strtotime($results['lastreply'])),
+            'flag' => (int)$results['flag'],
+            'service' => $results['service'],
             'client' => [
                 'id' => (int)$results['userid'],
-                'name' => $results['requestor_name'],
-                'email' => $results['requestor_email']
+                'name' => htmlspecialchars(trim($results['name'])),
+                'email' => $results['email'],
+                'cc' => $results['cc']
             ]
         ];
 
-        // Process ticket messages
+        // Process messages (original + replies)
         $ticket['messages'] = [];
-        
-        // Add original ticket message as first message
-        $ticket['messages'][] = [
-            'id' => 0,
-            'date' => $ticket['date_created'],
-            'message' => htmlspecialchars(trim($results['message'])),
-            'attachment' => isset($results['attachment']) ? $results['attachment'] : null,
-            'admin' => null,
-            'owner' => 'client',
-            'email' => $results['requestor_email'],
-            'name' => $results['requestor_name'],
-            'rating' => 0,
-            'editor' => 'plain'
-        ];
 
-        // Process additional replies
-        if (isset($results['replies']) && is_array($results['replies'])) {
-            foreach ($results['replies'] as $reply) {
+        // Add original message
+        if (isset($results['replies']['reply']) && is_array($results['replies']['reply'])) {
+            foreach ($results['replies']['reply'] as $reply) {
                 $ticket['messages'][] = [
                     'id' => (int)$reply['replyid'],
+                    'user_id' => (int)$reply['userid'],
+                    'contact_id' => (int)$reply['contactid'],
                     'date' => date('Y-m-d H:i:s', strtotime($reply['date'])),
                     'message' => htmlspecialchars(trim($reply['message'])),
-                    'attachment' => isset($reply['attachment']) ? $reply['attachment'] : null,
+                    'requestor' => [
+                        'name' => htmlspecialchars(trim($reply['requestor_name'])),
+                        'email' => $reply['requestor_email'],
+                        'type' => $reply['requestor_type']
+                    ],
                     'admin' => !empty($reply['admin']) ? htmlspecialchars(trim($reply['admin'])) : null,
-                    'owner' => !empty($reply['admin']) ? 'admin' : 'client',
-                    'email' => isset($reply['email']) ? $reply['email'] : null,
-                    'name' => isset($reply['name']) ? $reply['name'] : ($reply['admin'] ?? null),
                     'rating' => (int)($reply['rating'] ?? 0),
-                    'editor' => $reply['editor'] ?? 'plain'
+                    'attachments' => isset($reply['attachments']) && is_array($reply['attachments']) 
+                        ? array_filter(array_map(function($attachment) {
+                            return !empty($attachment) ? [
+                                'filename' => $attachment['filename'] ?? null,
+                                'index' => $attachment['index'] ?? null
+                            ] : null;
+                        }, $reply['attachments']))
+                        : []
                 ];
             }
         }
 
-        // Sort messages by date
-        usort($ticket['messages'], function($a, $b) {
-            return strtotime($a['date']) - strtotime($b['date']);
-        });
-
-        // Process attachments
-        if (isset($results['attachments']) && is_array($results['attachments'])) {
-            $ticket['attachments'] = array_map(function($attachment) {
+        // Add ticket notes if available
+        if (isset($results['notes']['note']) && is_array($results['notes']['note'])) {
+            $ticket['notes'] = array_map(function($note) {
                 return [
-                    'id' => (int)$attachment['id'],
-                    'filename' => htmlspecialchars(trim($attachment['filename'])),
-                    'size' => (int)$attachment['size'],
-                    'url' => $attachment['url'] ?? null
+                    'id' => (int)$note['noteid'],
+                    'date' => date('Y-m-d H:i:s', strtotime($note['date'])),
+                    'message' => htmlspecialchars(trim($note['message'])),
+                    'admin' => htmlspecialchars(trim($note['admin'])),
+                    'attachments' => isset($note['attachments']) && is_array($note['attachments'])
+                        ? array_filter($note['attachments'])
+                        : []
                 ];
-            }, $results['attachments']);
+            }, $results['notes']['note']);
         } else {
-            $ticket['attachments'] = [];
+            $ticket['notes'] = [];
         }
 
         $response = [
