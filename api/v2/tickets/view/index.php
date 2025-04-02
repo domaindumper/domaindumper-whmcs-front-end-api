@@ -58,22 +58,45 @@ try {
             ]
         ];
 
-        // Process replies
+        // Process ticket messages
+        $ticket['messages'] = [];
+        
+        // Add original ticket message as first message
+        $ticket['messages'][] = [
+            'id' => 0,
+            'date' => $ticket['date_created'],
+            'message' => htmlspecialchars(trim($results['message'])),
+            'attachment' => isset($results['attachment']) ? $results['attachment'] : null,
+            'admin' => null,
+            'owner' => 'client',
+            'email' => $results['requestor_email'],
+            'name' => $results['requestor_name'],
+            'rating' => 0,
+            'editor' => 'plain'
+        ];
+
+        // Process additional replies
         if (isset($results['replies']) && is_array($results['replies'])) {
-            $ticket['replies'] = array_map(function($reply) {
-                return [
-                    'id' => (int)$reply['id'],
+            foreach ($results['replies'] as $reply) {
+                $ticket['messages'][] = [
+                    'id' => (int)$reply['replyid'],
                     'date' => date('Y-m-d H:i:s', strtotime($reply['date'])),
                     'message' => htmlspecialchars(trim($reply['message'])),
-                    'attachment' => $reply['attachment'] ?? null,
-                    'admin' => htmlspecialchars(trim($reply['admin'])),
-                    'rating' => (int)$reply['rating'],
+                    'attachment' => isset($reply['attachment']) ? $reply['attachment'] : null,
+                    'admin' => !empty($reply['admin']) ? htmlspecialchars(trim($reply['admin'])) : null,
+                    'owner' => !empty($reply['admin']) ? 'admin' : 'client',
+                    'email' => isset($reply['email']) ? $reply['email'] : null,
+                    'name' => isset($reply['name']) ? $reply['name'] : ($reply['admin'] ?? null),
+                    'rating' => (int)($reply['rating'] ?? 0),
                     'editor' => $reply['editor'] ?? 'plain'
                 ];
-            }, $results['replies']);
-        } else {
-            $ticket['replies'] = [];
+            }
         }
+
+        // Sort messages by date
+        usort($ticket['messages'], function($a, $b) {
+            return strtotime($a['date']) - strtotime($b['date']);
+        });
 
         // Process attachments
         if (isset($results['attachments']) && is_array($results['attachments'])) {
