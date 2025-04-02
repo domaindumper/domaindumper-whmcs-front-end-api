@@ -46,9 +46,10 @@ try {
             'date_updated' => date('Y-m-d H:i:s', strtotime($results['lastreply'])),
             'subject' => htmlspecialchars(trim($results['subject'])),
             'status' => htmlspecialchars(ucfirst(trim($results['status']))),
-            'urgency' => htmlspecialchars(ucfirst(trim($results['urgency']))),
-            'department' => htmlspecialchars(trim($results['department'])),
-            'last_reply_by' => htmlspecialchars(trim($results['lastreplier'])),
+            // Fix field names to match WHMCS API response
+            'urgency' => htmlspecialchars(ucfirst(trim($results['priority']))),         // Changed from urgency to priority
+            'department' => htmlspecialchars(trim($results['deptname'])),               // Changed from department to deptname
+            'last_reply_by' => htmlspecialchars(trim($results['lastreplier'])),        // Changed from last_reply_by to lastreplier
             'unread' => (bool)$results['unread'],
             'client' => [
                 'id' => (int)$results['userid'],
