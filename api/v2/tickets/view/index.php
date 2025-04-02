@@ -68,12 +68,17 @@ try {
         // Add original message
         if (isset($results['replies']['reply']) && is_array($results['replies']['reply'])) {
             foreach ($results['replies']['reply'] as $reply) {
+                // Get the message and clean up code blocks
+                $message = trim($reply['message']);
+                $message = preg_replace('/```\r\n(.*?)\r\n```/s', '```$1```', $message); // Remove \r\n within code blocks
+                $message = html_entity_decode($message);
+
                 $ticket['messages'][] = [
                     'id' => (int)$reply['replyid'],
                     'user_id' => (int)$reply['userid'],
                     'contact_id' => (int)$reply['contactid'],
                     'date' => date('Y-m-d H:i:s', strtotime($reply['date'])),
-                    'message' => html_entity_decode(trim($reply['message'])), // Changed from htmlspecialchars to html_entity_decode
+                    'message' => $message, // Use cleaned message
                     'requestor' => [
                         'name' => htmlspecialchars(trim($reply['requestor_name'])),
                         'email' => $reply['requestor_email'],
