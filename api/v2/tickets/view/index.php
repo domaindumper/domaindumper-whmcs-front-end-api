@@ -71,11 +71,8 @@ try {
                 // Get the message and clean up code blocks
                 $message = trim($reply['message']);
                 
-                // Remove only leading and trailing newlines in code blocks
-                $message = preg_replace('/```\r?\n*(.*?)\r?\n*```/s', function($matches) {
-                    $code = trim($matches[1]); // Remove leading/trailing whitespace
-                    return "```$code```";
-                }, $message);
+                // Fix: Use string replacement instead of closure for preg_replace
+                $message = preg_replace('/```\r?\n*(.*?)\r?\n*```/s', '```$1```', $message);
                 
                 $message = html_entity_decode($message);
 
@@ -84,7 +81,7 @@ try {
                     'user_id' => (int)$reply['userid'],
                     'contact_id' => (int)$reply['contactid'],
                     'date' => date('Y-m-d H:i:s', strtotime($reply['date'])),
-                    'message' => $message, // Use cleaned message
+                    'message' => $message,
                     'requestor' => [
                         'name' => htmlspecialchars(trim($reply['requestor_name'])),
                         'email' => $reply['requestor_email'],
