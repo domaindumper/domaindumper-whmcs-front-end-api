@@ -70,7 +70,13 @@ try {
             foreach ($results['replies']['reply'] as $reply) {
                 // Get the message and clean up code blocks
                 $message = trim($reply['message']);
-                $message = preg_replace('/```\r\n(.*?)\r\n```/s', '```$1```', $message); // Remove \r\n within code blocks
+                
+                // Remove only leading and trailing newlines in code blocks
+                $message = preg_replace('/```\r?\n*(.*?)\r?\n*```/s', function($matches) {
+                    $code = trim($matches[1]); // Remove leading/trailing whitespace
+                    return "```$code```";
+                }, $message);
+                
                 $message = html_entity_decode($message);
 
                 $ticket['messages'][] = [
