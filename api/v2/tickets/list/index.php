@@ -34,7 +34,7 @@ try {
                 'tid' => htmlspecialchars(trim($ticket['tid'])),
                 'date_created' => date('Y-m-d H:i:s', strtotime($ticket['date'])),
                 'date_updated' => date('Y-m-d H:i:s', strtotime($ticket['lastreply'])),
-                'title' => htmlspecialchars(trim($ticket['subject'])),
+                'subject' => htmlspecialchars(trim($ticket['subject'])),
                 'message' => htmlspecialchars(trim($ticket['message'])),
                 'status' => htmlspecialchars(ucfirst(trim($ticket['status']))),
                 'urgency' => htmlspecialchars(ucfirst(trim($ticket['urgency']))),
