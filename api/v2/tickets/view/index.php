@@ -71,7 +71,7 @@ try {
                     'user_id' => (int)$reply['userid'],
                     'contact_id' => (int)$reply['contactid'],
                     'date' => date('Y-m-d H:i:s', strtotime($reply['date'])),
-                    'message' => htmlspecialchars(trim($reply['message'])),
+                    'message' => html_entity_decode(trim($reply['message'])), // Changed from htmlspecialchars to html_entity_decode
                     'requestor' => [
                         'name' => htmlspecialchars(trim($reply['requestor_name'])),
                         'email' => $reply['requestor_email'],
@@ -97,7 +97,7 @@ try {
                 return [
                     'id' => (int)$note['noteid'],
                     'date' => date('Y-m-d H:i:s', strtotime($note['date'])),
-                    'message' => htmlspecialchars(trim($note['message'])),
+                    'message' => html_entity_decode(trim($note['message'])), // Changed from htmlspecialchars to html_entity_decode
                     'admin' => htmlspecialchars(trim($note['admin'])),
                     'attachments' => isset($note['attachments']) && is_array($note['attachments'])
                         ? array_filter($note['attachments'])
