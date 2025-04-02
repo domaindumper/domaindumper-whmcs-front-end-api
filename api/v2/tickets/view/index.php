@@ -36,6 +36,8 @@ try {
 
     $results = localAPI($command, $postData);
 
+    print_r($results); // Debugging line to check the API response
+
     if ($results['result'] == 'success') {
         // Process ticket data
         $ticket = [
