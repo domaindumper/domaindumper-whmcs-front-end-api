@@ -3,7 +3,6 @@ use WHMCS\ClientArea;
 use WHMCS\Database\Capsule;
 
 define('CLIENTAREA', true);
-
 require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
 require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Session.php';
@@ -11,11 +10,15 @@ require $_SERVER['DOCUMENT_ROOT'] . '/v2/lib/Authorization.php';
 
 $ca = new ClientArea();
 
+// Define constants
+define('MAX_FILE_SIZE', 2 * 1024 * 1024); // 2MB
+define('ALLOWED_FILE_TYPES', ['jpg', 'gif', 'jpeg', 'png']);
+
 try {
     // Get JSON input
     $input = json_decode(file_get_contents('php://input'), true);
     
-    // Validate JSON and required fields
+    // Better input validation
     if (json_last_error() !== JSON_ERROR_NONE) {
         throw new Exception('Invalid JSON payload', 400);
     }
@@ -28,16 +31,35 @@ try {
     $auth = new Authorization();
     $userId = $auth->validateRequest();
 
-    // Handle file attachments if present
+    // Handle file attachments with validation
     $attachments = [];
     if (isset($input['attachments']) && is_array($input['attachments'])) {
         foreach ($input['attachments'] as $attachment) {
-            if (isset($attachment['name']) && isset($attachment['data'])) {
-                $attachments[] = [
-                    'name' => $attachment['name'],
-                    'data' => $attachment['data'] // Should be base64 encoded
-                ];
+            if (!isset($attachment['name']) || !isset($attachment['data'])) {
+                continue;
             }
+
+            // Validate file type
+            $ext = strtolower(pathinfo($attachment['name'], PATHINFO_EXTENSION));
+            if (!in_array($ext, ALLOWED_FILE_TYPES)) {
+                throw new Exception('Invalid file type. Only jpg, gif, jpeg, png files are allowed', 415);
+            }
+
+            // Validate base64 data
+            $decodedData = base64_decode($attachment['data']);
+            if ($decodedData === false) {
+                throw new Exception('Invalid file data', 400);
+            }
+
+            // Check file size
+            if (strlen($decodedData) > MAX_FILE_SIZE) {
+                throw new Exception('File size exceeds 2MB limit', 413);
+            }
+
+            $attachments[] = [
+                'name' => $attachment['name'],
+                'data' => $attachment['data']
+            ];
         }
     }
 
@@ -55,15 +77,9 @@ try {
         $postData['attachments'] = base64_encode(json_encode($attachments));
     }
 
-    // Add custom fields if present
-    if (isset($input['customFields']) && is_array($input['customFields'])) {
-        $postData['customfields'] = base64_encode(serialize($input['customFields']));
-    }
-
     $results = localAPI($command, $postData);
 
     if ($results['result'] == 'success') {
-        // Format the response
         $response = [
             'status' => 'success',
             'code' => 200,
