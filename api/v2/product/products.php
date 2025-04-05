@@ -50,16 +50,16 @@ $Products = [
     [
         'id' => 2,
         'title' => 'Daily Registered Domains (Free) - No API, No WHOIS',
-        'description_short' => 'Free daily list of newly registered domains worldwide.',
-        'description_long' => 'Access a free daily list of newly registered domains across all TLDs for market research and trend analysis.',
+        'description_short' => 'Daily updates of newly registered and removed domains.',
+        'description_long' => 'Get daily updates of newly registered and removed domains across all zones, including classic, gTLD, and ccTLD.',
         'images' => [
-            '/images/product/2/newly-registered-domains-free.jpg',
+            '/images/product/2/daily-registered-domains.jpg',
             '/images/product/2/more.jpg',
         ],
         'featuredImage' => '/images/product/featuredimage.webp',
-        'slug_page' => '/domain-name-list/new-domains/',
-        'sku' => 'DB-DOM-GLB-02',
-        'mpn' => 'DB-DOM-GLB-02-ID',
+        'slug_page' => '/domain-name-list/daily-registered-domains/',
+        'sku' => 'DB-DOM-DAILY-02',
+        'mpn' => 'DB-DOM-DAILY-02-ID',
         'related' => [4],
         'col' => 'col-lg-6',
         'google_product_category' => 'Software > Business & Productivity Software',
@@ -70,16 +70,14 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Daily updates of new domains',
-            'Covers all major TLDs',
-            'Simple CSV download format',
-            'No WHOIS or API access',
-            'Completely free resource'
+            'Daily updates of registered and removed domains',
+            'Covers all zones: classic, gTLD, ccTLD',
+            'Search and monitor domain names',
+            'Free access with no API or WHOIS data',
+            'CSV format for easy download'
         ],
         'api_details' => [
-            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
-            'support' => 'Email and chat support'
+            'support' => 'Not available for free plans'
         ],
         'delivery_method' => 'digital download',
         'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
@@ -111,13 +109,12 @@ $Products = [
             'Daily updates for 1500+ TLDs',
             'Complete ownership details',
             'Technical contact and DNS info',
-            'Domain registration and expiry dates',
-            'Multiple export formats (CSV, JSON)'
+            'Exportable in CSV format',
+            'Free API access included'
         ],
         'api_details' => [
-            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
-            'support' => 'Email and chat support'
+            'support' => 'Email and chat support',
+            'request_limit' => 'Unlimited for paid plans'
         ],
         'delivery_method' => 'digital download',
         'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
@@ -126,10 +123,10 @@ $Products = [
     [
         'id' => 4,
         'title' => 'Monthly New Domain Lists',
-        'description_short' => 'Monthly list of newly registered domains across TLDs.',
-        'description_long' => 'Track new domain registrations with monthly updates, organized by TLD and registration date.',
+        'description_short' => 'Comprehensive monthly list of all registered domains.',
+        'description_long' => 'Access the most complete list of all registered domains, updated monthly, including domain names, zones, and administrator contact details.',
         'images' => [
-            '/images/product/4/all-registered-domain-lists.jpg',
+            '/images/product/4/monthly-domain-lists.jpg',
             '/images/product/4/more.jpg',
         ],
         'featuredImage' => '/images/product/featuredimage.webp',
@@ -146,16 +143,16 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Monthly updates of new domains',
-            'Covers all major TLDs',
-            'Organized by TLD and date',
-            'CSV and JSON export formats',
-            'Ideal for market analysis'
+            'Complete list of all registered domains',
+            'Updated monthly with new and removed domains',
+            'Covers all zones: classic, gTLD, ccTLD',
+            'Includes administrator email and phone contacts',
+            'API access for automated updates',
+            'CSV format for easy integration'
         ],
         'api_details' => [
-            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
-            'support' => 'Email and chat support'
+            'support' => 'Email and chat support',
+            'request_limit' => 'Unlimited for paid plans'
         ],
         'delivery_method' => 'digital download',
         'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
@@ -164,18 +161,18 @@ $Products = [
     [
         'id' => 5,
         'title' => 'Website Technology Database',
-        'description_short' => 'Identify technologies used on millions of websites.',
-        'description_long' => 'Discover CMS, hosting, and analytics tools used by websites with our regularly updated database.',
+        'description_short' => 'Daily website data in CSV format with domain and email details.',
+        'description_long' => 'Access daily website data including domain names and email addresses extracted from website pages. [Not WHOIS].',
         'images' => [
-            '/images/product/5/website-details-all-domains.jpg',
+            '/images/product/5/website-technology-database.jpg',
             '/images/product/5/more.jpg',
         ],
         'featuredImage' => '/images/product/featuredimage.webp',
-        'slug_page' => '/website-database/historical-website-data/',
-        'sku' => 'DB-WEB-GLB-05',
-        'mpn' => 'DB-WEB-GLB-05-ID',
-        'related' => [1, 3],
-        'col' => 'col-lg-4',
+        'slug_page' => '/website-database/technology-data/',
+        'sku' => 'DB-WEB-TECH-05',
+        'mpn' => 'DB-WEB-TECH-05-ID',
+        'related' => [11],
+        'col' => 'col-lg-6',
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
         'availability' => 'in stock',
@@ -184,16 +181,15 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'CMS and framework detection',
-            'Hosting provider details',
-            'Analytics and marketing tools',
-            'Regular database updates',
-            'Export options for analysis'
+            'Daily updates in CSV format',
+            'Domain names and email addresses',
+            'Extracted from website pages',
+            'Upcoming: A records, NS, IP, and country data',
+            'Free API access included'
         ],
         'api_details' => [
-            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
-            'support' => 'Email and chat support'
+            'support' => 'Email and chat support',
+            'request_limit' => 'Unlimited for paid plans'
         ],
         'delivery_method' => 'digital download',
         'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
@@ -281,7 +277,6 @@ $Products = [
         'description_short' => 'Comprehensive WHOIS data for domains worldwide.',
         'description_long' => 'Get access to WHOIS data for domains across the globe, updated daily with ownership and DNS details.',
         'images' => [
-            '/images/product/8/australia-whois-database.jpg',
             '/images/product/8/more.jpg',
         ],
         'featuredImage' => '/images/product/featuredimage.webp',
@@ -298,16 +293,14 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Covers 1500+ TLDs',
             'Daily updates for all domains',
-            'Registrant and technical details',
-            'Nameserver and DNS data',
-            'Export in CSV or JSON formats'
+            'Registrant and DNS details included',
+            'Exportable in CSV format',
+            'Free API access included'
         ],
         'api_details' => [
-            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
-            'support' => 'Email and chat support'
+            'support' => 'Email and chat support',
+            'request_limit' => 'Unlimited for paid plans'
         ],
         'delivery_method' => 'digital download',
         'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
@@ -315,37 +308,36 @@ $Products = [
     ],
     [
         'id' => 9,
-        'title' => 'Domain Expiry Monitoring',
-        'description_short' => 'Track domain expiry dates and never miss an opportunity.',
-        'description_long' => 'Monitor domain expiry dates and get notified about expiring domains to secure valuable opportunities.',
+        'title' => 'Global WHOIS Database - Historical Data',
+        'description_short' => 'Access historical WHOIS data for domains worldwide.',
+        'description_long' => 'Order the global WHOIS database from past months, including registrant details and DNS data.',
         'images' => [
-            '/images/product/9/old-whois-database.jpg',
+            '/images/product/9/historical-whois-database.jpg',
             '/images/product/9/more.jpg',
         ],
         'featuredImage' => '/images/product/featuredimage.webp',
-        'slug_page' => '/whois-database/historical-whois/',
-        'sku' => 'DB-WHOIS-OLD-09',
-        'mpn' => 'DB-WHOIS-OLD-09-ID',
-        'related' => [1, 3],
+        'slug_page' => '/whois-database/historical-whois-data/',
+        'sku' => 'DB-WHOIS-HIST-09',
+        'mpn' => 'DB-WHOIS-HIST-09-ID',
+        'related' => [3, 8],
         'col' => 'col-lg-6',
         'google_product_category' => 'Software > Business & Productivity Software',
-        'condition' => 'new',
+        'condition' => 'NewCondition',
         'availability' => 'in stock',
         'downloadable' => 'yes',
         'brand' => 'Whoisextractor',
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Track expiring domains',
-            'Daily expiry notifications',
-            'Export expiry lists',
-            'Covers all major TLDs',
-            'Ideal for domain investors'
+            'Access WHOIS data from past months',
+            'Covers 1500+ TLDs globally',
+            'Registrant and DNS details included',
+            'Exportable in CSV format',
+            'Free API access included'
         ],
         'api_details' => [
-            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
-            'support' => 'Email and chat support'
+            'support' => 'Email and chat support',
+            'request_limit' => 'Unlimited for paid plans'
         ],
         'delivery_method' => 'digital download',
         'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
@@ -392,17 +384,17 @@ $Products = [
     [
         'id' => 11,
         'title' => 'Website Contact Database',
-        'description_short' => 'Verified contact details for websites worldwide.',
-        'description_long' => 'Get verified email addresses, phone numbers, and contact forms for websites globally.',
+        'description_short' => 'Daily website contact data in CSV format.',
+        'description_long' => 'Get daily website contact data including domain names and email addresses extracted from website pages. [Not WHOIS].',
         'images' => [
-            '/images/product/11/website-detailed-daily-data.jpg',
+            '/images/product/11/website-contact-database.jpg',
             '/images/product/11/more.jpg',
         ],
         'featuredImage' => '/images/product/featuredimage.webp',
-        'slug_page' => '/website-database/daily-website-data/',
-        'sku' => 'DB-WEB-GLB-11',
-        'mpn' => 'DB-WEB-GLB-11-ID',
-        'related' => [1, 3],
+        'slug_page' => '/website-database/contact-data/',
+        'sku' => 'DB-WEB-CONTACT-11',
+        'mpn' => 'DB-WEB-CONTACT-11-ID',
+        'related' => [5],
         'col' => 'col-lg-6',
         'google_product_category' => 'Software > Business & Productivity Software',
         'condition' => 'new',
@@ -412,16 +404,15 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Verified email and phone details',
-            'Contact form URLs',
-            'Regular database updates',
-            'Export options for lead generation',
-            'Ideal for B2B outreach'
+            'Daily updates in CSV format',
+            'Domain names and email addresses',
+            'Extracted from website pages',
+            'Upcoming: A records, NS, IP, and country data',
+            'Free API access included'
         ],
         'api_details' => [
-            'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
-            'support' => 'Email and chat support'
+            'support' => 'Email and chat support',
+            'request_limit' => 'Unlimited for paid plans'
         ],
         'delivery_method' => 'digital download',
         'return_policy' => 'https://www.whoisextractor.com/tos/refund-and-cancellation-policy/',
