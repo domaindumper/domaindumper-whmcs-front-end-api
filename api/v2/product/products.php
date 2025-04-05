@@ -8,8 +8,8 @@ $Products = [
     [
         'id' => 1,
         'title' => 'India WHOIS Database: Daily Updates',
-        'description_short' => 'Access the most up-to-date and comprehensive WHOIS data for Indian domains.',
-        'description_long' => 'Our India WHOIS Database provides comprehensive and accurate WHOIS records for millions of domains registered in India. This database is updated daily, ensuring you have access to the freshest data available. Use this data for lead generation, market research, competitor analysis, and more.',
+        'description_short' => 'Daily WHOIS data for Indian domains with accurate details.',
+        'description_long' => 'Get daily updates of WHOIS data for Indian domains, including registrant details, nameservers, and expiration dates.',
         'images' => [
             '/images/product/1/india-whois-database.jpg',
             '/images/product/1/more.jpg',
@@ -32,11 +32,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Daily updates for .IN domains',
+            'Accurate registrant details',
+            'Nameserver and DNS data',
+            'Domain registration and expiry dates',
+            'Bulk data export options'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -50,8 +50,8 @@ $Products = [
     [
         'id' => 2,
         'title' => 'Daily Registered Domains (Free) - No API, No WHOIS',
-        'description_short' => 'Get a free daily list of newly registered domain names.',
-        'description_long' => 'Stay ahead of the curve with our free Daily Registered Domains list. This list is updated every 24 hours and provides you with a snapshot of the latest domain name registrations. While it doesn\'t include WHOIS data or API access, it\'s a valuable resource for domain research, market analysis, and identifying potential new competitors.',
+        'description_short' => 'Free daily list of newly registered domains worldwide.',
+        'description_long' => 'Access a free daily list of newly registered domains across all TLDs for market research and trend analysis.',
         'images' => [
             '/images/product/2/newly-registered-domains-free.jpg',
             '/images/product/2/more.jpg',
@@ -70,11 +70,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Daily updates of new domains',
+            'Covers all major TLDs',
+            'Simple CSV download format',
+            'No WHOIS or API access',
+            'Completely free resource'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -88,8 +88,8 @@ $Products = [
     [
         'id' => 3,
         'title' => 'Daily WHOIS Database Downloads - Fresh, Accurate Data',
-        'description_short' => 'Need reliable and up-to-date WHOIS data? Our Daily Full WHOIS Database provides the solution. Get access to the latest domain registration information and make informed decisions for your business.',
-        'description_long' => 'Our Daily Full WHOIS Database provides comprehensive and up-to-date WHOIS records for millions of domains across the globe. This database is updated every day, ensuring you have access to the most current information available. Use this data for market research, lead generation, competitor analysis, and more.',
+        'description_short' => 'Global WHOIS data updated daily for 1500+ TLDs.',
+        'description_long' => 'Comprehensive WHOIS data for domains worldwide, updated daily with ownership and technical details.',
         'images' => [
             '/images/product/3/whois-database-download.jpg',
             '/images/product/3/more.jpg',
@@ -108,11 +108,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Daily updates for 1500+ TLDs',
+            'Complete ownership details',
+            'Technical contact and DNS info',
+            'Domain registration and expiry dates',
+            'Multiple export formats (CSV, JSON)'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -125,9 +125,9 @@ $Products = [
     ],
     [
         'id' => 4,
-        'title' => 'All Registered Domains (260M+) - Updated Daily',
-        'description_short' => 'Get an updated list of all registered domains daily.',
-        'description_long' => 'Our All Registered Domains List provides a comprehensive database of over 260 million active domain names across various TLDs. This list is updated daily, ensuring you have the most current information available. Use this data for domain research, market analysis, and identifying potential new competitors or trends. Please note that this list does not include WHOIS data.',
+        'title' => 'Monthly New Domain Lists',
+        'description_short' => 'Monthly list of newly registered domains across TLDs.',
+        'description_long' => 'Track new domain registrations with monthly updates, organized by TLD and registration date.',
         'images' => [
             '/images/product/4/all-registered-domain-lists.jpg',
             '/images/product/4/more.jpg',
@@ -146,11 +146,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Monthly updates of new domains',
+            'Covers all major TLDs',
+            'Organized by TLD and date',
+            'CSV and JSON export formats',
+            'Ideal for market analysis'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -163,9 +163,9 @@ $Products = [
     ],
     [
         'id' => 5,
-        'title' => '320k+ Website Details - Comprehensive Data',
-        'description_short' => 'Access a massive database of website details, including emails and tech stacks.',
-        'description_long' => 'Our Website Details Database provides comprehensive information on over 320,000 websites, including email addresses, technology stacks, contact details, and more. This database is updated daily, ensuring you have access to the most current information available. Use this data for lead generation, market research, competitor analysis, and a variety of other business applications.',
+        'title' => 'Website Technology Database',
+        'description_short' => 'Identify technologies used on millions of websites.',
+        'description_long' => 'Discover CMS, hosting, and analytics tools used by websites with our regularly updated database.',
         'images' => [
             '/images/product/5/website-details-all-domains.jpg',
             '/images/product/5/more.jpg',
@@ -184,11 +184,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'CMS and framework detection',
+            'Hosting provider details',
+            'Analytics and marketing tools',
+            'Regular database updates',
+            'Export options for analysis'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -203,7 +203,7 @@ $Products = [
         'id' => 6,
         'title' => 'Test Drive Our WHOIS Database - 7 Days Trial',
         'description_short' => 'Experience the power of our WHOIS database with a 7-day trial.',
-        'description_long' => 'Try our Daily Full WHOIS Database for free and see how it can benefit your business. Our trial gives you full access to our comprehensive WHOIS records for 7 days, allowing you to explore the data, test our tools, and experience the value we offer. Sign up for your trial today!',
+        'description_long' => 'Try our WHOIS database for 7 days and explore its features and benefits for your business.',
         'images' => [
             '/images/product/3/whois-database-download.jpg',
             '/images/product/3/more.jpg',
@@ -222,11 +222,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Full access to WHOIS data',
+            'Daily updates for 7 days',
+            'Explore domain ownership details',
+            'Test bulk domain analysis tools',
+            'No commitment required'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -239,9 +239,9 @@ $Products = [
     ],
     [
         'id' => 7,
-        'title' => 'US WHOIS Database: Daily Updates',
-        'description_short' => 'Get daily updates on US domain ownership and registration details.',
-        'description_long' => 'Stay ahead of the curve with our Daily US WHOIS Database. Get access to the latest domain registration information, including owner details, contact information, and historical records. Our data is accurate, reliable, and updated every day, giving you the insights you need to make informed decisions.',
+        'title' => 'USA WHOIS Database',
+        'description_short' => 'Daily WHOIS data for US domains with detailed records.',
+        'description_long' => 'Access daily-updated WHOIS data for US domains, including registrant details and DNS information.',
         'images' => [
             '/images/product/7/us-whois-database.jpg',
             '/images/product/7/more.jpg',
@@ -260,11 +260,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Daily updates for US domains',
+            'Registrant and DNS details',
+            'Domain registration and expiry dates',
+            'Bulk data export options',
+            'API access available'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -277,9 +277,9 @@ $Products = [
     ],
     [
         'id' => 8,
-        'title' => 'Australia - Whois Database',
-        'description_short' => 'Access the most up-to-date and comprehensive WHOIS data for Australian domains.',
-        'description_long' => 'Our Australia WHOIS Database provides comprehensive and accurate WHOIS records for millions of domains registered in Australia. This database is updated daily, ensuring you have access to the freshest data available. Use this data for lead generation, market research, competitor analysis, and more.',
+        'title' => 'Global WHOIS Database',
+        'description_short' => 'Comprehensive WHOIS data for domains worldwide.',
+        'description_long' => 'Get access to WHOIS data for domains across the globe, updated daily with ownership and DNS details.',
         'images' => [
             '/images/product/8/australia-whois-database.jpg',
             '/images/product/8/more.jpg',
@@ -298,11 +298,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Covers 1500+ TLDs',
+            'Daily updates for all domains',
+            'Registrant and technical details',
+            'Nameserver and DNS data',
+            'Export in CSV or JSON formats'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -315,9 +315,9 @@ $Products = [
     ],
     [
         'id' => 9,
-        'title' => 'Historical Old WHOIS Database - Access Past Domain Data',
-        'description_short' => 'Need to research past domain ownership? Download our historical WHOIS database.',
-        'description_long' => 'Step back in time with our Old WHOIS Database. This comprehensive archive allows you to access domain registration data from previous years, going all the way back to 2011. Select the year and month you\'re interested in and download the corresponding WHOIS records. This data is invaluable for historical domain research, investigating ownership changes, and understanding domain trends over time.',
+        'title' => 'Domain Expiry Monitoring',
+        'description_short' => 'Track domain expiry dates and never miss an opportunity.',
+        'description_long' => 'Monitor domain expiry dates and get notified about expiring domains to secure valuable opportunities.',
         'images' => [
             '/images/product/9/old-whois-database.jpg',
             '/images/product/9/more.jpg',
@@ -336,11 +336,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Track expiring domains',
+            'Daily expiry notifications',
+            'Export expiry lists',
+            'Covers all major TLDs',
+            'Ideal for domain investors'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -353,9 +353,9 @@ $Products = [
     ],
     [
         'id' => 10,
-        'title' => 'Daily Registered Domains with API - No WHOIS',
-        'description_short' => 'Access a daily updated list of new domain names via our API.',
-        'description_long' => 'Streamline your domain research with our Daily Registered Domains API. This API provides access to a freshly updated list of newly registered domain names every 24 hours. Integrate it with your application to automate downloads and seamlessly incorporate the data into your workflows. While it doesn\'t include WHOIS data, it\'s a valuable resource for domain analysis, market research, and identifying potential new competitors.',
+        'title' => 'Custom WHOIS Solutions',
+        'description_short' => 'Tailored WHOIS data solutions for your business needs.',
+        'description_long' => 'Get custom WHOIS data solutions designed to meet your specific business requirements.',
         'images' => [
             '/images/product/2/newly-registered-domains-free.jpg',
             '/images/product/2/more.jpg',
@@ -374,11 +374,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Custom data extraction',
+            'Flexible API integration',
+            'Dedicated support team',
+            'Scalable for enterprise needs',
+            'Secure and reliable'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -391,9 +391,9 @@ $Products = [
     ],
     [
         'id' => 11,
-        'title' => 'Website Detailed Daily Data - Accurate & Fresh',
-        'description_short' => 'Get daily updates on website data, including emails and tech stacks.',
-        'description_long' => 'Our Website Detailed Daily Data provides a wealth of information on over 320,000 websites. This database is updated daily, ensuring you have access to the freshest data available.  We scrape real data from live websites, including email addresses, technology stacks, contact details, social media links, and more. Use this data for lead generation, market research, competitor analysis, and a variety of other business applications.',
+        'title' => 'Website Contact Database',
+        'description_short' => 'Verified contact details for websites worldwide.',
+        'description_long' => 'Get verified email addresses, phone numbers, and contact forms for websites globally.',
         'images' => [
             '/images/product/11/website-detailed-daily-data.jpg',
             '/images/product/11/more.jpg',
@@ -412,11 +412,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Verified email and phone details',
+            'Contact form URLs',
+            'Regular database updates',
+            'Export options for lead generation',
+            'Ideal for B2B outreach'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
@@ -429,9 +429,9 @@ $Products = [
     ],
     [
         'id' => 12,
-        'title' => 'Website Detailed Daily Data - Trial 7 Days',
-        'description_long' => 'Domain Backordering long description...',
-        'description_short' => 'Domain Backordering short description',
+        'title' => 'Domain Registration Trends',
+        'description_short' => 'Analyze domain registration trends across TLDs.',
+        'description_long' => 'Track and analyze domain registration trends to identify market opportunities and patterns.',
         'images' => [
             '/images/product/11/website-detailed-daily-data.jpg',
             '/images/product/11/more.jpg',
@@ -450,11 +450,11 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            'Daily registration trends',
+            'Insights across TLDs',
+            'Exportable trend reports',
+            'Ideal for market analysis',
+            'Customizable filters'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
