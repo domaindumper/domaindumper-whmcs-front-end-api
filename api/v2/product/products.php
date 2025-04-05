@@ -458,15 +458,15 @@ $Products = [
     ],
     [
         'id' => 13,
-        'title' => 'India Data - 150 Crore Records - Comprehensive Coverage',
-        'description_short' => 'Access the largest and most comprehensive Pan India Database with 150 crore records.',
-        'description_long' => 'Our Pan India Database is the largest and most comprehensive collection of data on individuals and businesses across India. With 150 crore records, this database provides unparalleled coverage for your research, marketing, and analytical needs.  The data includes demographics, contact information, and other valuable insights.  Empower your business decisions with our Pan India Database.',
+        'title' => 'Pan India Database (150 Crore Data)',
+        'description_short' => 'Access 150 crore records with instant delivery via Google Drive links.',
+        'description_long' => 'Get the most comprehensive Pan India database with 150 crore records, ideal for B2C campaigns. The database is 70GB in size and includes classified directories for various industries. Instant delivery via Google Drive links.',
         'images' => [
             '/images/product/13/pan-india-database-150-crore-data.jpg',
             '/images/product/13/more.jpg',
         ],
         'featuredImage' => '/images/product/featuredimage.webp',
-        'slug_page' => '/domain-backordering/',
+        'slug_page' => '/database/pan-india-database/',
         'sku' => 'DB-ALL-IN-13',
         'mpn' => 'DB-ALL-IN-13-ID',
         'related' => [1, 3],
@@ -479,15 +479,17 @@ $Products = [
         'identifier_exists' => 'yes',
         'product_type' => 'Database',
         'features' => [
-            'Real-time WHOIS lookups',
-            'Historical WHOIS records',
-            'Bulk domain analysis',
-            'Domain ownership identification',
-            'Domain expiry monitoring'
+            '150 crore records across India',
+            '70GB database size',
+            'Instant delivery via Google Drive links',
+            'Ideal for B2C campaigns',
+            'Includes classified directories for various industries',
+            'Downloadable sample file available',
+            'Affordable pricing at ₹1300.00/mo or $15.22/mo'
         ],
         'api_details' => [
             'documentation' => 'https://www.whoisextractor.com/support/api-documents/',
-            'request_limit' => '500 requests/month',
+            'request_limit' => 'Unlimited for paid plans',
             'support' => 'Email and chat support'
         ],
         'delivery_method' => 'digital download',
