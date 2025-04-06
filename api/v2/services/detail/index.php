@@ -120,14 +120,14 @@ try {
 
         $clientResults = localAPI($command, $clientPostData);
 
-        // Add caching for currency details
-        $cacheKey = "currency_{$clientResults['currency_code']}";
-        $currencyDetails = Cache::remember($cacheKey, 3600, function() use ($clientResults) {
-            return Capsule::table('tblcurrencies')
+        // Replace the caching section with direct database query
+        $currencyDetails = null;
+        if (isset($clientResults['currency_code'])) {
+            $currencyDetails = Capsule::table('tblcurrencies')
                 ->select(['prefix', 'suffix', 'code', 'format', 'rate'])
                 ->where('code', $clientResults['currency_code'])
                 ->first();
-        });
+        }
         
         // Process service details
         $serviceDetails = [
