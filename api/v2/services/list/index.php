@@ -26,8 +26,23 @@ try {
     $results = localAPI($command, $postData);
 
     if ($results['result'] == 'success' && isset($results['products']['product'])) {
+        // Get client details for currency
+        $command = 'GetClientsDetails';
+        $clientPostData = array(
+            'clientid' => $userId,
+            'stats' => false
+        );
+
+        $clientResults = localAPI($command, $clientPostData);
+
+        // Get currency details from database
+        $currencyDetails = Capsule::table('tblcurrencies')
+            ->select(['prefix', 'suffix', 'code', 'format', 'rate'])
+            ->where('code', $clientResults['currency_code'])
+            ->first();
+
         // Process services
-        $services = array_map(function($service) {
+        $services = array_map(function($service) use ($currencyDetails) {
             return [
                 'id' => (int)$service['id'],
                 'client_id' => (int)$service['clientid'],
@@ -42,6 +57,10 @@ try {
                 'first_payment_amount' => (float)$service['firstpaymentamount'],
                 'recurring_amount' => (float)$service['recurringamount'],
                 'currency_code' => $service['currency'],
+                'currency_prefix' => $currencyDetails ? $currencyDetails->prefix : '',
+                'currency_suffix' => $currencyDetails ? $currencyDetails->suffix : '',
+                'currency_format' => $currencyDetails ? $currencyDetails->format : 1,
+                'currency_rate' => $currencyDetails ? (float)$currencyDetails->rate : 1.00000,
                 'subscription_id' => $service['subscriptionid'] ?? null,
                 'promotion_id' => (int)$service['promoid'],
                 'promotion_description' => $service['promocount'] > 0 ? $service['promodesc'] : null,
