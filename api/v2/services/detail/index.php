@@ -24,9 +24,19 @@ try {
         throw new Exception('Service ID is required', 400);
     }
 
-    // Initialize authorization
+    // Add authorization check at the beginning
     $auth = new Authorization();
     $userId = $auth->validateRequest();
+    
+    // Validate service ownership
+    $service = Capsule::table('tblhosting')
+        ->where('id', $input['serviceId'])
+        ->where('userid', $userId)
+        ->first();
+        
+    if (!$service) {
+        throw new Exception('Service not found or access denied', 404);
+    }
 
     // Get specific service details
     $command = 'GetClientsProducts';
@@ -50,11 +60,14 @@ try {
 
         $clientResults = localAPI($command, $clientPostData);
 
-        // Get currency details from database
-        $currencyDetails = Capsule::table('tblcurrencies')
-            ->select(['prefix', 'suffix', 'code', 'format', 'rate'])
-            ->where('code', $clientResults['currency_code'])
-            ->first();
+        // Add caching for currency details
+        $cacheKey = "currency_{$clientResults['currency_code']}";
+        $currencyDetails = Cache::remember($cacheKey, 3600, function() use ($clientResults) {
+            return Capsule::table('tblcurrencies')
+                ->select(['prefix', 'suffix', 'code', 'format', 'rate'])
+                ->where('code', $clientResults['currency_code'])
+                ->first();
+        });
         
         // Process service details
         $serviceDetails = [
@@ -91,7 +104,25 @@ try {
                     'name' => htmlspecialchars(trim($field['name'])),
                     'value' => htmlspecialchars(trim($field['value']))
                 ];
-            }, $service['customfields']) : []
+            }, $service['customfields']) : [],
+            'download' => [
+                'available' => $service['status'] === 'Active',
+                'url' => $service['status'] === 'Active' ? 
+                    generateDownloadUrl($service['id'], $userId) : null,
+                'expires' => $service['status'] === 'Active' ? 
+                    date('Y-m-d H:i:s', strtotime('+24 hours')) : null
+            ],
+            'documentation' => [
+                'api' => 'https://www.whoisextractor.com/support/api-documents/',
+                'user_guide' => 'https://www.whoisextractor.com/support/user-guide/',
+                'sample_data' => 'https://www.whoisextractor.com/support/sample-data/'
+            ],
+            'usage' => [
+                'api_calls' => getServiceApiUsage($service['id']),
+                'downloads' => getServiceDownloads($service['id']),
+                'last_download' => getLastDownloadDate($service['id']),
+                'quota_remaining' => calculateQuotaRemaining($service['id'])
+            ]
         ];
 
         $response = [
