@@ -39,6 +39,7 @@ try {
                 'registration_date' => date('Y-m-d H:i:s', strtotime($service['regdate'])),
                 'next_due_date' => date('Y-m-d H:i:s', strtotime($service['nextduedate'])),
                 'billing_cycle' => htmlspecialchars(trim($service['billingcycle'])),
+                'first_payment_amount' => (float)$service['firstpaymentamount'],
                 'recurring_amount' => (float)$service['recurringamount'],
                 'currency_code' => $service['currency'],
                 'subscription_id' => $service['subscriptionid'] ?? null,
