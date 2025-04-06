@@ -42,7 +42,7 @@ try {
             ->first();
 
         // Process services
-        $services = array_map(function($service) use ($currencyDetails) {
+        $services = array_map(function($service) {
             return [
                 'id' => (int)$service['id'],
                 'client_id' => (int)$service['clientid'],
@@ -56,11 +56,6 @@ try {
                 'billing_cycle' => htmlspecialchars(trim($service['billingcycle'])),
                 'first_payment_amount' => (float)$service['firstpaymentamount'],
                 'recurring_amount' => (float)$service['recurringamount'],
-                'currency_code' => $service['currency'],
-                'currency_prefix' => $currencyDetails ? $currencyDetails->prefix : '',
-                'currency_suffix' => $currencyDetails ? $currencyDetails->suffix : '',
-                'currency_format' => $currencyDetails ? $currencyDetails->format : 1,
-                'currency_rate' => $currencyDetails ? (float)$currencyDetails->rate : 1.00000,
                 'subscription_id' => $service['subscriptionid'] ?? null,
                 'promotion_id' => (int)$service['promoid'],
                 'promotion_description' => $service['promocount'] > 0 ? $service['promodesc'] : null,
@@ -99,7 +94,14 @@ try {
             'data' => [
                 'services' => $services,
                 'status_counts' => $statusCounts,
-                'total_records' => count($services)
+                'total_records' => count($services),
+                'currency' => [
+                    'code' => $currencyDetails ? $currencyDetails->code : null,
+                    'prefix' => $currencyDetails ? $currencyDetails->prefix : '',
+                    'suffix' => $currencyDetails ? $currencyDetails->suffix : '',
+                    'format' => $currencyDetails ? $currencyDetails->format : 1,
+                    'rate' => $currencyDetails ? (float)$currencyDetails->rate : 1.00000
+                ]
             ]
         ];
     } else {
