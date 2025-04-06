@@ -40,6 +40,21 @@ try {
 
     if ($results['result'] == 'success' && isset($results['products']['product'][0])) {
         $service = $results['products']['product'][0];
+
+        // Get client details for currency
+        $command = 'GetClientsDetails';
+        $clientPostData = array(
+            'clientid' => $userId,
+            'stats' => false
+        );
+
+        $clientResults = localAPI($command, $clientPostData);
+
+        // Get currency details from database
+        $currencyDetails = Capsule::table('tblcurrencies')
+            ->select(['prefix', 'suffix', 'code', 'format', 'rate'])
+            ->where('code', $clientResults['currency_code'])
+            ->first();
         
         // Process service details
         $serviceDetails = [
@@ -82,7 +97,16 @@ try {
         $response = [
             'status' => 'success',
             'code' => 200,
-            'data' => $serviceDetails
+            'data' => [
+                'service' => $serviceDetails,
+                'currency' => [
+                    'code' => $currencyDetails ? $currencyDetails->code : null,
+                    'prefix' => $currencyDetails ? $currencyDetails->prefix : '',
+                    'suffix' => $currencyDetails ? $currencyDetails->suffix : '',
+                    'format' => $currencyDetails ? $currencyDetails->format : 1,
+                    'rate' => $currencyDetails ? (float)$currencyDetails->rate : 1.00000
+                ]
+            ]
         ];
     } else {
         throw new Exception('Service not found or access denied', 404);
