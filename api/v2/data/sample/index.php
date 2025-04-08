@@ -3,8 +3,8 @@ use WHMCS\ClientArea;
 use WHMCS\Database\Capsule;
 
 define('CLIENTAREA', true);
-require $_SERVER['DOCUMENT_ROOT'] . '../../init.php';
-require $_SERVER['DOCUMENT_ROOT'] . '/v2/vendor/autoload.php';
+require __DIR__ . '/../../../../init.php';
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 $ca = new ClientArea();
 
@@ -61,7 +61,14 @@ try {
             ]
         ];
     } else {
-        throw new Exception('No demo data found for this type', 404);
+        $response = [
+            'status' => 'success',
+            'code' => 200,
+            'data' => [
+                'samples' => [],
+                'total_records' => 0
+            ]
+        ];
     }
 
 } catch (Exception $e) {
